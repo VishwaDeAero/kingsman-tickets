@@ -119,9 +119,9 @@
                                 <h5 class="card-title">Card title</h5>
                                 <h6 class="">Category</h6>
                             </div>
-                            <div class="col text-end align-items-center d-flex justify-content-end">
+                            <div class="col text-end align-items-center d-flex justify-content-lg-end">
                                 <small class="bg-warning p-2 rounded-3 align-middle">
-                                    Rating:
+                                    <span class="d-none d-md-inline">Rating:</span>
                                     <span>
                                         4.8/5</span>
                                 </small>
