@@ -1,3 +1,7 @@
+<?php
+session_start();
+$_SESSION["pagename"] = "home";
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,6 +9,9 @@
     <?php include('master/headlinks.php') ?>
     <title>Kingsman Tickets</title>
 </head>
+
+<!-- set page as home php -->
+<?php $pagename = "home"; ?>
 
 <body>
     <?php include('master/header.php'); ?>
