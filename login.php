@@ -1,9 +1,13 @@
+<?php
+session_start();
+$_SESSION["pagename"] = "login";
+?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <?php include('master/headlinks.php'); ?>
-    <title>Kingsman Tickets - Login</title>
+    <title><?php echo $sitename; ?> - Login</title>
 
     <style>
     .divider:after,

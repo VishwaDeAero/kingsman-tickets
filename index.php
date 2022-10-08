@@ -7,7 +7,7 @@ $_SESSION["pagename"] = "home";
 
 <head>
     <?php include('master/headlinks.php') ?>
-    <title>Kingsman Tickets</title>
+    <title><?php echo $sitename; ?></title>
 </head>
 
 <!-- set page as home php -->

@@ -1,9 +1,13 @@
+<?php
+session_start();
+$_SESSION["pagename"] = "register";
+?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <?php include('master/headlinks.php'); ?>
-    <title>Kingsman Tickets - Register</title>
+    <title><?php echo $sitename; ?> - Register</title>
 
     <style>
     .h-custom {
