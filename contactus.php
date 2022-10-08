@@ -29,7 +29,7 @@ $_SESSION["pagename"] = "contactus";
 <body>
     <?php include('master/header.php'); ?>
     <!-- Contact Us -->
-    <div class="container p-5 my-md-3 m-auto">
+    <div class="container p-3 p-sm-2 p-lg-5 my-md-3 m-auto">
         <h3 class="font-weight-bold text-center mb-4">Contact Us</h3>
         <p class="text-center w-responsive mx-auto pb-5">Lorem ipsum dolor sit amet, consectetur adipisicing elit.
             Fugit, error amet numquam iure provident voluptate esse quasi, veritatis totam voluptas nostrum quisquam
