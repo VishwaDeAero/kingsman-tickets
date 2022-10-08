@@ -16,7 +16,7 @@
                         <a class="nav-link <?php if($_SESSION["pagename"] == 'allmovies'){ ?>active<?php } ?>"href="#">Movies</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link <?php if($_SESSION["pagename"] == 'aboutus'){ ?>active<?php } ?>" href="#">About Us</a>
+                        <a class="nav-link <?php if($_SESSION["pagename"] == 'aboutus'){ ?>active<?php } ?>" href="aboutus.php">About Us</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link <?php if($_SESSION["pagename"] == 'contactus'){ ?>active<?php } ?>" href="contactus.php">Contact Us</a>
