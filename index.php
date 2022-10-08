@@ -79,14 +79,14 @@ $_SESSION["pagename"] = "home";
     <!-- Main Slider End -->
 
     <!-- Latest Movies Section -->
-    <div class="container-fluid p-5 p-sm-4 p-lg-5">
+    <div class="container p-3 p-sm-4 p-lg-2">
         <div class="row">
             <div class="col">
                 <h2 class="fw-bold">Latest Movies</h2>
             </div>
         </div>
-        <hr class="mt-sm-2 mb-lg-4">
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-6 g-4">
+        <hr class="mt-0 mt-sm-2 mb-lg-4">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-4 g-4">
             <div class="col">
                 <div class="card h-100">
                     <img src="https://picsum.photos/350/400" class="card-img-top" alt="...">
@@ -117,6 +117,31 @@ $_SESSION["pagename"] = "home";
         </div>
     </div>
     <!-- Latest Movies Section End-->
+
+    <!-- News Feed -->
+    <div class="container p-3 p-sm-4 p-lg-2 my-5">
+        <div class="row">
+            <div class="col">
+                <h2 class="fw-bold">News Feed</h2>
+            </div>
+        </div>
+        <hr class="mt-0 mt-sm-2 mb-lg-4">
+        <div class="row row-cols-1 row-cols-md-2 g-4">
+            <div class="col">
+                <div class="card flex-row">
+                    <div class="col-4">
+                        <img class="card-img-left w-100 h-100" src="https://picsum.photos/400/350" />
+                    </div>
+                    <div class="card-body col-8 p-2">
+                        <h5 class="card-title mb-1 mb-md-3">Left image</h5>
+                        <p class="card-text small muted">This is a longer card with supporting text below as a natural
+                            lead-in to additional content. This content is a little bit longer.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- News Feed End-->
 
     <?php include('master/footer.php'); ?>
 
