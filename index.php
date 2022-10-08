@@ -8,6 +8,20 @@ $_SESSION["pagename"] = "home";
 <head>
     <?php include('master/headlinks.php') ?>
     <title><?php echo $sitename; ?></title>
+
+    <style>
+    .carousel-img {
+        width: 100%;
+        height: auto;
+    }
+
+    @media (max-width: 450px) {
+        .carousel-img {
+            width: auto;
+            height: 25vh;
+        }
+    }
+    </style>
 </head>
 
 <!-- set page as home php -->
@@ -27,15 +41,15 @@ $_SESSION["pagename"] = "home";
         </div>
         <div class="carousel-inner">
             <div class="carousel-item active">
-                <img src="assets/images/main_slider/movies_1315_633145515b98f_naane_varu_sd.jpg" class="d-block w-100"
-                    alt="Naane Varuen">
+                <img src="assets/images/main_slider/movies_1315_633145515b98f_naane_varu_sd.jpg"
+                    class="d-block carousel-img" alt="Naane Varuen">
                 <div class="carousel-caption d-none d-md-block">
                     <h1>First slide label</h1>
                     <h3>Some representative placeholder content for the first slide.</h3>
                 </div>
             </div>
             <div class="carousel-item">
-                <img src="assets/images/main_slider/movies_1170_6045ea459dd42_sinam_sd.jpg" class="d-block w-100"
+                <img src="assets/images/main_slider/movies_1170_6045ea459dd42_sinam_sd.jpg" class="d-block carousel-img"
                     alt="sinam">
                 <div class="carousel-caption d-none d-md-block">
                     <h1>Second slide label</h1>
@@ -43,8 +57,8 @@ $_SESSION["pagename"] = "home";
                 </div>
             </div>
             <div class="carousel-item">
-                <img src="assets/images/main_slider/movies_1301_62f6378b2572d_thiruchi_sd.jpg" class="d-block w-100"
-                    alt="thiruchan">
+                <img src="assets/images/main_slider/movies_1301_62f6378b2572d_thiruchi_sd.jpg"
+                    class="d-block carousel-img" alt="thiruchan">
                 <div class="carousel-caption d-none d-md-block">
                     <h1>Third slide label</h1>
                     <h3>Some representative placeholder content for the third slide.</h3>
@@ -65,24 +79,24 @@ $_SESSION["pagename"] = "home";
     <!-- Main Slider End -->
 
     <!-- Latest Movies Section -->
-    <div class="container-fluid p-lg-5">
+    <div class="container-fluid p-5 p-sm-4 p-lg-5">
         <div class="row">
             <div class="col">
-                <h2>Latest Movies to Watch</h2>
+                <h2 class="fw-bold">Latest Movies</h2>
             </div>
         </div>
-        <hr class="mb-lg-4">
-        <div class="row row-cols-2 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-6 g-4">
+        <hr class="mt-sm-2 mb-lg-4">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-6 g-4">
             <div class="col">
                 <div class="card h-100">
                     <img src="https://picsum.photos/350/400" class="card-img-top" alt="...">
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-auto">
+                            <div class="col-sm-auto">
                                 <h5 class="card-title">Card title</h5>
                                 <h6 class="">Category</h6>
                             </div>
-                            <div class="col text-end align-items-center d-flex justify-content-lg-end">
+                            <div class="col text-end align-items-center d-flex justify-content-sm-end">
                                 <small class="bg-warning p-2 rounded-3 align-middle">
                                     <span class="d-none d-md-inline">Rating:</span>
                                     <span>

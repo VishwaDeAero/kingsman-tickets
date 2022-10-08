@@ -22,10 +22,10 @@
                             <a href="#!" class="text-reset">Movies</a>
                         </p>
                         <p>
-                            <a href="#!" class="text-reset">About Us</a>
+                            <a href="aboutus.php" class="text-reset">About Us</a>
                         </p>
                         <p>
-                            <a href="#!" class="text-reset">Contact Us</a>
+                            <a href="contactus.php" class="text-reset">Contact Us</a>
                         </p>
                         <p>
                             <a href="#!" class="text-reset">My Account</a>
