@@ -1,58 +1,152 @@
+<?php
+session_start();
+$_SESSION["pagename"] = "home";
+?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <?php include('master/headlinks.php') ?>
+    <title><?php echo $sitename; ?></title>
 
-    <!-- Bootstrap -->
-    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
     <style>
-        .navbar-yellow {
-            background-color: gold;
+    .carousel-img {
+        width: 100%;
+        height: auto;
+    }
+
+    @media (max-width: 450px) {
+        .carousel-img {
+            width: auto;
+            height: 25vh;
         }
+    }
     </style>
-    <title>Kingsman Tickets</title>
 </head>
 
+<!-- set page as home php -->
+<?php $pagename = "home"; ?>
+
 <body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light sticky-top navbar-yellow">
-        <div class="container-fluid">
-            <!-- Brand Name and Logo -->
-            <a href="#" class="navbar-brand"><strong>Kingsman Tickets</strong></a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarText">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">News</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">About Us</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Contact Us</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">My Account</a>
-                    </li>
-                </ul>
-                <div class="d-flex">
-                    <a href="#" class="btn btn-outline-dark">Sign In</a>
-                    <a href="#" class="ms-2 btn btn-outline-dark">Register</a>
+    <?php include('master/header.php'); ?>
+    <!-- Main Slider -->
+    <div id="carouselExampleCaptions" class="carousel slide main-slider mb-lg-5" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active"
+                aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1"
+                aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2"
+                aria-label="Slide 3"></button>
+        </div>
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="assets/images/main_slider/movies_1315_633145515b98f_naane_varu_sd.jpg"
+                    class="d-block carousel-img" alt="Naane Varuen">
+                <div class="carousel-caption d-none d-md-block">
+                    <h1>First slide label</h1>
+                    <h3>Some representative placeholder content for the first slide.</h3>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="assets/images/main_slider/movies_1170_6045ea459dd42_sinam_sd.jpg" class="d-block carousel-img"
+                    alt="sinam">
+                <div class="carousel-caption d-none d-md-block">
+                    <h1>Second slide label</h1>
+                    <h3>Some representative placeholder content for the second slide.</h3>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="assets/images/main_slider/movies_1301_62f6378b2572d_thiruchi_sd.jpg"
+                    class="d-block carousel-img" alt="thiruchan">
+                <div class="carousel-caption d-none d-md-block">
+                    <h1>Third slide label</h1>
+                    <h3>Some representative placeholder content for the third slide.</h3>
                 </div>
             </div>
         </div>
-    </nav>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions"
+            data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions"
+            data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+    <!-- Main Slider End -->
+
+    <!-- Latest Movies Section -->
+    <div class="container p-3 p-sm-4 p-lg-2">
+        <div class="row">
+            <div class="col">
+                <h2 class="fw-bold">Latest Movies</h2>
+            </div>
+        </div>
+        <hr class="mt-0 mt-sm-2 mb-lg-4">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-4 g-4">
+            <div class="col">
+                <div class="card h-100">
+                    <img src="https://picsum.photos/350/400" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-auto">
+                                <h5 class="card-title">Card title</h5>
+                                <h6 class="">Category</h6>
+                            </div>
+                            <div class="col text-end align-items-center d-flex justify-content-sm-end">
+                                <small class="bg-warning p-2 rounded-3 align-middle">
+                                    <span class="d-none d-md-inline">Rating:</span>
+                                    <span>
+                                        4.8/5</span>
+                                </small>
+                            </div>
+                        </div>
+                        <hr>
+                        <p class="card-text"><small class="text-muted">This is a longer card with supporting text below
+                                as a natural lead-in to
+                                additional content. This content is a little bit longer.</small></p>
+                        <div class="d-grid gap-2">
+                            <button type="button" class="btn btn-lg btn-dark text-light">Buy Tickets</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Latest Movies Section End-->
+
+    <!-- News Feed -->
+    <div class="container p-3 p-sm-4 p-lg-2 my-5">
+        <div class="row">
+            <div class="col">
+                <h2 class="fw-bold">News Feed</h2>
+            </div>
+        </div>
+        <hr class="mt-0 mt-sm-2 mb-lg-4">
+        <div class="row row-cols-1 row-cols-md-2 g-4">
+            <div class="col">
+                <div class="card flex-row">
+                    <div class="col-4">
+                        <img class="card-img-left w-100 h-100" src="https://picsum.photos/400/350" />
+                    </div>
+                    <div class="card-body col-8 p-2">
+                        <h5 class="card-title mb-1 mb-md-3">Left image</h5>
+                        <p class="card-text small muted">This is a longer card with supporting text below as a natural
+                            lead-in to additional content. This content is a little bit longer.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- News Feed End-->
+
+    <?php include('master/footer.php'); ?>
 
     <!-- Javascript -->
-    <script src="bootstrap/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <?php include('master/jslinks.php'); ?>
 </body>
 
 </html>
