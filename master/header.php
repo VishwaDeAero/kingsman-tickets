@@ -13,7 +13,7 @@
                         <a class="nav-link <?php if($_SESSION["pagename"] == 'home'){ ?>active<?php } ?>" aria-current="page" href="index.php">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link <?php if($_SESSION["pagename"] == 'allmovies'){ ?>active<?php } ?>"href="#">Movies</a>
+                        <a class="nav-link <?php if($_SESSION["pagename"] == 'allmovies'){ ?>active<?php } ?>"href="allmovies.php">Movies</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link <?php if($_SESSION["pagename"] == 'aboutus'){ ?>active<?php } ?>" href="aboutus.php">About Us</a>
