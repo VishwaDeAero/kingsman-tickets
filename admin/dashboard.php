@@ -1,6 +1,6 @@
 <?php
 session_start();
-$_SESSION["pagename"] = "adminMovies";
+$_SESSION["pagename"] = "adminDashboard";
 ?>
 <!DOCTYPE html>
 <html lang="en">
