@@ -7,6 +7,11 @@
 
 <!-- Bootstrap -->
 <link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+
+<!-- Datatables -->
+<link rel="stylesheet" href="../assets/libraries/datatables/dataTables.bootstrap5.min.css">
+<link rel="stylesheet" href="../assets/libraries/datatables/responsive.bootstrap.min.css">
+
 <!-- Font Awesome 6 -->
 <link href="../assets/libraries/fontawesome/css/fontawesome.css" rel="stylesheet">
 <link href="../assets/libraries/fontawesome/css/brands.css" rel="stylesheet">
