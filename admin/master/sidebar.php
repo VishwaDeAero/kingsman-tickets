@@ -2,27 +2,27 @@
     <div class="position-sticky py-3 sidebar-sticky">
         <ul class="nav flex-column">
             <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">
+                <a class="nav-link <?php if($_SESSION["pagename"] == 'adminDashboard'){ ?>active<?php } ?>" aria-current="page" href="dashboard.php">
                     <span data-feather="home" class="align-text-bottom"></span>
                     Dashboard
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link <?php if($_SESSION["pagename"] == 'adminMovies'){ ?>active<?php } ?>" href="movies.php">
                     <span data-feather="file" class="align-text-bottom"></span>
-                    Orders
+                    Movies
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#">
                     <span data-feather="shopping-cart" class="align-text-bottom"></span>
-                    Products
+                    Seats
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#">
                     <span data-feather="users" class="align-text-bottom"></span>
-                    Customers
+                    Staff
                 </a>
             </li>
             <li class="nav-item">
