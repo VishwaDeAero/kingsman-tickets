@@ -109,7 +109,7 @@ $_SESSION["pagename"] = "home";
                                 as a natural lead-in to
                                 additional content. This content is a little bit longer.</small></p>
                         <div class="d-grid gap-2">
-                            <button type="button" class="btn btn-lg btn-dark text-light">Buy Tickets</button>
+                            <button type="button" class="btn btn-lg btn-dark text-light buy-btn">Buy Tickets</button>
                         </div>
                     </div>
                 </div>
@@ -147,6 +147,18 @@ $_SESSION["pagename"] = "home";
 
     <!-- Javascript -->
     <?php include('master/jslinks.php'); ?>
+
+    <script type="text/javascript">
+    $(document).ready(function() {
+        $(".buy-btn").click(function() {
+            Swal.fire(
+                'The Internet?',
+                'That thing is still around?',
+                'success'
+            )
+        });
+    });
+    </script>
 </body>
 
 </html>
