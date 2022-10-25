@@ -22,7 +22,7 @@
                         <a class="nav-link <?php if($_SESSION["pagename"] == 'contactus'){ ?>active<?php } ?>" href="contactus.php">Contact Us</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link <?php if($_SESSION["pagename"] == 'myaccount'){ ?>active<?php } ?>" href="#">My Account</a>
+                        <a class="nav-link <?php if($_SESSION["pagename"] == 'myaccount'){ ?>active<?php } ?>" href="myaccount.php">My Account</a>
                     </li>
                 </ul>
                 <div class="d-flex">
