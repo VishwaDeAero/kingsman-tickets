@@ -22,9 +22,31 @@ $_SESSION["pagename"] = "adminMovies";
             <!-- Side bar -->
             <?php include('master/sidebar.php') ?>
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 working-area">
+
                 <div
                     class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                    <h3 class="mx-4">Movies</h3>
+                    <h3 class="mx-2 mx-md-4">Categories</h3>
+                </div>
+                <div class="container-fluid p-2 px-md-4 pt-2 my-3">
+                    <div class="row gap-1 m-0">
+                        <!-- Category Item -->
+                        <div class="col-auto border rounded-3 bg-dark text-light p-2">
+                            <div class="row gap-1">
+                                <div class="col-auto"><h5 class="m-0">Marvel</h5></div>
+                                <div class="col">
+                                    <a class="btn btn-sm p-0 text-light" title="edit"><i class="fa-solid fa-pen"></i></a>
+                                    <a class="btn btn-sm p-0 ms-2 text-light " title="delete"><i class="fa-solid fa-trash"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-grid d-md-block gap-2 my-2">
+                        <button class="btn btn-sm btn-outline-dark fw-bold"><i class="fa-solid fa-plus me-2"></i>Add New Category</button>
+                    </div>
+                </div>
+                <div
+                    class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h3 class="mx-2 mx-md-4">Movies</h3>
                 </div>
 
                 <div class="container-fluid p-2 p-md-4 my-3">
