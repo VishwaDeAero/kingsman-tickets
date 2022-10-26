@@ -17,9 +17,9 @@ function getAllCategories(){
         $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
         // set the PDO error mode to exception
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $sql = $conn->prepare("SELECT id, name FROM categories");
+        $sql = $conn->prepare("SELECT id, name FROM categories WHERE deleted_at IS NULL");
         $sql->execute();
-        return $sql->fetchAll();
+        return $sql->fetchAll(PDO::FETCH_ASSOC);
       } catch(PDOException $e) {
         echo "Error: " . $e->getMessage();
       }
@@ -37,9 +37,9 @@ function insertCategory($name){
         VALUES ('$name')";
         $conn->exec($sql);
         $last_id = $conn->lastInsertId();
-        echo "New record: $last_id created successfully";
+        return "New record: $last_id created successfully";
       } catch(PDOException $e) {
-        echo $sql . "<br>" . $e->getMessage();
+        return $sql . "<br>" . $e->getMessage();
       }
       $conn = null;
 }
@@ -54,9 +54,9 @@ function updateCategory($id, $name){
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $sql = $conn->prepare("UPDATE categories SET name='$name', updated_at='$date' WHERE id=$id");
         $sql->execute();
-        echo "Record: $id update successfully";
+        return "Record: $id update successfully";
       } catch(PDOException $e) {
-        echo "Error: " . $e->getMessage();
+        return "Error: " . $e->getMessage();
       }
       $conn = null;
 }
@@ -71,12 +71,10 @@ function deleteCategory($id){
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $sql = $conn->prepare("UPDATE categories SET deleted_at='$date' WHERE id=$id");
         $sql->execute();
-        echo "Record: $id deleted successfully";
+        return "Record: $id deleted successfully";
       } catch(PDOException $e) {
-        echo "Error: " . $e->getMessage();
+        return "Error: " . $e->getMessage();
       }
       $conn = null;
 }
-
-deleteCategory(3);
 ?>
