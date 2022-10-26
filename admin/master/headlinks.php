@@ -16,5 +16,9 @@
 <link href="../assets/libraries/fontawesome/css/fontawesome.css" rel="stylesheet">
 <link href="../assets/libraries/fontawesome/css/brands.css" rel="stylesheet">
 <link href="../assets/libraries/fontawesome/css/solid.css" rel="stylesheet">
+
+<!-- Sweet Alert 2 -->
+<link href="../assets/libraries/sweetalert2/sweetalert2.css" rel="stylesheet">
+
 <!-- Custom styles -->
 <link href="../assets/css/admin.css" rel="stylesheet">
