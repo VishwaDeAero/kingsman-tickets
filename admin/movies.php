@@ -189,6 +189,8 @@ $_SESSION["pagename"] = "adminMovies";
                             timer: 2000,
                             showConfirmButton: false
                         });
+                        loadCategory();
+                        $("#addCategoryFormModal").modal('hide');
                     } else {
                         Swal.fire({
                             title: 'Insert Failed!',
