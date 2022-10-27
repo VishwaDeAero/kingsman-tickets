@@ -44,9 +44,72 @@ $_SESSION["pagename"] = "adminMovies";
                         <button class="btn btn-sm btn-outline-dark fw-bold"><i class="fa-solid fa-plus me-2"></i>Add New Category</button>
                     </div>
                 </div>
-                <div
-                    class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                    <h3 class="mx-2 mx-md-4">Movies</h3>
+
+
+                <!-- Add Category Modal -->
+                <div class="modal fade" id="addCategoryFormModal" data-bs-backdrop="static" data-bs-keyboard="false"
+                    tabindex="-1" aria-labelledby="categoryFormLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="categoryFormLabel">Add New Category</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <form id="addCategoryForm" name="addCategoryForm">
+                                <div class="modal-body">
+                                    <div class="mb-3">
+                                        <label for="categoryName" class="form-label">Category Name</label>
+                                        <input type="text" class="form-control" id="categoryName" required>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Cancel</button>
+                                    <button type="submit" id="addCategoryBtn" class="btn btn-dark">Submit</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!-- Add Category Modal End -->
+
+                <!-- Update Category Modal -->
+                <div class="modal fade" id="updateCategoryFormModal" data-bs-backdrop="static" data-bs-keyboard="false"
+                    tabindex="-1" aria-labelledby="categoryFormLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="categoryFormLabel">Update Category</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <form id="updateCategoryForm" name="updateCategoryForm">
+                                <div class="modal-body">
+                                    <div class="mb-3">
+                                        <label for="categoryName" class="form-label">Category Name</label>
+                                        <input type="hidden" class="form-control" id="categoryId" value="-1" required>
+                                        <input type="text" class="form-control" id="updateCategoryName" required>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Cancel</button>
+                                    <button type="submit" id="addCategoryBtn" class="btn btn-dark">Submit</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!-- Update Category Modal End -->
+
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h3 class="mx-2 mx-md-4 col">Movies</h3>
+                    <div class="col-auto">
+                            <button class="btn btn-outline-dark fw-bold" data-bs-toggle="modal"
+                                data-bs-target="#addMovieFormModal"><i class="fa-solid fa-plus me-2"></i>Add New
+                                Movie</button>
+                        </div>
                 </div>
 
                 <div class="container-fluid p-2 p-md-4 my-3">
