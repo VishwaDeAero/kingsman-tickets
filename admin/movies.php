@@ -103,9 +103,13 @@ $_SESSION["pagename"] = "adminMovies";
                 </div>
                 <!-- Update Category Modal End -->
 
-                <div
-                    class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                    <h3 class="mx-2 mx-md-4">Movies</h3>
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h3 class="mx-2 mx-md-4 col">Movies</h3>
+                    <div class="col-auto">
+                            <button class="btn btn-outline-dark fw-bold" data-bs-toggle="modal"
+                                data-bs-target="#addMovieFormModal"><i class="fa-solid fa-plus me-2"></i>Add New
+                                Movie</button>
+                        </div>
                 </div>
 
                 <div class="container-fluid p-2 p-md-4 my-3">
