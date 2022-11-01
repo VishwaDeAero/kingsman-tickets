@@ -20,5 +20,8 @@
 <!-- Sweet Alert 2 -->
 <link href="../assets/libraries/sweetalert2/sweetalert2.css" rel="stylesheet">
 
+<!-- Sweet Alert 2 -->
+<link href="../assets/libraries/imguploader/image-uploader.css" rel="stylesheet">
+
 <!-- Custom styles -->
 <link href="../assets/css/admin.css" rel="stylesheet">
