@@ -7,8 +7,10 @@ $_SESSION["pagename"] = "adminMovies";
 
 <head>
     <?php include('master/headlinks.php') ?>
-    <title><?php echo $sitename; ?> - Movies</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
 
+    <title><?php echo $sitename; ?> - Movies</title>
     <style>
     </style>
 </head>
@@ -103,13 +105,82 @@ $_SESSION["pagename"] = "adminMovies";
                 </div>
                 <!-- Update Category Modal End -->
 
-                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <!-- Add Movie Modal -->
+                <div class="modal fade" id="addMovieFormModal" data-bs-backdrop="static" data-bs-keyboard="false"
+                    tabindex="-1" aria-labelledby="categoryFormLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="addMovieFormLabel">New Movie</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <form id="addMovieForm" name="addMovieForm" enctype="multipart/form-data">
+                                <div class="modal-body">
+                                    <div class="mb-3">
+                                        <label for="addMovieName" class="form-label">Movie Name</label>
+                                        <input type="text" class="form-control" id="addMovieName" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="addMovieCategory" class="form-label">Movie Category</label>
+                                        <select class="form-select" aria-label="Select Movie Category"
+                                            id="addMovieCategory" required>
+                                            <option selected>Open this select menu</option>
+                                            <option value="1">One</option>
+                                            <option value="2">Two</option>
+                                            <option value="3">Three</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="addMovieDescription" class="form-label">Movie Description</label>
+                                        <textarea class="form-control" placeholder="Enter Description Here"
+                                            id="addMovieDescription" rows="4"></textarea>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="formupload" class="form-label">Upload Movie Cover</label>
+                                        <div class="input-images"></div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="addMovieDateTime" class="form-label">Movie Screen Times</label>
+                                        <div class="row">
+                                            <div class="col">
+                                                <input type="datetime-local" class="form-control" id="addMovieDateTime"
+                                                    required>
+                                            </div>
+                                            <div class="col-auto">
+                                                <button class="btn btn-dark fw-bold"><i
+                                                        class="fa-solid fa-plus"></i></button>
+                                            </div>
+                                        </div>
+                                        <div id="screenList" class="row gap-1 mx-0 my-3">
+                                            <!-- Screen Time-->
+                                            <div class="col-auto border border-dark rounded-3 p-1">
+                                                <span class="ps-2">2022-05-10 16:30</span>
+                                                <button class="btn btn-sm px-2"><i
+                                                        class="fa-solid fa-close"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Cancel</button>
+                                    <button type="submit" id="addMovieBtn" class="btn btn-dark">Submit</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!-- Add Movie Modal End -->
+
+                <div
+                    class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <h3 class="mx-2 mx-md-4 col">Movies</h3>
                     <div class="col-auto">
-                            <button class="btn btn-outline-dark fw-bold" data-bs-toggle="modal"
-                                data-bs-target="#addMovieFormModal"><i class="fa-solid fa-plus me-2"></i>Add New
-                                Movie</button>
-                        </div>
+                        <button class="btn btn-outline-dark fw-bold" data-bs-toggle="modal"
+                            data-bs-target="#addMovieFormModal"><i class="fa-solid fa-plus me-2"></i>Add New
+                            Movie</button>
+                    </div>
                 </div>
 
                 <div class="container-fluid p-2 p-md-4 my-3">
@@ -153,6 +224,11 @@ $_SESSION["pagename"] = "adminMovies";
     <?php include('master/jslinks.php') ?>
     <script type="text/javascript">
     $(document).ready(function() {
+
+        $('.input-images').imageUploader({
+            imagesInputName: 'movie',
+            maxFiles: 1
+        });
 
         $('.form-switch .form-check-input').on('change', function() {
             console.log($(this).is(':checked'))
