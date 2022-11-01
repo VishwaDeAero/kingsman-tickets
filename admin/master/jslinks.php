@@ -9,3 +9,5 @@
 <script src="../assets/libraries/datatables/responsive.bootstrap.min.js"></script>
 <!-- Sweet Alert 2 -->
 <script src="../assets/libraries/sweetalert2/sweetalert2.js" crossorigin="anonymous"></script>
+<!-- Image Uploader -->
+<script src="../assets/libraries/imguploader/image-uploader.js" crossorigin="anonymous"></script>
