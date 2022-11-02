@@ -7,6 +7,8 @@
 <script src="../assets/libraries/datatables/dataTables.bootstrap5.min.js"></script>
 <script src="../assets/libraries/datatables/dataTables.responsive.min.js"></script>
 <script src="../assets/libraries/datatables/responsive.bootstrap.min.js"></script>
+<!--Moment JS -->
+<script src="../assets/libraries/moment/moment.js" crossorigin="anonymous"></script>
 <!-- Sweet Alert 2 -->
 <script src="../assets/libraries/sweetalert2/sweetalert2.js" crossorigin="anonymous"></script>
 <!-- Image Uploader -->
