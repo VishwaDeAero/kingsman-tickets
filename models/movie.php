@@ -43,14 +43,14 @@ function getAllMovies(){
 }
 
 // Insert New Movie
-function insertMovie($name, $category_id, $description){
+function insertMovie($name, $category_id, $description, $img_path){
     global $servername, $dbname, $username, $password;
     try {
         $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
         // set the PDO error mode to exception
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $sql = "INSERT INTO movies (name, category_id, description)
-        VALUES ('$name', '$category_id', '$description', )";
+        $sql = "INSERT INTO movies (name, category_id, description, img_path)
+        VALUES ('$name', '$category_id', '$description', '$img_path')";
         $conn->exec($sql);
         $last_id = $conn->lastInsertId();
         return "New record: $last_id created successfully";

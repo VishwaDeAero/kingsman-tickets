@@ -7,9 +7,6 @@ $_SESSION["pagename"] = "adminMovies";
 
 <head>
     <?php include('master/headlinks.php') ?>
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
-      rel="stylesheet">
-
     <title><?php echo $sitename; ?> - Movies</title>
     <style>
     </style>
@@ -123,12 +120,9 @@ $_SESSION["pagename"] = "adminMovies";
                                     </div>
                                     <div class="mb-3">
                                         <label for="addMovieCategory" class="form-label">Movie Category</label>
-                                        <select class="form-select" aria-label="Select Movie Category"
-                                            id="addMovieCategory" required>
-                                            <option selected>Open this select menu</option>
-                                            <option value="1">One</option>
-                                            <option value="2">Two</option>
-                                            <option value="3">Three</option>
+                                        <select class="form-select movie-category-list"
+                                            aria-label="Select Movie Category" id="addMovieCategory" required>
+                                            <option value="-1" Disabled>No Categories</option>
                                         </select>
                                     </div>
                                     <div class="mb-3">
@@ -148,17 +142,17 @@ $_SESSION["pagename"] = "adminMovies";
                                                     required>
                                             </div>
                                             <div class="col-auto">
-                                                <button class="btn btn-dark fw-bold"><i
+                                                <button type="button" id="addNewScreenBtn"
+                                                    class="btn btn-dark fw-bold"><i
                                                         class="fa-solid fa-plus"></i></button>
                                             </div>
                                         </div>
                                         <div id="screenList" class="row gap-1 mx-0 my-3">
                                             <!-- Screen Time-->
-                                            <div class="col-auto border border-dark rounded-3 p-1">
+                                            <!-- <div class="col-auto border border-dark rounded-3 p-1">
                                                 <span class="ps-2">2022-05-10 16:30</span>
-                                                <button class="btn btn-sm px-2"><i
-                                                        class="fa-solid fa-close"></i></button>
-                                            </div>
+                                                <button type="button" class="deleteScreenBtn btn btn-sm px-2"><i class="fa-solid fa-close"></i></button>
+                                            </div> -->
                                         </div>
                                     </div>
                                 </div>
@@ -228,7 +222,7 @@ $_SESSION["pagename"] = "adminMovies";
         // Initial Load
         loadCategory();
         $('.input-images').imageUploader({
-            imagesInputName: 'movie',
+            imagesInputName: 'images',
             maxFiles: 1
         });
 
@@ -239,6 +233,84 @@ $_SESSION["pagename"] = "adminMovies";
         $('#example').DataTable({
             responsive: true
         });
+
+        // Add New Screen Time - Movie
+        $(document).on("click", ".deleteScreenBtn", function(e) {
+            (e.target.parentElement.parentElement).remove();
+        });
+
+        // Add New Screen Time - Movie
+        $('#addNewScreenBtn').click(function(e) {
+            var value = $('#addMovieDateTime').val()
+            var date = moment(value).format('YYYY-MM-DD');
+            var time = moment(value).format('HH:mm:ss');
+            var screenItem = `<div data-date="${date}" data-time="${time}" class="screen-item col-auto border border-dark rounded-3 p-1">
+                                <span class="ps-2">${moment(value).format('YYYY-MM-DD HH:mm')}</span>
+                                <button type="button" class="btn btn-sm px-2">
+                                    <i class="fa-solid fa-close"></i>
+                                </button>
+                            </div>`;
+            $('#screenList').append(screenItem);
+        });
+
+        // Add New Movie
+        $('#addMovieForm').submit(function(e) {
+            e.preventDefault();
+            Swal.fire({
+                title: 'Please Wait',
+                allowEscapeKey: false,
+                allowOutsideClick: false,
+            });
+            Swal.showLoading();
+            var sendDate = new FormData();
+            // Get the Image
+            let form = $(this);
+            let files = form.find('input[name^="images"]')[0].files;
+            // Append Function to Call
+            sendDate.append('function', 'add');
+            if (files.length > 0) {
+                sendDate.append('image', files[0]);
+            } else {
+                Swal.fire({
+                    title: 'No Cover Photo Selected',
+                    text: 'Please upload a cover photo',
+                    icon: 'error',
+                    showConfirmButton: true
+                });
+            }
+            // Append Movie Info
+            sendDate.append('name', $('#addMovieName').val());
+            sendDate.append('category_id', $('#addMovieCategory').val());
+            sendDate.append('description', $('#addMovieDescription').val());
+            sendDate.append('screens', []);
+            $.ajax({
+                type: "POST",
+                url: '../controllers/movie.php',
+                processData: false,
+                contentType: false,
+                data: sendDate,
+                success: function(response) {
+                    if ((!response.error) && response.result) {
+                        $('#addMovieForm').trigger('reset');
+                        Swal.fire({
+                            title: 'Insert Successful!',
+                            icon: 'success',
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                        $("#addMovieFormModal").modal('hide');
+                    } else {
+                        Swal.fire({
+                            title: 'Insert Failed!',
+                            text: response.error,
+                            icon: 'error',
+                            showConfirmButton: true
+                        });
+                    }
+                }
+            });
+        });
+        // ----------------------------------------------
 
         // Add New Category
         $('#addCategoryForm').submit(function(e) {
@@ -373,7 +445,7 @@ $_SESSION["pagename"] = "adminMovies";
         });
         // ----------------------------------------------
 
-        // Update Modal on Popup
+        // Update Category Modal on Popup
         $('#updateCategoryFormModal').on('show.bs.modal', function(e) {
             var btn = e.relatedTarget;
             $('#updateCategoryName').val(btn.attributes['data-name'].value);
@@ -383,13 +455,6 @@ $_SESSION["pagename"] = "adminMovies";
 
         // Load Categories
         function loadCategory() {
-            // Swal.fire({
-            //     title: 'Please Wait',
-            //     allowEscapeKey: false,
-            //     allowOutsideClick: false,
-            //     showConfirmButton: false
-            // });
-            // Swal.showLoading();
             $.ajax({
                 type: "POST",
                 url: '../controllers/category.php',
@@ -400,6 +465,7 @@ $_SESSION["pagename"] = "adminMovies";
                 success: function(response) {
                     if (response.result != undefined || response.result.length != 0) {
                         var categoryList = "";
+                        var categoryDropdown = "";
                         var dataArray = response.result;
                         dataArray.forEach(element => {
                             // Category Code
@@ -417,8 +483,13 @@ $_SESSION["pagename"] = "adminMovies";
                                                     </div>
                                                 </div>`;
                             categoryList += singleCategory;
+
+                            // Category Dropdown
+                            categoryDropdown +=
+                                `<option value="${element.id}">${element.name}</option>`;
                         });
-                        $("#categoryList").html(categoryList);
+                        $('.movie-category-list').empty().append(categoryDropdown);
+                        $('#categoryList').html(categoryList);
                         // Swal.close();
                     } else {
                         Swal.fire({
