@@ -10,7 +10,7 @@ try {
   }
 $conn = null;
 
-// Get All Movies
+// Get Single Movie
 function getSingleMovie($id){
     global $servername, $dbname, $username, $password;
     try {
@@ -53,7 +53,11 @@ function insertMovie($name, $category_id, $description, $img_path){
         VALUES ('$name', '$category_id', '$description', '$img_path')";
         $conn->exec($sql);
         $last_id = $conn->lastInsertId();
-        return "New record: $last_id created successfully";
+        $return_array = [
+          "status" => 'Success',
+          "id" => $last_id
+        ];
+        return $return_array;
       } catch(PDOException $e) {
         return $sql . "<br>" . $e->getMessage();
       }
