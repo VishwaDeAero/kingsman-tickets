@@ -138,8 +138,7 @@ $_SESSION["pagename"] = "adminMovies";
                                         <label for="addMovieDateTime" class="form-label">Movie Screen Times</label>
                                         <div class="row">
                                             <div class="col">
-                                                <input type="datetime-local" class="form-control" id="addMovieDateTime"
-                                                    required>
+                                                <input type="datetime-local" class="form-control" id="addMovieDateTime">
                                             </div>
                                             <div class="col-auto">
                                                 <button type="button" id="addNewScreenBtn"
@@ -190,7 +189,7 @@ $_SESSION["pagename"] = "adminMovies";
                                 <th>Change</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <!-- <tbody>
                             <tr>
                                 <td>1</td>
                                 <td>Spider Man - No way home</td>
@@ -210,6 +209,7 @@ $_SESSION["pagename"] = "adminMovies";
                                             class="fa-solid fa-trash"></i></a>
                                 </td>
                             </tr>
+                        </tbody> -->
                     </table>
                 </div>
             </main>
@@ -230,27 +230,90 @@ $_SESSION["pagename"] = "adminMovies";
             console.log($(this).is(':checked'))
         });
 
-        $('#example').DataTable({
-            responsive: true
-        });
+        function showMovies() {
+            var getData = new FormData();
+            getData.append('function', 'list');
+            $.ajax({
+                type: "POST",
+                url: '../controllers/movie.php',
+                processData: false,
+                contentType: false,
+                data: getData,
+                success: function(response) {
+                    if (response.result) {
+                        console.log(response.result)
+                        $('#example').DataTable({
+                            data: response.result,
+                            columns: [{
+                                    data: 'movie_screen_id'
+                                },
+                                {
+                                    data: 'movie_name'
+                                },
+                                {
+                                    data: 'movie_category'
+                                },
+                                {
+                                    data: 'movie_screen_date'
+                                },
+                                {
+                                    data: 'movie_screen_time'
+                                },
+                                {
+                                    data: 'active_switch'
+                                },
+                                {
+                                    data: 'action_buttons'
+                                }
+                            ]
+                        });
+                    } else {
+                        Swal.fire({
+                            title: 'Table Error!',
+                            text: response.error,
+                            icon: 'error',
+                            showConfirmButton: true
+                        });
+                    }
+                }
+            });
+        }
 
-        // Add New Screen Time - Movie
-        $(document).on("click", ".deleteScreenBtn", function(e) {
-            (e.target.parentElement.parentElement).remove();
-        });
+        showMovies();
+        // $('#example').DataTable({
+        //     responsive: true
+        // });
+
+        // Screen Times Array
+        var ScreenTimes = [];
 
         // Add New Screen Time - Movie
         $('#addNewScreenBtn').click(function(e) {
             var value = $('#addMovieDateTime').val()
             var date = moment(value).format('YYYY-MM-DD');
             var time = moment(value).format('HH:mm:ss');
-            var screenItem = `<div data-date="${date}" data-time="${time}" class="screen-item col-auto border border-dark rounded-3 p-1">
-                                <span class="ps-2">${moment(value).format('YYYY-MM-DD HH:mm')}</span>
-                                <button type="button" class="btn btn-sm px-2">
-                                    <i class="fa-solid fa-close"></i>
-                                </button>
-                            </div>`;
-            $('#screenList').append(screenItem);
+            if (!ScreenTimes.includes(value)) {
+                ScreenTimes.push(value);
+                var screenItem = `<div data-date="${date}" data-time="${time}" data-value="${value}" class="screen-item col-auto border border-dark rounded-3 p-1">
+                        <span class="ps-2">${moment(value).format('YYYY-MM-DD HH:mm')}</span>
+                        <button type="button" class="btn btn-sm px-2 deleteScreenBtn">
+                            <i class="fa-solid fa-close"></i>
+                        </button>
+                    </div>`;
+                $('#screenList').append(screenItem);
+            }
+            console.log(ScreenTimes)
+        });
+
+        // Delete Screen Time - Movie
+        $(document).on("click", ".deleteScreenBtn", function(e) {
+            var deleteScreen = (e.target.parentElement.parentElement).attributes["data-value"].value;
+            const index = ScreenTimes.indexOf(deleteScreen);
+            if (index > -1) {
+                ScreenTimes.splice(index, 1);
+            }
+            (e.target.parentElement.parentElement).remove();
+            console.log(ScreenTimes);
         });
 
         // Add New Movie
@@ -262,14 +325,14 @@ $_SESSION["pagename"] = "adminMovies";
                 allowOutsideClick: false,
             });
             Swal.showLoading();
-            var sendDate = new FormData();
+            var sendData = new FormData();
             // Get the Image
             let form = $(this);
             let files = form.find('input[name^="images"]')[0].files;
             // Append Function to Call
-            sendDate.append('function', 'add');
+            sendData.append('function', 'add');
             if (files.length > 0) {
-                sendDate.append('image', files[0]);
+                sendData.append('image', files[0]);
             } else {
                 Swal.fire({
                     title: 'No Cover Photo Selected',
@@ -279,17 +342,19 @@ $_SESSION["pagename"] = "adminMovies";
                 });
             }
             // Append Movie Info
-            sendDate.append('name', $('#addMovieName').val());
-            sendDate.append('category_id', $('#addMovieCategory').val());
-            sendDate.append('description', $('#addMovieDescription').val());
-            sendDate.append('screens', []);
+            sendData.append('name', $('#addMovieName').val());
+            sendData.append('category_id', $('#addMovieCategory').val());
+            sendData.append('description', $('#addMovieDescription').val());
+            sendData.append('screens', ScreenTimes);
+            console.log(sendData)
             $.ajax({
                 type: "POST",
                 url: '../controllers/movie.php',
                 processData: false,
                 contentType: false,
-                data: sendDate,
+                data: sendData,
                 success: function(response) {
+                    console.log(response);
                     if ((!response.error) && response.result) {
                         $('#addMovieForm').trigger('reset');
                         Swal.fire({
