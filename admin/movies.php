@@ -168,7 +168,7 @@ $_SESSION["pagename"] = "adminMovies";
 
                 <div
                     class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                    <h3 class="mx-2 mx-md-4 col">Movies</h3>
+                    <h3 class="mx-2 mx-md-4 col">Screening Movies Details</h3>
                     <div class="col-auto">
                         <button class="btn btn-outline-dark fw-bold" data-bs-toggle="modal"
                             data-bs-target="#addMovieFormModal"><i class="fa-solid fa-plus me-2"></i>Add New
@@ -355,7 +355,7 @@ $_SESSION["pagename"] = "adminMovies";
                 data: sendData,
                 success: function(response) {
                     console.log(response);
-                    if ((!response.error) && response.result) {
+                    if ((!response.error) && response.movie_result) {
                         $('#addMovieForm').trigger('reset');
                         Swal.fire({
                             title: 'Insert Successful!',
