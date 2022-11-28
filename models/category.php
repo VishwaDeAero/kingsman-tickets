@@ -10,6 +10,22 @@ try {
   }
 $conn = null;
 
+// Get Single Category
+function getSingleCategory($id){
+  global $servername, $dbname, $username, $password;
+  try {
+      $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+      // set the PDO error mode to exception
+      $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+      $sql = $conn->prepare("SELECT * FROM categories WHERE id=$id AND deleted_at IS NULL");
+      $sql->execute();
+      return $sql->fetchAll(PDO::FETCH_ASSOC);
+    } catch(PDOException $e) {
+      echo "Error: " . $e->getMessage();
+    }
+    $conn = null;
+}
+
 // Get All Categories
 function getAllCategories(){
     global $servername, $dbname, $username, $password;
