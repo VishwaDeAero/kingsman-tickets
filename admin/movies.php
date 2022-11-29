@@ -242,6 +242,9 @@ $_SESSION["pagename"] = "adminMovies";
                 success: function(response) {
                     if (response.result) {
                         console.log(response.result)
+                        if ($.fn.DataTable.isDataTable("#example")) {
+                            $('#example').DataTable().clear().destroy();
+                        }
                         $('#example').DataTable({
                             data: response.result,
                             columns: [{
@@ -364,6 +367,7 @@ $_SESSION["pagename"] = "adminMovies";
                             showConfirmButton: false
                         });
                         $("#addMovieFormModal").modal('hide');
+                        showMovies();
                     } else {
                         Swal.fire({
                             title: 'Insert Failed!',
