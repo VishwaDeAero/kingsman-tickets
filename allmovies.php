@@ -105,7 +105,6 @@ $_SESSION["pagename"] = "allmovies";
                             var movieslist = element.movies;
                             var movieliststring = "";
                             if(movieslist.length > 0){
-                                console.log(movieslist);
                                 movieslist.forEach(movie_element => {
                                     movieliststring += `<div class="col">
                                                             <div class="card h-100">
@@ -127,7 +126,7 @@ $_SESSION["pagename"] = "allmovies";
                                                                     <hr>
                                                                     <p class="card-text"><small class="text-muted">${(movie_element.description.length > 100)? movie_element.description.substring(0,100): movie_element.description}.</small></p>
                                                                     <div class="d-grid gap-2">
-                                                                        <button type="button" data-id="${movie_element.id}" class="btn btn-lg btn-dark text-light">Buy
+                                                                        <button type="button" data-id="${movie_element.id}" class="btn btn-lg btn-dark text-light buy-tickets-btn">Buy
                                                                             Tickets</button>
                                                                     </div>
                                                                 </div>
@@ -168,6 +167,11 @@ $_SESSION["pagename"] = "allmovies";
             var pane_id = '#'+$(this).attr('data-id')+'_pane';
             $("#myTabContent .tab-pane").removeClass('show active');
             $(pane_id).addClass('show active');
+        });
+        $(document).on('click', '.buy-tickets-btn', function(e) {
+            e.preventDefault();
+            var movie_id = $(this).attr('data-id');
+            window.location.href = `moviedetails.php?id=${movie_id}`;
         });
     });
     </script>
