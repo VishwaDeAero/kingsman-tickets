@@ -86,7 +86,7 @@ $_SESSION["pagename"] = "home";
             </div>
         </div>
         <hr class="mt-0 mt-sm-2 mb-lg-4">
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-4 g-4">
+        <div id="latest_movies_row" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-4 g-4">
             <div class="col">
                 <div class="card h-100">
                     <img src="https://picsum.photos/350/400" class="card-img-top" alt="...">
@@ -150,6 +150,64 @@ $_SESSION["pagename"] = "home";
 
     <script type="text/javascript">
     $(document).ready(function() {
+
+        function showLatestMovies() {
+            var getData = new FormData();
+            getData.append('function', 'latestmovies');
+            $.ajax({
+                type: "POST",
+                url: 'controllers/home.php',
+                processData: false,
+                contentType: false,
+                data: getData,
+                success: function(response) {
+                    if (!response.error) {
+                        console.log(response.result);
+                        var movie_string = "";
+                        response.result.forEach(element => {
+                            var movie = element.movie;
+                            var category = element.category;
+                            movie_string += `<div class="col">
+                                                <div class="card h-100">
+                                                    <img src="assets/images/movies/${movie.img_path}" class="card-img-top" alt="...">
+                                                    <div class="card-body">
+                                                        <div class="row">
+                                                            <div class="col-sm-auto">
+                                                                <h5 class="card-title">${movie.name}</h5>
+                                                                <h6 class="">${movie.name}</h6>
+                                                            </div>
+                                                            <div class="col text-end align-items-center d-flex justify-content-sm-end">
+                                                                <small class="bg-warning p-2 rounded-3 align-middle">
+                                                                    <span class="d-none d-md-inline">Rating:</span>
+                                                                    <span>
+                                                                        4.8/5</span>
+                                                                </small>
+                                                            </div>
+                                                        </div>
+                                                        <hr>
+                                                        <p class="card-text"><small class="text-muted">${(movie.description.length > 100)? movie.description.substring(0,100): movie.description}.</small></p>
+                                                        <div class="d-grid gap-2">
+                                                            <button type="button" data-id="${movie.id}" class="btn btn-lg btn-dark text-light buy-tickets-btn">Buy
+                                                                Tickets</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>`;
+                        });
+                        $("#latest_movies_row").empty().append(movie_string);
+                    } else {
+                        Swal.fire({
+                            title: 'Error Loading Movies!',
+                            text: response.error,
+                            icon: 'error',
+                            showConfirmButton: true
+                        });
+                    }
+                }
+            });
+        }
+        showLatestMovies();
+
         $(".buy-btn").click(function() {
             Swal.fire(
                 'The Internet?',
