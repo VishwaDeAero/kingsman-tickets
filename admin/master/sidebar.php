@@ -2,7 +2,7 @@
     <div class="position-sticky py-3 sidebar-sticky">
         <ul class="nav flex-column">
             <li class="nav-item">
-                <a class="nav-link <?php if($_SESSION["pagename"] == 'adminDashboard'){ ?>active<?php } ?>" aria-current="page" href="dashboard.php">
+                <a class="nav-link <?php if($_SESSION["pagename"] == 'adminDashboard'){ ?>active<?php } ?>" aria-current="page" href="index.php">
                     <span data-feather="home" class="align-text-bottom"></span>
                     Dashboard
                 </a>
