@@ -10,7 +10,7 @@
             <li class="nav-item">
                 <a class="nav-link <?php if($_SESSION["pagename"] == 'adminMovies'){ ?>active<?php } ?>" href="movies.php">
                     <span data-feather="file" class="align-text-bottom"></span>
-                    Movies
+                    Movies & Categories
                 </a>
             </li>
             <li class="nav-item">
@@ -21,53 +21,50 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#">
-                    <span data-feather="users" class="align-text-bottom"></span>
-                    Staff
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">
-                    <span data-feather="bar-chart-2" class="align-text-bottom"></span>
-                    Reports
+                    <span data-feather="layers" class="align-text-bottom"></span>
+                    Tickets
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#">
                     <span data-feather="layers" class="align-text-bottom"></span>
-                    Integrations
+                    News
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                    <span data-feather="layers" class="align-text-bottom"></span>
+                    Main Slider
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                    <span data-feather="users" class="align-text-bottom"></span>
+                    Staff
                 </a>
             </li>
         </ul>
 
         <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted text-uppercase">
-            <span>Saved reports</span>
-            <a class="link-secondary" href="#" aria-label="Add a new report">
-                <span data-feather="plus-circle" class="align-text-bottom"></span>
-            </a>
+            <span>Monthly Reports</span>
         </h6>
         <ul class="nav flex-column mb-2">
             <li class="nav-item">
                 <a class="nav-link" href="#">
                     <span data-feather="file-text" class="align-text-bottom"></span>
-                    Current month
+                    Tickets
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#">
                     <span data-feather="file-text" class="align-text-bottom"></span>
-                    Last quarter
+                    Movies
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#">
                     <span data-feather="file-text" class="align-text-bottom"></span>
-                    Social engagement
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">
-                    <span data-feather="file-text" class="align-text-bottom"></span>
-                    Year-end sale
+                    Users
                 </a>
             </li>
         </ul>
