@@ -26,8 +26,8 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">
-                    <span data-feather="layers" class="align-text-bottom"></span>
+                <a class="nav-link <?php if($_SESSION["pagename"] == 'adminNews'){ ?>active<?php } ?>" href="news.php">
+                    <span data-feather="file" class="align-text-bottom"></span>
                     News
                 </a>
             </li>

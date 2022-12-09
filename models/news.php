@@ -65,7 +65,7 @@ function insertNews($title, $description, $img_path){
         $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
         // set the PDO error mode to exception
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $sql = "INSERT INTO news (name, category_id, description, img_path)
+        $sql = "INSERT INTO news (title, description, img_path)
         VALUES ('$title', '$description', '$img_path')";
         $conn->exec($sql);
         $last_id = $conn->lastInsertId();

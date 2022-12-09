@@ -213,6 +213,47 @@ $_SESSION["pagename"] = "home";
         }
         showLatestMovies();
 
+        function showLatestNews() {
+            var getData = new FormData();
+            getData.append('function', 'latestnews');
+            $.ajax({
+                type: "POST",
+                url: 'controllers/home.php',
+                processData: false,
+                contentType: false,
+                data: getData,
+                success: function(response) {
+                    if (!response.error) {
+                        console.log(response.result);
+                        var news_string = "";
+                        response.result.forEach(element => {
+                            var news = element;
+                            news_string += `<div class="col">
+                                                <div class="card flex-row">
+                                                    <div class="col-4">
+                                                        <img class="card-img-left w-100 h-100" src="assets/images/news/${news.img_path}" />
+                                                    </div>
+                                                    <div class="card-body col-8 p-2">
+                                                        <h5 class="card-title mb-1 mb-md-3">${news.title}</h5>
+                                                        <p class="card-text small muted">${(news.description.length > 100)? news.description.substring(0,100): news.description}.</p>
+                                                    </div>
+                                                </div>
+                                            </div>`;
+                        });
+                        $("#news_row").empty().append(news_string);
+                    } else {
+                        Swal.fire({
+                            title: 'Error Loading Movies!',
+                            text: response.error,
+                            icon: 'error',
+                            showConfirmButton: true
+                        });
+                    }
+                }
+            });
+        }
+        showLatestNews();
+
         $(".buy-btn").click(function() {
             Swal.fire(
                 'The Internet?',

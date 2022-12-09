@@ -2,6 +2,7 @@
     header('Content-Type: application/json');
     require_once('../models/movie.php');
     require_once('../models/category.php');
+    require_once('../models/news.php');
 
 
     $Result = array();
@@ -25,18 +26,11 @@
                 $Result['status'] = 200;
                 $Result['result'] = $movies;
                 break;
-
-            case 'listcategories':
-                $categoryList = getAllCategories();
+            
+            case 'latestnews':
+                $newsList = getLatestNews(6);
                 $Result['status'] = 200;
-                $Result['result'] = $categoryList;
-                break;
-
-            case 'listmovies':
-                $category_id = $_POST['category_id'];
-                $movieList = getMovies($category_id);
-                $Result['status'] = 200;
-                $Result['result'] = $movieList;
+                $Result['result'] = $newsList;
                 break;
 
             default:
