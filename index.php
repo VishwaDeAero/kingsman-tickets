@@ -126,7 +126,7 @@ $_SESSION["pagename"] = "home";
             </div>
         </div>
         <hr class="mt-0 mt-sm-2 mb-lg-4">
-        <div class="row row-cols-1 row-cols-md-2 g-4">
+        <div id="news_row" class="row row-cols-1 row-cols-md-2 g-4">
             <div class="col">
                 <div class="card flex-row">
                     <div class="col-4">
@@ -138,6 +138,11 @@ $_SESSION["pagename"] = "home";
                             lead-in to additional content. This content is a little bit longer.</p>
                     </div>
                 </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col text-end">
+                <a href="news.php"><h6 class="fw-bold">Show More</h6></a>
             </div>
         </div>
     </div>
