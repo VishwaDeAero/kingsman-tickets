@@ -166,7 +166,7 @@ $_SESSION["pagename"] = "home";
                         var movie_string = "";
                         response.result.forEach(element => {
                             var movie = element.movie;
-                            var category = element.category;
+                            var category = element.category[0];
                             movie_string += `<div class="col">
                                                 <div class="card h-100">
                                                     <img src="assets/images/movies/${movie.img_path}" class="card-img-top" alt="...">
@@ -174,7 +174,7 @@ $_SESSION["pagename"] = "home";
                                                         <div class="row">
                                                             <div class="col-sm-auto">
                                                                 <h5 class="card-title">${movie.name}</h5>
-                                                                <h6 class="">${movie.name}</h6>
+                                                                <h6 class="">${category.name}</h6>
                                                             </div>
                                                             <div class="col text-end align-items-center d-flex justify-content-sm-end">
                                                                 <small class="bg-warning p-2 rounded-3 align-middle">
