@@ -32,6 +32,12 @@
                 </a>
             </li>
             <li class="nav-item">
+            <a class="nav-link <?php if($_SESSION["pagename"] == 'adminInquiry'){ ?>active<?php } ?>" href="inquiry.php">
+                    <span data-feather="layers" class="align-text-bottom"></span>
+                    Inquiries
+                </a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" href="#">
                     <span data-feather="layers" class="align-text-bottom"></span>
                     Main Slider
