@@ -133,6 +133,8 @@ $_SESSION["pagename"] = "allmovies";
                                                             </div>
                                                         </div>`;
                                 });
+                            }else{
+                                return;
                             }
                             tab_string +=
                                 `<li class="nav-item" role="${element.name}">
