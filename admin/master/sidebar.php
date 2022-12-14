@@ -14,7 +14,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link <?php if($_SESSION["pagename"] == 'adminSeats'){ ?>active<?php } ?>" href="seats.php">
                     <span data-feather="shopping-cart" class="align-text-bottom"></span>
                     Seats
                 </a>
