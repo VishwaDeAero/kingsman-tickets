@@ -93,6 +93,49 @@ $_SESSION["pagename"] = "adminSeats";
                 </div>
                 <!-- Add Seats Modal End -->
 
+                <!-- Update Seats Modal -->
+                <div class="modal fade" id="updateSeatsFormModal" data-bs-backdrop="static" data-bs-keyboard="false"
+                    tabindex="-1" aria-labelledby="seatsFormLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="updateSeatFormLabel">New Seat</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <form id="updateSeatsForm" name="updateSeatsForm">
+                                <div class="modal-body">
+                                    <div class="mb-3">
+                                        <label for="updateSeatCode" class="form-label">Seat Code</label>
+                                        <input type="text" class="form-control" id="updateSeatCode" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="updateSeatCategory" class="form-label">Seat Category</label>
+                                        <select class="form-select seat-category-list" aria-label="Select Seat Category"
+                                            id="updateSeatCategory" required>
+                                            <option value="ODC" Disabled>ODC</option>
+                                            <option value="BAL" Disabled>Balcony</option>
+                                            <option value="BOX" Disabled>Box</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-check-label" for="updateSeatActive">Seat Availability</label>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" role="switch" id="updateSeatActive" checked>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Cancel</button>
+                                    <button type="submit" id="updateSeatsBtn" class="btn btn-dark">Submit</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!-- Add Update Modal End -->
+
                 <div
                     class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <h3 class="mx-2 mx-md-4 col">Seat Layout</h3>
@@ -295,8 +338,8 @@ $_SESSION["pagename"] = "adminSeats";
         }
         // showNews();
 
-        // Add News
-        $('#addNewsForm').submit(function(e) {
+        // Add New Layout
+        $('#changeLayoutForm').submit(function(e) {
             e.preventDefault();
             Swal.fire({
                 title: 'Please Wait',
@@ -309,7 +352,7 @@ $_SESSION["pagename"] = "adminSeats";
             let form = $(this);
             let files = form.find('input[name^="images"]')[0].files;
             // Append Function to Call
-            sendData.append('function', 'add');
+            sendData.append('function', 'layout');
             if (files.length > 0) {
                 sendData.append('image', files[0]);
             } else {
@@ -320,28 +363,25 @@ $_SESSION["pagename"] = "adminSeats";
                     showConfirmButton: true
                 });
             }
-            // Append News Info
-            sendData.append('title', $('#addNewsTitle').val());
-            sendData.append('description', $('#addNewsDescription').val());
-            console.log(sendData)
             $.ajax({
                 type: "POST",
-                url: '../controllers/news.php',
+                url: '../controllers/seats.php',
                 processData: false,
                 contentType: false,
                 data: sendData,
                 success: function(response) {
                     console.log(response);
-                    if ((!response.error) && response.result) {
-                        $('#addNewsForm').trigger('reset');
+                    if (!response.error) {
+                        $('#changeLayoutForm').trigger('reset');
                         Swal.fire({
-                            title: 'Insert Successful!',
+                            title: 'Layout Changed Succefully',
                             icon: 'success',
                             timer: 2000,
                             showConfirmButton: false
+                        }).then((result) => {
+                            location.reload();
                         });
-                        $("#addNewsFormModal").modal('hide');
-                        showNews();
+                        $("#changeLayoutForm").modal('hide');
                     } else {
                         Swal.fire({
                             title: 'Insert Failed!',
