@@ -33,6 +33,18 @@
                      $Result['result'] = updateSeat($data['id'], $data['code'], $data['seat_category'], $data['active']);
                 }
                 break;
+                
+            case 'delete':
+                if( !is_array($_POST['data']) || (count($_POST['data']) != 1) ) {
+                    $Result['status'] = 500;
+                    $Result['error'] = 'invalid Data! Seat Id reuired';
+                }
+                else {
+                        $data = $_POST['data'];
+                        $Result['status'] = 200;
+                        $Result['result'] = deleteSeat($data['id']);
+                }
+                break;
 
             case 'list':
                 $seatList = getAllSeats();

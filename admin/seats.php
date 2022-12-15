@@ -361,7 +361,7 @@ $_SESSION["pagename"] = "adminSeats";
                                                             data-bs-target="#updateSeatFormModal" data-code="${element.code}" data-active="${element.active}" data-category="${element.seat_category}" data-id="${element.id}"
                                                             title="edit">
                                                             <i class="fa-solid fa-pen"></i></a>
-                                                        <a class="btn btn-sm p-0 ms-2 text-${color} deleteSeatBtn" data-code="ODC-01"
+                                                        <a class="btn btn-sm p-0 ms-2 text-${color} deleteSeatBtn" data-code="${element.code}"
                                                             data-id="${element.id}" title="delete">
                                                             <i class="fa-solid fa-trash"></i></a>
                                                     </div>
@@ -551,14 +551,14 @@ $_SESSION["pagename"] = "adminSeats";
         });
         // ----------------------------------------------
 
-        // Delete Category
-        $(document).on("click", ".deleteCategoryBtn", function(e) {
+        // Delete Seat
+        $(document).on("click", ".deleteSeatBtn", function(e) {
             var btn = e.currentTarget;
             var dataId = btn.attributes['data-id'].value;
-            var dataName = btn.attributes['data-name'].value;
+            var dataCode = btn.attributes['data-code'].value;
             Swal.fire({
                 title: 'Are you sure?',
-                text: `You want to delete ${dataName} category!`,
+                text: `You want to delete ${dataCode} Seat? You cannot undone this.`,
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonText: 'Yes, delete it!'
@@ -566,7 +566,7 @@ $_SESSION["pagename"] = "adminSeats";
                 if (result.isConfirmed) {
                     $.ajax({
                         type: "POST",
-                        url: '../controllers/category.php',
+                        url: '../controllers/seats.php',
                         dataType: 'json',
                         data: {
                             function: 'delete',
@@ -578,18 +578,18 @@ $_SESSION["pagename"] = "adminSeats";
                             if (!response.error) {
                                 Swal.fire(
                                     'Deleted!',
-                                    'Your file has been deleted.',
+                                    'Your seat has been deleted.',
                                     'success',
                                 )
                             } else {
                                 Swal.fire({
-                                    title: 'Insert Failed!',
+                                    title: 'Delete Failed!',
                                     text: response.error,
                                     icon: 'error',
                                     showConfirmButton: true
                                 });
                             }
-                            loadCategory();
+                            showSeats();
                         }
                     });
                 }
