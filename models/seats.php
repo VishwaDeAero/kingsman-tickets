@@ -33,7 +33,7 @@ function getAllSeats(){
         $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
         // set the PDO error mode to exception
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $sql = $conn->prepare("SELECT * FROM seats WHERE active == '1' deleted_at IS NULL");
+        $sql = $conn->prepare("SELECT * FROM seats WHERE deleted_at IS NULL");
         $sql->execute();
         return $sql->fetchAll(PDO::FETCH_ASSOC);
       } catch(PDOException $e) {
@@ -43,14 +43,14 @@ function getAllSeats(){
 }
 
 // Insert New Seat
-function insertSeat($code, $category_id, $active){
+function insertSeat($code, $seat_category, $active){
     global $servername, $dbname, $username, $password;
     try {
         $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
         // set the PDO error mode to exception
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $sql = "INSERT INTO categories (code, category_id, active)
-        VALUES ('$code', '$category_id', '$active')";
+        $sql = "INSERT INTO seats (code, seat_category, active)
+        VALUES ('$code', '$seat_category', '$active')";
         $conn->exec($sql);
         $last_id = $conn->lastInsertId();
         return "New record: $last_id created successfully";
@@ -61,14 +61,14 @@ function insertSeat($code, $category_id, $active){
 }
 
 // Update a Seat
-function updateSeat($id, $code, $category_id, $active){
+function updateSeat($id, $code, $seat_category, $active){
     global $servername, $dbname, $username, $password;
     $date = date('Y-m-d H:i:s');
     try {
         $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
         // set the PDO error mode to exception
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $sql = $conn->prepare("UPDATE seats SET code='$code', category_id='$category_id', active='$active', updated_at='$date' WHERE id=$id");
+        $sql = $conn->prepare("UPDATE seats SET code='$code', seat_category='$seat_category', active='$active', updated_at='$date' WHERE id=$id");
         $sql->execute();
         return "Record: $id update successfully";
       } catch(PDOException $e) {

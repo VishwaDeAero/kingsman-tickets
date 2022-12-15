@@ -34,7 +34,7 @@ $_SESSION["pagename"] = "adminSeats";
                             </div>
                             <form id="changeLayoutForm" name="changeLayoutForm" enctype="multipart/form-data">
                                 <div class="modal-body">
-                                <div class="mb-3">
+                                    <div class="mb-3">
                                         <label for="formupload" class="form-label">Upload Seats Layout Image</label>
                                         <div class="input-images"></div>
                                     </div>
@@ -70,15 +70,16 @@ $_SESSION["pagename"] = "adminSeats";
                                         <label for="addSeatCategory" class="form-label">Seat Category</label>
                                         <select class="form-select seat-category-list" aria-label="Select Seat Category"
                                             id="addSeatCategory" required>
-                                            <option value="ODC" Disabled>ODC</option>
-                                            <option value="BAL" Disabled>Balcony</option>
-                                            <option value="BOX" Disabled>Box</option>
+                                            <option value="ODC">ODC</option>
+                                            <option value="BAL">Balcony</option>
+                                            <option value="BOX">Box</option>
                                         </select>
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-check-label" for="addSeatActive">Seat Availability</label>
                                         <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" role="switch" id="addSeatActive" checked>
+                                            <input class="form-check-input" type="checkbox" role="switch"
+                                                id="addSeatActive" checked>
                                         </div>
                                     </div>
                                 </div>
@@ -113,15 +114,16 @@ $_SESSION["pagename"] = "adminSeats";
                                         <label for="updateSeatCategory" class="form-label">Seat Category</label>
                                         <select class="form-select seat-category-list" aria-label="Select Seat Category"
                                             id="updateSeatCategory" required>
-                                            <option value="ODC" Disabled>ODC</option>
-                                            <option value="BAL" Disabled>Balcony</option>
-                                            <option value="BOX" Disabled>Box</option>
+                                            <option value="ODC">ODC</option>
+                                            <option value="BAL">Balcony</option>
+                                            <option value="BOX">Box</option>
                                         </select>
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-check-label" for="updateSeatActive">Seat Availability</label>
                                         <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" role="switch" id="updateSeatActive" checked>
+                                            <input class="form-check-input" type="checkbox" role="switch"
+                                                id="updateSeatActive" checked>
                                         </div>
                                     </div>
                                 </div>
@@ -141,7 +143,8 @@ $_SESSION["pagename"] = "adminSeats";
                     <h3 class="mx-2 mx-md-4 col">Seat Layout</h3>
                     <div class="col-auto">
                         <button class="btn btn-outline-dark fw-bold" data-bs-toggle="modal"
-                            data-bs-target="#changeLayoutFormModal"><i class="fa-solid fa-plus me-2"></i>Change Layout</button>
+                            data-bs-target="#changeLayoutFormModal"><i class="fa-solid fa-plus me-2"></i>Change
+                            Layout</button>
                     </div>
                 </div>
 
@@ -202,7 +205,7 @@ $_SESSION["pagename"] = "adminSeats";
 
                     <!-- Balcony List -->
                     <h5 class="fw-bold">Balcony Seats</h5>
-                    <div id="balconyList" class="row gap-1 mx-0 mb-4">
+                    <div id="balList" class="row gap-1 mx-0 mb-4">
                         <!-- Balcony Item Sample-->
                         <div class="col-auto border rounded-3 border-warning text-warning p-2">
                             <div class="row gap-1">
@@ -291,44 +294,105 @@ $_SESSION["pagename"] = "adminSeats";
             maxFiles: 1
         });
 
-        function showNews() {
-            var getData = new FormData();
-            getData.append('function', 'list');
+        // Show Seats
+        function showSeats() {
             $.ajax({
                 type: "POST",
-                url: '../controllers/news.php',
-                processData: false,
-                contentType: false,
-                data: getData,
+                url: '../controllers/seats.php',
+                dataType: 'json',
+                data: {
+                    function: 'list'
+                },
                 success: function(response) {
-                    if (response.result) {
-                        console.log(response.result)
-                        if ($.fn.DataTable.isDataTable("#example")) {
-                            $('#example').DataTable().clear().destroy();
-                        }
-                        $('#example').DataTable({
-                            data: response.result,
-                            columns: [{
-                                    data: 'news_id'
-                                },
-                                {
-                                    data: 'news_title'
-                                },
-                                {
-                                    data: 'news_description'
-                                },
-                                {
-                                    data: 'created_date'
-                                },
-                                {
-                                    data: 'action_buttons'
-                                }
-                            ]
+                    console.log(response)
+                    if (response.result != undefined || response.result.length != 0) {
+                        var ODClist = "";
+                        var BALlist = "";
+                        var BOXlist = "";
+                        var dataArray = response.result;
+                        dataArray.forEach(element => {
+                            var seatType = element.seat_category;
+                            var seatActive = element.active;
+                            var color = "secondary";
+                            switch (seatType) {
+                                case "ODC":
+                                    color = "primary";
+                                    break;
+
+                                case "BAL":
+                                    color = "warning";
+                                    break;
+
+                                case "BOX":
+                                    color = "danger";
+                                    break;
+
+                                default:
+                                    break;
+                            }
+                            // Seat Code
+                            var singleSeat;
+                            if (seatActive == '1') {
+                                singleSeat = `<div class="col-auto border rounded-3 bg-${color} text-light p-2">
+                                                <div class="row gap-1">
+                                                    <div class="col-auto">
+                                                        <h5 class="m-0">${element.code}</h5>
+                                                    </div>
+                                                    <div class="col">
+                                                        <a class="btn btn-sm p-0 text-light updateSeatBtn" data-bs-toggle="modal"
+                                                            data-bs-target="#updateSeatFormModal" data-code="${element.code}" data-category="${element.seat_category}" data-id="${element.id}"
+                                                            title="edit">
+                                                            <i class="fa-solid fa-pen"></i></a>
+                                                        <a class="btn btn-sm p-0 ms-2 text-light deleteSeatBtn" data-code="${element.code}"
+                                                            data-id="${element.id}" title="delete">
+                                                            <i class="fa-solid fa-trash"></i></a>
+                                                    </div>
+                                                </div>
+                                            </div>`;
+                            } else {
+                                singleSeat = `<div class="col-auto border rounded-3 border-${color} text-${color} p-2">
+                                                <div class="row gap-1">
+                                                    <div class="col-auto">
+                                                        <h5 class="m-0">${element.code}</h5>
+                                                    </div>
+                                                    <div class="col">
+                                                        <a class="btn btn-sm p-0 text-${color} updateSeatBtn" data-bs-toggle="modal"
+                                                            data-bs-target="#updateSeatFormModal" data-code="${element.code}" data-category="${element.seat_category}" data-id="${element.id}"
+                                                            title="edit">
+                                                            <i class="fa-solid fa-pen"></i></a>
+                                                        <a class="btn btn-sm p-0 ms-2 text-${color} deleteSeatBtn" data-code="ODC-01"
+                                                            data-id="${element.id}" title="delete">
+                                                            <i class="fa-solid fa-trash"></i></a>
+                                                    </div>
+                                                </div>
+                                            </div>`;
+                            }
+
+                            switch (seatType) {
+                                case "ODC":
+                                    ODClist += singleSeat;
+                                    break;
+
+                                case "BAL":
+                                    BALlist += singleSeat;
+                                    break;
+
+                                case "BOX":
+                                    BOXlist += singleSeat;
+                                    break;
+
+                                default:
+                                    break;
+                            }
                         });
+                        $('#odcList').html(ODClist);
+                        $('#balList').html(BALlist);
+                        $('#boxList').html(BOXlist);
+                        // Swal.close();
                     } else {
                         Swal.fire({
-                            title: 'Table Error!',
-                            text: response.error,
+                            title: 'Loading Failed!',
+                            text: response,
                             icon: 'error',
                             showConfirmButton: true
                         });
@@ -336,7 +400,7 @@ $_SESSION["pagename"] = "adminSeats";
                 }
             });
         }
-        // showNews();
+        showSeats();
 
         // Add New Layout
         $('#changeLayoutForm').submit(function(e) {
@@ -393,6 +457,149 @@ $_SESSION["pagename"] = "adminSeats";
                 }
             });
         });
+        // ----------------------------------------------
+
+        // Add New Seat
+        $('#addSeatsForm').submit(function(e) {
+            e.preventDefault();
+            Swal.fire({
+                title: 'Please Wait',
+                allowEscapeKey: false,
+                allowOutsideClick: false,
+            });
+            Swal.showLoading();
+            $.ajax({
+                type: "POST",
+                url: '../controllers/seats.php',
+                dataType: 'json',
+                data: {
+                    function: 'add',
+                    data: {
+                        'code': $('#addSeatCode').val(),
+                        'seat_category': $('#addSeatCategory').val(),
+                        'active': ($('#addSeatActive').is(":checked")) ? 1 : 0
+                    }
+                },
+                success: function(response) {
+                    if (!response.error) {
+                        $('#addSeatsForm').trigger('reset');
+                        Swal.fire({
+                            title: 'Insert Successful!',
+                            icon: 'success',
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                        showSeats();
+                        $("#addSeatsFormModal").modal('hide');
+                    } else {
+                        Swal.fire({
+                            title: 'Insert Failed!',
+                            text: response.error,
+                            icon: 'error',
+                            showConfirmButton: true
+                        });
+                    }
+                }
+            });
+        });
+        // ----------------------------------------------
+
+        // Update Category
+        $('#updateCategoryForm').submit(function(e) {
+            e.preventDefault();
+            Swal.fire({
+                title: 'Please Wait',
+                allowEscapeKey: false,
+                allowOutsideClick: false,
+            });
+            Swal.showLoading();
+            $.ajax({
+                type: "POST",
+                url: '../controllers/category.php',
+                dataType: 'json',
+                data: {
+                    function: 'edit',
+                    data: {
+                        'id': $('#categoryId').val(),
+                        'name': $('#updateCategoryName').val()
+                    }
+                },
+                success: function(response) {
+                    if (!response.error) {
+                        $('#updateCategoryForm').trigger('reset');
+                        Swal.fire({
+                            title: 'Update Successful!',
+                            icon: 'success',
+                            timer: 1000,
+                            showConfirmButton: false
+                        });
+                    } else {
+                        Swal.fire({
+                            title: 'Insert Failed!',
+                            text: response.error,
+                            icon: 'error',
+                            showConfirmButton: true
+                        });
+                    }
+                    loadCategory();
+                    $("#updateCategoryFormModal").modal('hide');
+                }
+            });
+        });
+        // ----------------------------------------------
+
+        // Delete Category
+        $(document).on("click", ".deleteCategoryBtn", function(e) {
+            var btn = e.currentTarget;
+            var dataId = btn.attributes['data-id'].value;
+            var dataName = btn.attributes['data-name'].value;
+            Swal.fire({
+                title: 'Are you sure?',
+                text: `You want to delete ${dataName} category!`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: "POST",
+                        url: '../controllers/category.php',
+                        dataType: 'json',
+                        data: {
+                            function: 'delete',
+                            data: {
+                                'id': dataId,
+                            }
+                        },
+                        success: function(response) {
+                            if (!response.error) {
+                                Swal.fire(
+                                    'Deleted!',
+                                    'Your file has been deleted.',
+                                    'success',
+                                )
+                            } else {
+                                Swal.fire({
+                                    title: 'Insert Failed!',
+                                    text: response.error,
+                                    icon: 'error',
+                                    showConfirmButton: true
+                                });
+                            }
+                            loadCategory();
+                        }
+                    });
+                }
+            })
+        });
+        // ----------------------------------------------
+
+        // Update Seat Modal on Popup
+        $('#updateCategoryFormModal').on('show.bs.modal', function(e) {
+            var btn = e.relatedTarget;
+            $('#updateCategoryName').val(btn.attributes['data-name'].value);
+            $('#categoryId').val(btn.attributes['data-id'].value);
+        })
         // ----------------------------------------------
     });
     </script>
