@@ -95,7 +95,7 @@ $_SESSION["pagename"] = "adminSeats";
                 <!-- Add Seats Modal End -->
 
                 <!-- Update Seats Modal -->
-                <div class="modal fade" id="updateSeatsFormModal" data-bs-backdrop="static" data-bs-keyboard="false"
+                <div class="modal fade" id="updateSeatFormModal" data-bs-backdrop="static" data-bs-keyboard="false"
                     tabindex="-1" aria-labelledby="seatsFormLabel" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
@@ -104,8 +104,9 @@ $_SESSION["pagename"] = "adminSeats";
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
                             </div>
-                            <form id="updateSeatsForm" name="updateSeatsForm">
+                            <form id="updateSeatForm" name="updateSeatForm">
                                 <div class="modal-body">
+                                    <input type="hidden" class="form-control" id="updateSeatId" value="-1" required>
                                     <div class="mb-3">
                                         <label for="updateSeatCode" class="form-label">Seat Code</label>
                                         <input type="text" class="form-control" id="updateSeatCode" required>
@@ -123,7 +124,7 @@ $_SESSION["pagename"] = "adminSeats";
                                         <label class="form-check-label" for="updateSeatActive">Seat Availability</label>
                                         <div class="form-check form-switch">
                                             <input class="form-check-input" type="checkbox" role="switch"
-                                                id="updateSeatActive" checked>
+                                                id="updateSeatActive">
                                         </div>
                                     </div>
                                 </div>
@@ -136,7 +137,7 @@ $_SESSION["pagename"] = "adminSeats";
                         </div>
                     </div>
                 </div>
-                <!-- Add Update Modal End -->
+                <!-- Update Seat Modal End -->
 
                 <div
                     class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
@@ -340,7 +341,7 @@ $_SESSION["pagename"] = "adminSeats";
                                                     </div>
                                                     <div class="col">
                                                         <a class="btn btn-sm p-0 text-light updateSeatBtn" data-bs-toggle="modal"
-                                                            data-bs-target="#updateSeatFormModal" data-code="${element.code}" data-category="${element.seat_category}" data-id="${element.id}"
+                                                            data-bs-target="#updateSeatFormModal" data-code="${element.code}" data-active="${element.active}" data-category="${element.seat_category}" data-id="${element.id}"
                                                             title="edit">
                                                             <i class="fa-solid fa-pen"></i></a>
                                                         <a class="btn btn-sm p-0 ms-2 text-light deleteSeatBtn" data-code="${element.code}"
@@ -357,7 +358,7 @@ $_SESSION["pagename"] = "adminSeats";
                                                     </div>
                                                     <div class="col">
                                                         <a class="btn btn-sm p-0 text-${color} updateSeatBtn" data-bs-toggle="modal"
-                                                            data-bs-target="#updateSeatFormModal" data-code="${element.code}" data-category="${element.seat_category}" data-id="${element.id}"
+                                                            data-bs-target="#updateSeatFormModal" data-code="${element.code}" data-active="${element.active}" data-category="${element.seat_category}" data-id="${element.id}"
                                                             title="edit">
                                                             <i class="fa-solid fa-pen"></i></a>
                                                         <a class="btn btn-sm p-0 ms-2 text-${color} deleteSeatBtn" data-code="ODC-01"
@@ -504,8 +505,8 @@ $_SESSION["pagename"] = "adminSeats";
         });
         // ----------------------------------------------
 
-        // Update Category
-        $('#updateCategoryForm').submit(function(e) {
+        // Update Seat
+        $('#updateSeatForm').submit(function(e) {
             e.preventDefault();
             Swal.fire({
                 title: 'Please Wait',
@@ -515,18 +516,20 @@ $_SESSION["pagename"] = "adminSeats";
             Swal.showLoading();
             $.ajax({
                 type: "POST",
-                url: '../controllers/category.php',
+                url: '../controllers/seats.php',
                 dataType: 'json',
                 data: {
                     function: 'edit',
                     data: {
-                        'id': $('#categoryId').val(),
-                        'name': $('#updateCategoryName').val()
+                        'id': $('#updateSeatId').val(),
+                        'code': $('#updateSeatCode').val(),
+                        'seat_category': $('#updateSeatCategory').val(),
+                        'active': ($('#updateSeatActive').is(":checked")) ? 1 : 0
                     }
                 },
                 success: function(response) {
                     if (!response.error) {
-                        $('#updateCategoryForm').trigger('reset');
+                        $('#updateSeatForm').trigger('reset');
                         Swal.fire({
                             title: 'Update Successful!',
                             icon: 'success',
@@ -535,14 +538,14 @@ $_SESSION["pagename"] = "adminSeats";
                         });
                     } else {
                         Swal.fire({
-                            title: 'Insert Failed!',
+                            title: 'Update Failed!',
                             text: response.error,
                             icon: 'error',
                             showConfirmButton: true
                         });
                     }
-                    loadCategory();
-                    $("#updateCategoryFormModal").modal('hide');
+                    showSeats();
+                    $("#updateSeatFormModal").modal('hide');
                 }
             });
         });
@@ -595,10 +598,17 @@ $_SESSION["pagename"] = "adminSeats";
         // ----------------------------------------------
 
         // Update Seat Modal on Popup
-        $('#updateCategoryFormModal').on('show.bs.modal', function(e) {
+        $('#updateSeatFormModal').on('show.bs.modal', function(e) {
             var btn = e.relatedTarget;
-            $('#updateCategoryName').val(btn.attributes['data-name'].value);
-            $('#categoryId').val(btn.attributes['data-id'].value);
+            $('#updateSeatId').val(btn.attributes['data-id'].value);
+            $('#updateSeatCode').val(btn.attributes['data-code'].value);
+            $('#updateSeatCategory').val(btn.attributes['data-category'].value);
+            console.log(btn.attributes['data-active'].value)
+            if(btn.attributes['data-active'].value == 1){
+                $('#updateSeatActive').prop('checked', true);
+            }else{
+                $('#updateSeatActive').prop('checked', false);
+            }
         })
         // ----------------------------------------------
     });
