@@ -12,6 +12,24 @@
     if( !isset($Result['error']) ) {
 
         switch($_POST['function']) {
+
+            case 'single':
+                if( !isset($_POST['id'])) {
+                    $Result['status'] = 500;
+                    $Result['error'] = 'invalid Data! id reuired';
+                }
+                else {
+                     $id = $_POST['id'];
+                     $Result['status'] = 200;
+                     $movieData = getSingleMovie($id);
+                     $categoryData = getSingleCategory($movieData[0]['category_id']);
+                     $Result['result'] = [
+                         'movie' => $movieData,
+                         'category' => $categoryData
+                     ];
+                }
+                break;
+                
             case 'list':
                 $screenList = getAllScreens();
                 $tableArray = [];
