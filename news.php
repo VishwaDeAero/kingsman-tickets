@@ -27,7 +27,7 @@ $_SESSION["pagename"] = "allnews";
     <div class="container p-3 p-sm-4 p-lg-2 mt-lg-4">
         <div id="news_row" class="row row-cols-1 row-cols-sm-2 g-4 mb-2">
             <div class="col">
-                <div class="card flex-row">
+                <div class="card flex-row news-card">
                     <div class="col-4">
                         <img class="card-img-left w-100 h-100" src="https://picsum.photos/400/350" />
                     </div>
@@ -63,7 +63,7 @@ $_SESSION["pagename"] = "allnews";
                         response.result.forEach(element => {
                             var news = element;
                             news_string += `<div class="col">
-                                                <div class="card flex-row">
+                                                <div data-id="${news.id}" class="card flex-row news-card">
                                                     <div class="col-4">
                                                         <img class="card-img-left w-100 h-100" src="assets/images/news/${news.img_path}" />
                                                     </div>
@@ -87,6 +87,13 @@ $_SESSION["pagename"] = "allnews";
             });
         }
         showAllNews();
+
+        $(document).on('click', '.news-card', function(e) {
+            console.log(e.currentTarget);
+            var newsId = $(this).data('id');
+            e.preventDefault();
+            window.location.href = `newsdetails.php?id=${newsId}`;
+        });
     });
     </script>
 </body>
