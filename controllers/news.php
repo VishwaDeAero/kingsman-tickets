@@ -10,6 +10,19 @@
     if( !isset($Result['error']) ) {
 
         switch($_POST['function']) {
+
+            case 'single':
+                if( !isset($_POST['id'])) {
+                    $Result['status'] = 500;
+                    $Result['error'] = 'invalid Data! id reuired';
+                }
+                else {
+                     $id = $_POST['id'];
+                     $Result['status'] = 200;
+                     $Result['result'] = getSingleNews($id);
+                }
+                break;
+
             case 'list':
                 $newsList = getAllNews();
                 $tableArray = [];

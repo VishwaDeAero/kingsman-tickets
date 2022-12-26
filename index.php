@@ -128,7 +128,7 @@ $_SESSION["pagename"] = "home";
         <hr class="mt-0 mt-sm-2 mb-lg-4">
         <div id="news_row" class="row row-cols-1 row-cols-md-2 g-4">
             <div class="col">
-                <div class="card flex-row">
+                <div class="card flex-row news-card">
                     <div class="col-4">
                         <img class="card-img-left w-100 h-100" src="https://picsum.photos/400/350" />
                     </div>
@@ -229,7 +229,7 @@ $_SESSION["pagename"] = "home";
                         response.result.forEach(element => {
                             var news = element;
                             news_string += `<div class="col">
-                                                <div class="card flex-row">
+                                                <div data-id="${news.id}" class="card flex-row news-card">
                                                     <div class="col-4">
                                                         <img class="card-img-left w-100 h-100" src="assets/images/news/${news.img_path}" />
                                                     </div>
@@ -260,6 +260,13 @@ $_SESSION["pagename"] = "home";
                 'That thing is still around?',
                 'success'
             )
+        });
+
+        $(document).on('click', '.news-card', function(e) {
+            console.log(e.currentTarget);
+            var newsId = $(this).data('id');
+            e.preventDefault();
+            window.location.href = `newsdetails.php?id=${newsId}`;
         });
     });
     </script>
