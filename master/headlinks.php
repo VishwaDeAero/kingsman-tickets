@@ -13,5 +13,8 @@
 <link href="assets/libraries/fontawesome/css/solid.css" rel="stylesheet">
 <!-- Sweet Alert 2 -->
 <link href="assets/libraries/sweetalert2/sweetalert2.css" rel="stylesheet">
+<!-- Select 2 -->
+<link href="assets/libraries/select2/select2.min.css" rel="stylesheet">
+<link href="assets/libraries/select2/select2.bootstrap5.min.css" rel="stylesheet">
 <!-- Custom styles -->
 <link href="assets/css/main.css" rel="stylesheet">

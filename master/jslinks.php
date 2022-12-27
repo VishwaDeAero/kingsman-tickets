@@ -4,3 +4,5 @@
 <script src="bootstrap/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 <!-- Sweet Alert 2 -->
 <script src="assets/libraries/sweetalert2/sweetalert2.js" crossorigin="anonymous"></script>
+<!-- Sweet Alert 2 -->
+<script src="assets/libraries/select2/select2.min.js" crossorigin="anonymous"></script>

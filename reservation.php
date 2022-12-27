@@ -51,14 +51,18 @@ $_SESSION["pagename"] = "moviedetails";
                     <div class="row">
                         <div class="col-6">
                             <div class="mb-3">
-                                <label for="seatsCount" class="form-label">Select Date</label>
-                                <input type="text" class="form-control" id="reserveDate" required>
+                                <label for="reserveDate" class="form-label">Select Date</label>
+                                <select class="form-select reserve-dates-list" aria-label="Select Movie Date" id="reserveDate" required>
+                                    <option value="-1" Disabled>No Dates Available</option>
+                                </select>
                             </div>
                         </div>
                         <div class="col-6">
                             <div class="mb-3">
-                                <label for="seatsCount" class="form-label">Select Time</label>
-                                <input type="number" class="form-control" id="seatsCount" required disabled>
+                                <label for="reserveTime" class="form-label">Select Time</label>
+                                <select class="form-select reserve-times-list" aria-label="Select Screen Time" id="reserveTime" required disabled>
+                                    <option value="-1" Disabled>No Screens Available</option>
+                                </select>
                             </div>
                         </div>
                         <div class="col-6">
@@ -69,8 +73,13 @@ $_SESSION["pagename"] = "moviedetails";
                         </div>
                         <div class="col-6">
                             <div class="mb-3">
-                                <label for="seatsCount" class="form-label">Select Seats</label>
-                                <input type="number" class="form-control" id="seatsCount" required disabled>
+                                <label for="reservedSeats" class="form-label">Select Seats</label>
+                                <!-- <input type="number" class="form-control" id="seatsCount" required disabled> -->
+                                <select class="form-select" multiple aria-label="multiple select example" id="reservedSeats" required disabled>
+                                    <option value="1">One</option>
+                                    <option value="2">Two</option>
+                                    <option value="3">Three</option>
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -86,11 +95,17 @@ $_SESSION["pagename"] = "moviedetails";
 
     <?php include('master/footer.php'); ?>
     <?php include('master/jslinks.php'); ?>
+
     <script type="text/javascript">
     $(document).ready(function() {
         const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString);
         var dataid = urlParams.get('id');
+
+        $('#reservedSeats').select2({
+            theme: "bootstrap-5",
+            maximumSelectionLength: 2
+        });
 
         function loadMovie(id) {
             var getData = new FormData();
