@@ -89,6 +89,12 @@ $_SESSION["pagename"] = "moviedetails";
             });
         }
         loadMovie(dataid);
+
+        $(document).on('click', '.buy-tickets-btn', function(e) {
+            e.preventDefault();
+            var movie_id = $(this).attr('data-id');
+            window.location.href = `reservation.php?id=${dataid}`;
+        });
     });
     </script>
 </body>

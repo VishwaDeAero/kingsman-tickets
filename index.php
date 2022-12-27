@@ -268,6 +268,12 @@ $_SESSION["pagename"] = "home";
             e.preventDefault();
             window.location.href = `newsdetails.php?id=${newsId}`;
         });
+
+        $(document).on('click', '.buy-tickets-btn', function(e) {
+            e.preventDefault();
+            var movie_id = $(this).attr('data-id');
+            window.location.href = `moviedetails.php?id=${movie_id}`;
+        });
     });
     </script>
 </body>
