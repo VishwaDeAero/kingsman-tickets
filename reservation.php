@@ -265,6 +265,7 @@ $_SESSION["pagename"] = "reservation";
                                 maximumSelectionLength: 10
                             });
                         } else {
+                            $("#reservedSeats").empty();
                             $('#reservedSeats').select2({
                                 theme: "bootstrap-5",
                                 placeholder: "No seats available",
@@ -332,6 +333,8 @@ $_SESSION["pagename"] = "reservation";
                             icon: 'success',
                             timer: 2000,
                             showConfirmButton: false
+                        }).then((result) => {
+                            getSeats();
                         });
                     } else {
                         Swal.fire({
@@ -339,9 +342,10 @@ $_SESSION["pagename"] = "reservation";
                             text: response.error,
                             icon: 'error',
                             showConfirmButton: true
+                        }).then((result) => {
+                            getSeats();
                         });
                     }
-                    getSeats();
                 }
             });
         });
