@@ -341,8 +341,8 @@ $_SESSION["pagename"] = "reservation";
                             showConfirmButton: true
                         });
                     }
+                    getSeats();
                 }
-                getSeats();
             });
         });
         // -------------------------------------------------------
