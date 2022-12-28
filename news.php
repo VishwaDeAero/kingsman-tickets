@@ -77,7 +77,7 @@ $_SESSION["pagename"] = "allnews";
                         $("#news_row").empty().append(news_string);
                     } else {
                         Swal.fire({
-                            title: 'Error Loading Movies!',
+                            title: 'Error Loading News!',
                             text: response.error,
                             icon: 'error',
                             showConfirmButton: true

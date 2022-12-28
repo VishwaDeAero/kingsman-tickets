@@ -4,6 +4,7 @@
     require_once('../models/screen.php');
     require_once('../models/reservation.php');
     require_once('../models/booking.php');
+    require_once('../models/movie.php');
 
 
     $Result = array();
@@ -106,6 +107,36 @@
                         $Result['status'] = 200;
                         $Result['result'] = "Reservation Completed Successfully";
                     }
+                }
+                break;
+
+            case 'alltickets':
+                if( !isset($_POST['user_id'])) {
+                    $Result['status'] = 500;
+                    $Result['error'] = 'invalid Data! user_id required';
+                }
+                else {
+                    $user_id = $_POST['user_id'];
+                    $tickets = getAllReservationsByUser($user_id);
+                    $ticketsList = [];
+                    foreach ($tickets as $key => $ticket) {
+                        $ticket_info = [];
+                        $movie_id = $ticket['movie_id'];
+                        $screen_id = $ticket['screen_id'];
+                        $ticket_info['ticket']= getSingleReservation($ticket['id'])[0];
+                        $ticket_info['movie']= getSingleMovie($movie_id)[0];
+                        $ticket_info['screen'] = getMovieScreens($screen_id)[0];
+                        $seats = getAllBookingsByReservation($ticket['id']);
+                        $seatsList = [];
+                        foreach ($seats as $skey => $seat) {
+                            $seat_info = getSingleSeat($seat['seat_id']);
+                            array_push($seatsList, $seat_info);
+                        }
+                        $ticket_info['seats'] = $seatsList;
+                        array_push($ticketsList, $ticket_info);
+                    }
+                    $Result['status'] = 200;
+                    $Result['result'] = $ticketsList;
                 }
                 break;
 
