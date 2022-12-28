@@ -17,7 +17,7 @@
             case 'add':
                if( !is_array($_POST['data']) || (count($_POST['data']) != 1) ) {
                    $Result['status'] = 500;
-                   $Result['error'] = 'invalid Data! name reuired';
+                   $Result['error'] = 'invalid Data! name required';
                }
                else {
                     $data = $_POST['data'];
@@ -29,7 +29,7 @@
             case 'edit':
                if( !is_array($_POST['data']) || (count($_POST['data']) != 2) ) {
                    $Result['status'] = 500;
-                   $Result['error'] = 'invalid Data! id,name reuired';
+                   $Result['error'] = 'invalid Data! id,name required';
                }
                else {
                     $data = $_POST['data'];
@@ -41,7 +41,7 @@
             case 'delete':
                if( !is_array($_POST['data']) || (count($_POST['data']) != 1) ) {
                    $Result['status'] = 500;
-                   $Result['error'] = 'invalid Data! id reuired';
+                   $Result['error'] = 'invalid Data! id required';
                }
                else {
                     $data = $_POST['data'];

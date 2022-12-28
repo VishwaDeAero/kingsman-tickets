@@ -16,7 +16,7 @@
             case 'single':
                 if( !isset($_POST['id'])) {
                     $Result['status'] = 500;
-                    $Result['error'] = 'invalid Data! id reuired';
+                    $Result['error'] = 'invalid Data! id required';
                 }
                 else {
                      $id = $_POST['id'];

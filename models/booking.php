@@ -10,14 +10,14 @@ try {
   }
 $conn = null;
 
-// Get Single Seat
-function getSingleCategory($id){
+// Get Single Booking
+function getSingleBooking($id){
   global $servername, $dbname, $username, $password;
   try {
       $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
       // set the PDO error mode to exception
       $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-      $sql = $conn->prepare("SELECT * FROM seats WHERE id=$id AND deleted_at IS NULL");
+      $sql = $conn->prepare("SELECT * FROM bookings WHERE id=$id AND deleted_at IS NULL");
       $sql->execute();
       return $sql->fetchAll(PDO::FETCH_ASSOC);
     } catch(PDOException $e) {
@@ -26,14 +26,14 @@ function getSingleCategory($id){
     $conn = null;
 }
 
-// Get All Active Seats
-function getAllActiveSeats(){
+// Get All Bookings
+function getAllBookings(){
     global $servername, $dbname, $username, $password;
     try {
         $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
         // set the PDO error mode to exception
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $sql = $conn->prepare("SELECT id, code FROM seats WHERE active=1 AND deleted_at IS NULL");
+        $sql = $conn->prepare("SELECT * FROM bookings WHERE deleted_at IS NULL");
         $sql->execute();
         return $sql->fetchAll(PDO::FETCH_ASSOC);
       } catch(PDOException $e) {
@@ -42,31 +42,15 @@ function getAllActiveSeats(){
       $conn = null;
 }
 
-// Get All Seats
-function getAllSeats(){
+// Insert New Booking
+function insertBooking($res_id, $seat_id){
     global $servername, $dbname, $username, $password;
     try {
         $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
         // set the PDO error mode to exception
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $sql = $conn->prepare("SELECT * FROM seats WHERE deleted_at IS NULL");
-        $sql->execute();
-        return $sql->fetchAll(PDO::FETCH_ASSOC);
-      } catch(PDOException $e) {
-        echo "Error: " . $e->getMessage();
-      }
-      $conn = null;
-}
-
-// Insert New Seat
-function insertSeat($code, $seat_category, $active){
-    global $servername, $dbname, $username, $password;
-    try {
-        $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
-        // set the PDO error mode to exception
-        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $sql = "INSERT INTO seats (code, seat_category, active)
-        VALUES ('$code', '$seat_category', '$active')";
+        $sql = "INSERT INTO bookings (reservation_id, seat_id)
+        VALUES ('$res_id', '$seat_id')";
         $conn->exec($sql);
         $last_id = $conn->lastInsertId();
         return "New record: $last_id created successfully";
@@ -76,15 +60,15 @@ function insertSeat($code, $seat_category, $active){
       $conn = null;
 }
 
-// Update a Seat
-function updateSeat($id, $code, $seat_category, $active){
+// Update a Booking
+function updateBooking($id, $res_id, $seat_id){
     global $servername, $dbname, $username, $password;
     $date = date('Y-m-d H:i:s');
     try {
         $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
         // set the PDO error mode to exception
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $sql = $conn->prepare("UPDATE seats SET code='$code', seat_category='$seat_category', active='$active', updated_at='$date' WHERE id=$id");
+        $sql = $conn->prepare("UPDATE bookings SET reservation_id='$res_id', seat_id='$seat_id', updated_at='$date' WHERE id=$id");
         $sql->execute();
         return "Record: $id update successfully";
       } catch(PDOException $e) {
@@ -93,15 +77,15 @@ function updateSeat($id, $code, $seat_category, $active){
       $conn = null;
 }
 
-// Delete a Seat (Soft Delete)
-function deleteSeat($id){
+// Delete a Booking (Soft Delete)
+function deleteBooking($id){
     global $servername, $dbname, $username, $password;
     $date = date('Y-m-d H:i:s');
     try {
         $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
         // set the PDO error mode to exception
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $sql = $conn->prepare("UPDATE seats SET deleted_at='$date' WHERE id=$id");
+        $sql = $conn->prepare("UPDATE bookings SET deleted_at='$date' WHERE id=$id");
         $sql->execute();
         return "Record: $id deleted successfully";
       } catch(PDOException $e) {

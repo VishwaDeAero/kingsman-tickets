@@ -1,6 +1,6 @@
 <?php
 session_start();
-$_SESSION["pagename"] = "moviedetails";
+$_SESSION["pagename"] = "reservation";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -52,7 +52,8 @@ $_SESSION["pagename"] = "moviedetails";
                         <div class="col-6">
                             <div class="mb-3">
                                 <label for="reserveDate" class="form-label">Select Date</label>
-                                <select class="form-select reserve-dates-list" aria-label="Select Movie Date" id="reserveDate" required>
+                                <select class="form-select reserve-dates-list" aria-label="Select Movie Date"
+                                    id="reserveDate" required>
                                     <option value="-1" Disabled>No Dates Available</option>
                                 </select>
                             </div>
@@ -60,22 +61,24 @@ $_SESSION["pagename"] = "moviedetails";
                         <div class="col-6">
                             <div class="mb-3">
                                 <label for="reserveTime" class="form-label">Select Time</label>
-                                <select class="form-select reserve-times-list" aria-label="Select Screen Time" id="reserveTime" required disabled>
+                                <select class="form-select reserve-times-list" aria-label="Select Screen Time"
+                                    id="reserveTime" required disabled>
                                     <option value="-1" Disabled>No Screens Available</option>
                                 </select>
                             </div>
                         </div>
-                        <div class="col-6">
+                        <!-- <div class="col-6">
                             <div class="mb-3">
                                 <label for="seatsCount" class="form-label">Seats Count</label>
                                 <input type="number" class="form-control" id="seatsCount" required disabled>
                             </div>
-                        </div>
-                        <div class="col-6">
+                        </div> -->
+                        <div class="col-12">
                             <div class="mb-3">
                                 <label for="reservedSeats" class="form-label">Select Seats</label>
                                 <!-- <input type="number" class="form-control" id="seatsCount" required disabled> -->
-                                <select class="form-select" multiple aria-label="multiple select example" id="reservedSeats" required disabled>
+                                <select class="form-select" multiple aria-label="multiple select example"
+                                    id="reservedSeats" required disabled>
                                     <option value="1">One</option>
                                     <option value="2">Two</option>
                                     <option value="3">Three</option>
@@ -137,6 +140,139 @@ $_SESSION["pagename"] = "moviedetails";
             });
         }
         loadMovie(dataid);
+
+        function getDates() {
+            $('#reservedSeats').prop('disabled', true);
+            $('#reserveTime').prop('disabled', true);
+            Swal.fire({
+                title: 'Please Wait',
+                allowEscapeKey: false,
+                allowOutsideClick: false,
+            });
+            Swal.showLoading();
+            var getData = new FormData();
+            getData.append('function', 'datelist');
+            getData.append('id', dataid);
+            $.ajax({
+                type: "POST",
+                url: 'controllers/reservation.php',
+                processData: false,
+                contentType: false,
+                data: getData,
+                success: function(response) {
+                    if (!response.error) {
+                        if (response.result.length > 0) {
+                            var reserveDateSelect = $("#reserveDate");
+                            reserveDateSelect.empty(); // remove old options
+                            response.result.forEach(element => {
+                                reserveDateSelect.append($("<option></option>").attr(
+                                    "value", element.date).text(element.date));
+                            });
+                        }
+                        Swal.close();
+                        getScreens();
+                    } else {
+                        Swal.fire({
+                            title: 'Date Loading Error!',
+                            text: response.error,
+                            icon: 'error',
+                            showConfirmButton: true
+                        });
+                    }
+                }
+            });
+        }
+        getDates();
+
+        function getScreens() {
+            $('#reserveTime').prop('disabled', false);
+            Swal.fire({
+                title: 'Please Wait',
+                allowEscapeKey: false,
+                allowOutsideClick: false,
+            });
+            Swal.showLoading();
+            var getData = new FormData();
+            getData.append('function', 'screenlist');
+            getData.append('id', dataid);
+            getData.append('date', $('#reserveDate').val());
+            $.ajax({
+                type: "POST",
+                url: 'controllers/reservation.php',
+                processData: false,
+                contentType: false,
+                data: getData,
+                success: function(response) {
+                    console.log(response)
+                    if (!response.error) {
+                        if (response.result.length > 0) {
+                            var reserveScreenselect = $("#reserveTime");
+                            reserveScreenselect.empty(); // remove old options
+                            response.result.forEach(element => {
+                                reserveScreenselect.append($("<option></option>").attr(
+                                    "value", element.id).text(element.time));
+                            });
+                        }
+                        Swal.close();
+                        getSeats();
+                    } else {
+                        Swal.fire({
+                            title: 'Screens Loading Error!',
+                            text: response.error,
+                            icon: 'error',
+                            showConfirmButton: true
+                        });
+                    }
+                }
+            });
+        }
+
+        function getSeats() {
+            $('#reservedSeats').prop('disabled', false);
+            Swal.fire({
+                title: 'Please Wait',
+                allowEscapeKey: false,
+                allowOutsideClick: false,
+            });
+            Swal.showLoading();
+            var getData = new FormData();
+            getData.append('function', 'seatslist');
+            getData.append('id', dataid);
+            getData.append('screen', $('#reserveTime').val());
+            $.ajax({
+                type: "POST",
+                url: 'controllers/reservation.php',
+                processData: false,
+                contentType: false,
+                data: getData,
+                success: function(response) {
+                    console.log(response)
+                    if (!response.error) {
+                        if (response.result.length > 0) {
+                            $("#reservedSeats").select2("destroy");
+                            var reserveSeatSelect = $("#reservedSeats");
+                            reserveSeatSelect.empty(); // remove old options
+                            response.result.forEach(element => {
+                                reserveSeatSelect.append($("<option></option>").attr(
+                                    "value", element.id).text(element.code));
+                            });
+                            $('#reservedSeats').select2({
+                                theme: "bootstrap-5",
+                                maximumSelectionLength: 10
+                            });
+                        }
+                        Swal.close();
+                    } else {
+                        Swal.fire({
+                            title: 'Seats Loading Error!',
+                            text: response.error,
+                            icon: 'error',
+                            showConfirmButton: true
+                        });
+                    }
+                }
+            });
+        }
     });
     </script>
 </body>

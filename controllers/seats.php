@@ -37,7 +37,7 @@
             case 'delete':
                 if( !is_array($_POST['data']) || (count($_POST['data']) != 1) ) {
                     $Result['status'] = 500;
-                    $Result['error'] = 'invalid Data! Seat Id reuired';
+                    $Result['error'] = 'invalid Data! Seat Id required';
                 }
                 else {
                         $data = $_POST['data'];
