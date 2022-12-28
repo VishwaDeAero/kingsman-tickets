@@ -141,6 +141,13 @@ $_SESSION["pagename"] = "reservation";
         }
         loadMovie(dataid);
 
+        $('#reserveDate').on('change', function() {
+            getScreens();
+        });
+        $('#reserveTime').on('change', function() {
+            getSeats();
+        });
+
         function getDates() {
             $('#reservedSeats').prop('disabled', true);
             $('#reserveTime').prop('disabled', true);
@@ -259,6 +266,12 @@ $_SESSION["pagename"] = "reservation";
                             $('#reservedSeats').select2({
                                 theme: "bootstrap-5",
                                 maximumSelectionLength: 10
+                            });
+                        } else {
+                            $('#reservedSeats').select2({
+                                theme: "bootstrap-5",
+                                placeholder: "No seats available",
+                                disabled: true
                             });
                         }
                         Swal.close();
