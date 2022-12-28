@@ -2,6 +2,8 @@
     header('Content-Type: application/json');
     require_once('../models/seats.php');
     require_once('../models/screen.php');
+    require_once('../models/reservation.php');
+    require_once('../models/booking.php');
 
 
     $Result = array();
@@ -46,8 +48,25 @@
                      $id = $_POST['id'];
                      $screen = $_POST['screen'];
                      $Result['status'] = 200;
+                     //  Get All Active Seats
                      $AllSeats = getAllActiveSeats();
-                     $Result['result'] = $AllSeats;
+                     $screenReservations = getAllReservationsByScreen($screen);
+                     $BookedSeats = [];
+                     //  Get Booked Seats
+                     foreach ($screenReservations as $key => $value) {
+                        $bookings = getAllBookingsByReservation($value['id']);
+                        $seatcode = getSingleSeat($bookings[0]['seat_id']);
+                        array_push($BookedSeats, $seatcode[0]) ;
+                     }
+                     $AvailableSeats = [];
+                     //  Get Available Seats
+                     foreach ($AllSeats as $key => $value) {
+                        if (!in_array($value, $BookedSeats))
+                        {
+                            array_push($AvailableSeats, $value) ;
+                        }
+                     }
+                     $Result['result'] = $AvailableSeats;
                 }
                 break;
 
