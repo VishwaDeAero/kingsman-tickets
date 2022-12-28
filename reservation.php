@@ -88,7 +88,7 @@ $_SESSION["pagename"] = "reservation";
                     </div>
                     <div class="row mt-2">
                         <div class="col-12 text-end">
-                            <button type="button" class="btn btn-dark">Book Seats</button>
+                            <button id="bookSeatsBtn" type="button" class="btn btn-dark">Book Seats</button>
                         </div>
                     </div>
                 </div>
@@ -103,7 +103,7 @@ $_SESSION["pagename"] = "reservation";
     $(document).ready(function() {
         const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString);
-        var dataid = urlParams.get('id');
+        const dataid = urlParams.get('id');
 
         $('#reservedSeats').select2({
             theme: "bootstrap-5",
@@ -122,7 +122,6 @@ $_SESSION["pagename"] = "reservation";
                 data: getData,
                 success: function(response) {
                     if (!response.error) {
-                        console.log("test", response.result);
                         var img_path = 'assets/images/movies/' + response.result.movie[0].img_path;
                         $("#movie_title").text(response.result.movie[0].name);
                         // $("#movie_desc").text(response.result.movie[0].description);
@@ -210,7 +209,6 @@ $_SESSION["pagename"] = "reservation";
                 contentType: false,
                 data: getData,
                 success: function(response) {
-                    console.log(response)
                     if (!response.error) {
                         if (response.result.length > 0) {
                             var reserveScreenselect = $("#reserveTime");
@@ -253,7 +251,6 @@ $_SESSION["pagename"] = "reservation";
                 contentType: false,
                 data: getData,
                 success: function(response) {
-                    console.log(response)
                     if (!response.error) {
                         if (response.result.length > 0) {
                             $("#reservedSeats").select2("destroy");
@@ -286,6 +283,68 @@ $_SESSION["pagename"] = "reservation";
                 }
             });
         }
+
+        // Reserve Seats
+        $("#bookSeatsBtn").click(function() {
+            Swal.fire({
+                title: 'Please Wait',
+                allowEscapeKey: false,
+                allowOutsideClick: false,
+            });
+            Swal.showLoading();
+            var seats = $('#reservedSeats').select2('data');
+
+            // If no seats selected show error
+            if (seats === undefined || seats.length == 0) {
+                Swal.fire({
+                    title: 'No Seats Selected',
+                    text: 'Please Select Your Seats to Reserve',
+                    icon: 'error',
+                    showConfirmButton: true
+                });
+                return false;
+            }
+
+            var movie_id = dataid;
+            var screen_id = $('#reserveTime').val();
+            var user_id = 1;
+            var seats_id = [];
+            seats.forEach(element => {
+                seats_id.push(element.id);
+            });
+
+            var sendData = new FormData();
+            sendData.append('function', 'add');
+            sendData.append('movie_id', movie_id);
+            sendData.append('screen_id', screen_id);
+            sendData.append('user_id', user_id);
+            sendData.append('seats_id', seats_id);
+            $.ajax({
+                type: "POST",
+                url: 'controllers/reservation.php',
+                processData: false,
+                contentType: false,
+                data: sendData,
+                success: function(response) {
+                    if (!response.error) {
+                        Swal.fire({
+                            title: 'Reservation Successful!',
+                            icon: 'success',
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                    } else {
+                        Swal.fire({
+                            title: 'Seats Loading Error!',
+                            text: response.error,
+                            icon: 'error',
+                            showConfirmButton: true
+                        });
+                    }
+                }
+            });
+        });
+        // -------------------------------------------------------
     });
     </script>
 </body>

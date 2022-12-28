@@ -101,7 +101,7 @@ function insertReservation($user_id, $movie_id, $screen_id, $paid, $status){
         VALUES ('$user_id', '$movie_id', '$screen_id', '$paid', '$status')";
         $conn->exec($sql);
         $last_id = $conn->lastInsertId();
-        return "New record: $last_id created successfully";
+        return $last_id;
       } catch(PDOException $e) {
         return $sql . "<br>" . $e->getMessage();
       }
