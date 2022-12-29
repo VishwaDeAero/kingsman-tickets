@@ -314,7 +314,7 @@ if(!isset($_SESSION["user"])){
 
             var movie_id = dataid;
             var screen_id = $('#reserveTime').val();
-            var user_id = 1;
+            const user_id = <?php echo $_SESSION["user"]["id"] ?>;
             var seats_id = [];
             seats.forEach(element => {
                 seats_id.push(element.id);

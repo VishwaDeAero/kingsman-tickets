@@ -1,3 +1,12 @@
+<?php
+// Signout Function
+if(isset($_POST['signoutBtn'])) {
+    unset ($_SESSION["user"]);
+    header('Location: login.php');
+}
+?>
+
+
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-light sticky-top navbar-yellow">
         <div class="container-fluid">
@@ -24,13 +33,35 @@
                     <li class="nav-item">
                         <a class="nav-link <?php if($_SESSION["pagename"] == 'contactus'){ ?>active<?php } ?>" href="contactus.php">Contact Us</a>
                     </li>
+                    <!-- Show Only when logged in -->
+                    <?php
+                        if(isset($_SESSION["user"])){
+                    ?>
                     <li class="nav-item">
                         <a class="nav-link <?php if($_SESSION["pagename"] == 'myaccount'){ ?>active<?php } ?>" href="myaccount.php">My Account</a>
                     </li>
+                    <?php
+                        }
+                    ?>
                 </ul>
                 <div class="d-flex">
-                    <a href="login.php" class="btn btn-outline-dark">Sign In</a>
-                    <a href="register.php" class="ms-2 btn btn-outline-dark">Register</a>
+                    <!-- Change Buttons when user logged in -->
+                    <?php
+                        if(!isset($_SESSION["user"])){
+                    ?>
+                            <a href="login.php" class="btn btn-outline-dark">Sign In</a>
+                            <a href="register.php" class="ms-2 btn btn-outline-dark">Register</a>
+                    <?php
+                        }
+                        else{
+                    ?>
+                            <p class="m-auto pe-3">Hello <?php echo $_SESSION["user"]['first_name'] ?>!</p>
+                            <form method="POST">
+                                <button type="submit" name="signoutBtn" class="btn btn-outline-dark">Sign Out</button>
+                            </form>
+                    <?php
+                        }
+                    ?>
                 </div>
             </div>
         </div>

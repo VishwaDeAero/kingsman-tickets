@@ -35,37 +35,37 @@ if(!isset($_SESSION["user"])){
                     <label class="h6 mb-0">
                         First Name :
                     </label>
-                    <p class="h4">Vishwa Nipun</p>
+                    <p class="h4"><?php echo $_SESSION["user"]["first_name"] ?></p>
                 </div>
                 <div class="col-md-6 col-lg-3">
                     <label class="h6 mb-0">
                         Last Name :
                     </label>
-                    <p class="h4">Srimal</p>
+                    <p class="h4"><?php echo $_SESSION["user"]["last_name"] ?></p>
                 </div>
                 <div class="col-md-6 col-lg-3">
                     <label class="h6 mb-0">
                         Mobile Number :
                     </label>
-                    <p class="h4">0777123454</p>
+                    <p class="h4"><?php echo $_SESSION["user"]["contact_no"] ?></p>
                 </div>
                 <div class="col-md-6 col-lg-3">
                     <label class="h6 mb-0">
                         Email :
                     </label>
-                    <p class="h4">test@kingman.lk</p>
+                    <p class="h4"><?php echo $_SESSION["user"]["email"] ?></p>
                 </div>
                 <div class="col-md-6 col-lg-3">
                     <label class="h6 mb-0">
                         Date of Birth :
                     </label>
-                    <p class="h4">14-07-1999</p>
+                    <p class="h4"><?php echo $_SESSION["user"]["dob"] ?></p>
                 </div>
                 <div class="col-md-6 col-lg-3">
                     <label class="h6 mb-0">
                         NIC Number :
                     </label>
-                    <p class="h4">199919603197</p>
+                    <p class="h4"><?php echo $_SESSION["user"]["nic"] ?></p>
                 </div>
             </div>
             <div class="d-grid gap-2 d-sm-block mt-4 d-md-flex justify-content-md-end">
@@ -181,11 +181,11 @@ if(!isset($_SESSION["user"])){
     <?php include('master/jslinks.php'); ?>
     <script type="text/javascript">
     $(document).ready(function() {
-
+        const user_id = <?php echo $_SESSION["user"]["id"] ?>;
         function showAllTickets() {
             var getData = new FormData();
             getData.append('function', 'alltickets');
-            getData.append('user_id', '1');
+            getData.append('user_id', user_id);
             $.ajax({
                 type: "POST",
                 url: 'controllers/reservation.php',
