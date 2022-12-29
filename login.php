@@ -115,7 +115,11 @@ $_SESSION["pagename"] = "login";
                             timer: 2000,
                             showConfirmButton: false
                         }).then((result) => {
-
+                            if(response.result.user_type == 'staff'){
+                                window.location.href = "admin/index.php";
+                            }else if(response.result.user_type == 'user'){
+                                window.location.href = "index.php";
+                            }
                         });
                     } else {
                         Swal.fire({
