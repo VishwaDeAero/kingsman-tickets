@@ -2,7 +2,7 @@
 <nav class="navbar navbar-expand-lg navbar-light sticky-top navbar-yellow">
         <div class="container-fluid">
             <!-- Brand Name and Logo -->
-            <a href="index.php" class="navbar-brand"><strong>Kingsman Tickets</strong></a>
+            <a href="index.php" class="navbar-brand"><strong>Cineflix Movies</strong></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
                 aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
