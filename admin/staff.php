@@ -152,6 +152,7 @@ $_SESSION["pagename"] = "adminStaff";
                 passwordMatch = false;
             } else {
                 $(".password-input").removeClass("border-danger");
+                passwordMatch = true;
             }
         });
 
@@ -220,6 +221,15 @@ $_SESSION["pagename"] = "adminStaff";
         // Add Staffs
         $('#addStaffForm').submit(function(e) {
             e.preventDefault();
+            if (!passwordMatch || $('#addPassword').val() == "") {
+                Swal.fire({
+                    title: 'Password Mismatch!',
+                    text: 'Please enter same password in each box',
+                    icon: 'error',
+                    showConfirmButton: true
+                });
+                return false;
+            }
             Swal.fire({
                 title: 'Please Wait',
                 allowEscapeKey: false,
