@@ -11,6 +11,26 @@
 
         switch($_POST['function']) {
 
+            case 'login':
+                if( !isset($_POST['username']) || !isset($_POST['password']) ){
+                    $Result['status'] = 500;
+                    $Result['error'] = 'Username and Password Required!';
+                }else{
+                    $usrname = $_POST['username'];
+                    $passwrd = $_POST['password'];
+                    $user = getLoggedUser( $usrname, $passwrd );
+                    if($user){
+                        session_start();
+                        $_SESSION["user"] = $user[0];
+                        $Result['status'] = 200;
+                        $Result['result'] = $_SESSION["user"];
+                    }else{
+                        $Result['status'] = 500;
+                        $Result['error'] = 'Incorrect Username or Password. Please try again';
+                    }
+                }
+                break;
+
             case 'userlist':
                 $userlist = getAllUsersByType('user');
                 $tableArray = [];

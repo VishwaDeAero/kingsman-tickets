@@ -1,6 +1,12 @@
 <?php
 session_start();
 $_SESSION["pagename"] = "reservation";
+
+// Redirect to Login If User not Logged in
+if(!isset($_SESSION["user"])){
+    header('Location: login.php');
+    die();
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
