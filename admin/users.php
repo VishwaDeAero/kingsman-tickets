@@ -257,9 +257,10 @@ $_SESSION["pagename"] = "adminUsers";
                             icon: 'success',
                             timer: 2000,
                             showConfirmButton: false
+                        }).then((result) => {
+                            $("#addUserFormModal").modal('hide');
+                            showUsers();
                         });
-                        $("#addUserFormModal").modal('hide');
-                        showUsers();
                     } else {
                         Swal.fire({
                             title: 'Insert Failed!',
