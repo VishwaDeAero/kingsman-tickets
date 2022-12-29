@@ -103,7 +103,7 @@ $_SESSION["pagename"] = "contactus";
                         <a class="btn-floating btn-lg text-dark accent-1">
                             <i class="fas fa-envelope"></i>
                         </a>
-                        <p>info@kingsmantickets.com</p>
+                        <p>info@cineflixmovies.com</p>
                     </div>
                 </div>
             </div>

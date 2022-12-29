@@ -3,7 +3,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <!-- Common Variables PHP -->
-<?php $sitename = "Kingsman Tickets"; ?>
+<?php $sitename = "Cineflix Movies"; ?>
 
 <!-- Bootstrap -->
 <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">

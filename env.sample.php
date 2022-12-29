@@ -4,6 +4,6 @@
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "kingsman_tickets";
+$dbname = "cineflix_movies";
 
 ?> 

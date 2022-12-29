@@ -6,7 +6,7 @@
                     <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
                         <!-- Brief Description -->
                         <h6 class="text-uppercase fw-bold mb-4">
-                            <i class="fa-brands fa-kickstarter me-3"></i>Kingsman Movies
+                            <i class="fa-brands fa-kickstarter me-3"></i>Cineflix Movies
                         </h6>
                         <p>
                             Here you can use rows and columns to organize your footer content. Lorem ipsum
@@ -37,7 +37,7 @@
                         <p><i class="fas fa-home me-3"></i> No.112, Kaduwela Rd, Malabe.</p>
                         <p>
                             <i class="fas fa-envelope me-3"></i>
-                            info@kingsmantickets.com
+                            info@cineflixmovies.com
                         </p>
                         <p><i class="fas fa-phone me-3"></i> + 01 234 567 88</p>
                         <p><i class="fas fa-print me-3"></i> + 01 234 567 89</p>
