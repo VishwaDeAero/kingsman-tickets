@@ -3,55 +3,46 @@
         <ul class="nav flex-column">
             <li class="nav-item">
                 <a class="nav-link <?php if($_SESSION["pagename"] == 'adminDashboard'){ ?>active<?php } ?>" aria-current="page" href="index.php">
-                    <span data-feather="home" class="align-text-bottom"></span>
                     Dashboard
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link <?php if($_SESSION["pagename"] == 'adminUsers'){ ?>active<?php } ?>" href="users.php">
-                    <span data-feather="file" class="align-text-bottom"></span>
                     Users
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link <?php if($_SESSION["pagename"] == 'adminMovies'){ ?>active<?php } ?>" href="movies.php">
-                    <span data-feather="file" class="align-text-bottom"></span>
                     Movies & Categories
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link <?php if($_SESSION["pagename"] == 'adminSeats'){ ?>active<?php } ?>" href="seats.php">
-                    <span data-feather="shopping-cart" class="align-text-bottom"></span>
                     Seats
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#">
-                    <span data-feather="layers" class="align-text-bottom"></span>
                     Tickets
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link <?php if($_SESSION["pagename"] == 'adminNews'){ ?>active<?php } ?>" href="news.php">
-                    <span data-feather="file" class="align-text-bottom"></span>
                     News
                 </a>
             </li>
             <li class="nav-item">
             <a class="nav-link <?php if($_SESSION["pagename"] == 'adminInquiry'){ ?>active<?php } ?>" href="inquiry.php">
-                    <span data-feather="layers" class="align-text-bottom"></span>
                     Inquiries
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#">
-                    <span data-feather="layers" class="align-text-bottom"></span>
                     Main Slider
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">
-                    <span data-feather="users" class="align-text-bottom"></span>
+                <a class="nav-link <?php if($_SESSION["pagename"] == 'adminStaff'){ ?>active<?php } ?>" href="staff.php">
                     Staff
                 </a>
             </li>
@@ -63,19 +54,16 @@
         <ul class="nav flex-column mb-2">
             <li class="nav-item">
                 <a class="nav-link" href="#">
-                    <span data-feather="file-text" class="align-text-bottom"></span>
                     Tickets
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#">
-                    <span data-feather="file-text" class="align-text-bottom"></span>
                     Movies
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#">
-                    <span data-feather="file-text" class="align-text-bottom"></span>
                     Users
                 </a>
             </li>
