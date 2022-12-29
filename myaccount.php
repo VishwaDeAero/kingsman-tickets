@@ -79,7 +79,7 @@ $_SESSION["pagename"] = "myaccount";
         </div>
 
         <!-- Ticket Line -->
-        <div class="row gap-2">
+        <div id="ticket_line" class="row gap-2">
             <!-- Fully Cancelled Ticket -->
             <div class="container ticket shadow bg-body rounded p-4 col-12">
                 <div class="row d-flex align-items-center">
@@ -173,6 +173,72 @@ $_SESSION["pagename"] = "myaccount";
 
     <?php include('master/footer.php'); ?>
     <?php include('master/jslinks.php'); ?>
+    <script type="text/javascript">
+    $(document).ready(function() {
+
+        function showAllTickets() {
+            var getData = new FormData();
+            getData.append('function', 'alltickets');
+            getData.append('user_id', '1');
+            $.ajax({
+                type: "POST",
+                url: 'controllers/reservation.php',
+                processData: false,
+                contentType: false,
+                data: getData,
+                success: function(response) {
+                    if (!response.error) {
+                        var tickets_string = "";
+                        response.result.forEach(element => {
+                            var ticket = element.ticket;
+                            var movie = element.movie;
+                            var screen = element.screen;
+                            var seats = element.seats;
+                            var seat_string = "";
+                            seats.forEach(seat => {
+                                seat_string += `<span class="bg-dark col-auto text-light px-2 py-1 rounded" data-id="${seat[0].id}" title="${seat[0].seat_category}">${seat[0].code}</span>`;
+                            });
+                            tickets_string += `<div class="container ticket shadow bg-body rounded p-4 col-12">
+                                                    <div class="row d-flex align-items-center">
+                                                        <div class="col-md-3">
+                                                            <p class="h4 fw-bold"><i class="fa-solid fa-ticket me-2"></i>${ticket.id}</p>
+                                                            <p class="h5"><i class="fa-solid fa-film me-2"></i>${movie.name}</p>
+                                                            <p class="text-muted m-0"><i class="fa-solid fa-calendar-days me-2"></i>${screen.date} ${screen.time}</p>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="row mt-3 mt-md-2 mt-sm-0">
+                                                                <div class="col-auto d-flex align-items-md-center">
+                                                                    <p class="h5 lh-base mb-0">Seats :</p>
+                                                                </div>
+                                                                <div class="col row d-flex align-items-center gap-2">
+                                                                    ${seat_string}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3 mt-3 mt-md-2 mt-sm-0 d-grid gap-2 d-md-flex justify-content-md-end">
+                                                            <label class="text-success h5">
+                                                                ${ticket.status}
+                                                            </label>
+                                                            <button class="btn btn-outline-danger">Cancel</button>
+                                                        </div>
+                                                    </div>
+                                                </div>`;
+                        });
+                        $('#ticket_line').empty().append(tickets_string);
+                    } else {
+                        Swal.fire({
+                            title: 'Error Loading Tickets!',
+                            text: response.error,
+                            icon: 'error',
+                            showConfirmButton: true
+                        });
+                    }
+                }
+            });
+        }
+        showAllTickets();
+    });
+    </script>
 </body>
 
 </html>
