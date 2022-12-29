@@ -8,6 +8,12 @@
                 </a>
             </li>
             <li class="nav-item">
+                <a class="nav-link <?php if($_SESSION["pagename"] == 'adminUsers'){ ?>active<?php } ?>" href="users.php">
+                    <span data-feather="file" class="align-text-bottom"></span>
+                    Users
+                </a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link <?php if($_SESSION["pagename"] == 'adminMovies'){ ?>active<?php } ?>" href="movies.php">
                     <span data-feather="file" class="align-text-bottom"></span>
                     Movies & Categories
