@@ -93,6 +93,23 @@ function updateBooking($id, $res_id, $seat_id){
       $conn = null;
 }
 
+// Delete a Booking by seat & reservation (Soft Delete)
+function deleteCancelledBooking($res_id, $seat_id){
+    global $servername, $dbname, $username, $password;
+    $date = date('Y-m-d H:i:s');
+    try {
+        $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+        // set the PDO error mode to exception
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $sql = $conn->prepare("UPDATE bookings SET deleted_at='$date' WHERE reservation_id='$res_id' AND seat_id='$seat_id'");
+        $sql->execute();
+        return "Record deleted successfully";
+      } catch(PDOException $e) {
+        return "Error: " . $e->getMessage();
+      }
+      $conn = null;
+}
+
 // Delete a Booking (Soft Delete)
 function deleteBooking($id){
     global $servername, $dbname, $username, $password;

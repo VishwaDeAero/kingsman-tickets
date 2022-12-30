@@ -257,6 +257,7 @@ if(!isset($_SESSION["user"])){
                 contentType: false,
                 data: getData,
                 success: function(response) {
+                    console.log(response)
                     if (!response.error) {
                         if (response.result.length > 0) {
                             $("#reservedSeats").select2("destroy");

@@ -70,6 +70,8 @@
                         }
                      }
                      $Result['result'] = $AvailableSeats;
+                     $Result['result1'] = $AllSeats;
+                     $Result['result2'] = $BookedSeats;
                 }
                 break;
 
@@ -107,6 +109,21 @@
                         $Result['status'] = 200;
                         $Result['result'] = "Reservation Completed Successfully";
                     }
+                }
+                break;
+            
+            case 'cancel':
+                if( !isset($_POST['reservation']) && !isset($_POST['seats']) ) {
+                    $Result['status'] = 500;
+                    $Result['error'] = 'invalid Data! reservation_id, seats required';
+                }else{
+                    $reservation_id = $_POST['reservation'];
+                    $seat_set = explode(",",$_POST['seats']);
+                    foreach ($seat_set as $key => $seat_id) {
+                        deleteCancelledBooking($reservation_id, $seat_id);
+                    }
+                    $Result['status'] = 200;
+                    $Result['result'] = 'Your selected seats reservation has cancelled successfully.';
                 }
                 break;
 

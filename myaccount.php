@@ -177,11 +177,49 @@ if(!isset($_SESSION["user"])){
         <!-- Ticket Line End -->
     </div>
 
+    <!-- Cancellation Modal -->
+    <div class="modal fade" id="cancelTicketsFormModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="cancelTicketsFormLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="cancelTicketsFormLabel">Cancel Tickets</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="cancelTicketsForm" name="cancelTicketsForm" enctype="multipart/form-data">
+                    <input type="hidden" id="cancelUserId" value="">
+                    <input type="hidden" id="cancelReservationId" value="">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="selectTickets" class="form-label">Select Tickets to Cancel</label>
+                        </div>
+                        <div id="bookedSeatsCancel" class="mb-3">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+                                <label class="form-check-label" for="inlineCheckbox1">1</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2">
+                                <label class="form-check-label" for="inlineCheckbox2">2</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Exit</button>
+                        <button type="submit" id="cancelTicketsBtn" class="btn btn-dark">Cancel Tickets</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Cancellation Modal End -->
+
     <?php include('master/footer.php'); ?>
     <?php include('master/jslinks.php'); ?>
     <script type="text/javascript">
     $(document).ready(function() {
         const user_id = <?php echo $_SESSION["user"]["id"] ?>;
+
         function showAllTickets() {
             var getData = new FormData();
             getData.append('function', 'alltickets');
@@ -201,8 +239,13 @@ if(!isset($_SESSION["user"])){
                             var screen = element.screen;
                             var seats = element.seats;
                             var seat_string = "";
+                            var seatcancel = [];
+                            var seatcancelid = [];
                             seats.forEach(seat => {
-                                seat_string += `<span class="bg-dark col-auto text-light px-2 py-1 rounded" data-id="${seat[0].id}" title="${seat[0].seat_category}">${seat[0].code}</span>`;
+                                seatcancel.push(seat[0].code);
+                                seatcancelid.push(seat[0].id);
+                                seat_string +=
+                                    `<span class="bg-dark col-auto text-light px-2 py-1 rounded" data-id="${seat[0].id}" title="${seat[0].seat_category}">${seat[0].code}</span>`;
                             });
                             tickets_string += `<div class="container ticket shadow bg-body rounded p-4 col-12">
                                                     <div class="row d-flex align-items-center">
@@ -225,7 +268,8 @@ if(!isset($_SESSION["user"])){
                                                             <label class="text-success h5">
                                                                 ${ticket.status}
                                                             </label>
-                                                            <button class="btn btn-outline-danger">Cancel</button>
+                                                            <button class="btn btn-outline-danger" data-bs-toggle="modal" data-res="${ticket.id}" data-set="${seatcancel}" data-id-set="${seatcancelid}"
+                                                                data-bs-target="#cancelTicketsFormModal">Cancel</button>
                                                         </div>
                                                     </div>
                                                 </div>`;
@@ -243,6 +287,77 @@ if(!isset($_SESSION["user"])){
             });
         }
         showAllTickets();
+
+        // Update Cancellation Modal on Popup
+        $('#cancelTicketsFormModal').on('show.bs.modal', function(e) {
+            var btn = e.relatedTarget;
+            var seatcodes = (btn.attributes['data-set'].value).split(",");
+            var seatids = (btn.attributes['data-id-set'].value).split(",");
+            var cancelseats = "";
+            var seatcount = 0;
+            if (seatcodes == "") {
+                Swal.fire({
+                    title: 'No Seats to Cancel!',
+                    icon: 'error',
+                    showConfirmButton: true
+                });
+                return false;
+            }
+            seatcodes.forEach(seat => {
+                cancelseats +=
+                    `<div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="${seatids[seatcount]}" value="${seatids[seatcount]}">
+                        <label class="form-check-label" for="${seatids[seatcount]}">${seat}</label>
+                    </div>`;
+                seatcount++;
+            });
+            $('#bookedSeatsCancel').empty().append(cancelseats);
+            $('#cancelReservationId').val(btn.attributes['data-res'].value);
+            $('#cancelUserId').val(user_id);
+        })
+        // ----------------------------------------------
+
+        // Cancel Tickets
+        $('#cancelTicketsForm').submit(function(e) {
+            e.preventDefault();
+            var selected = [];
+            $('#bookedSeatsCancel input:checked').each(function() {
+                selected.push($(this).attr('value'));
+            });
+            var sendData = new FormData();
+            sendData.append('function', 'cancel');
+            sendData.append('reservation', $('#cancelReservationId').val());
+            sendData.append('seats', selected);
+            $.ajax({
+                type: "POST",
+                url: 'controllers/reservation.php',
+                processData: false,
+                contentType: false,
+                data: sendData,
+                success: function(response) {
+                    console.log(response)
+                    if (!response.error) {
+                        Swal.fire({
+                            title: 'Seats Cancelled',
+                            text: response.result,
+                            icon: 'success',
+                            timer: 2000,
+                            showConfirmButton: false
+                        }).then((result) => {
+                            $("#cancelTicketsFormModal").modal('hide');
+                            showAllTickets();
+                        });
+                    } else {
+                        Swal.fire({
+                            title: 'Seats Cancellation Error!',
+                            text: response.error,
+                            icon: 'error',
+                            showConfirmButton: true
+                        });
+                    }
+                }
+            });
+        });
     });
     </script>
 </body>
