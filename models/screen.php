@@ -26,6 +26,22 @@ function getMovieScreens($id){
       $conn = null;
 }
 
+// Get Movie Screens Count for Current Month
+function getMovieScreensByMonth(){
+    global $servername, $dbname, $username, $password;
+    try {
+        $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+        // set the PDO error mode to exception
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $sql = $conn->prepare("SELECT * FROM screens WHERE active=1 AND deleted_at IS NULL AND MONTH(date) = MONTH(CURRENT_DATE()) AND YEAR(date) = YEAR(CURRENT_DATE()) GROUP BY movie_id");
+        $sql->execute();
+        return $sql->fetchAll(PDO::FETCH_ASSOC);
+      } catch(PDOException $e) {
+        echo "Error: " . $e->getMessage();
+      }
+      $conn = null;
+}
+
 // Get Movie Screens By Date
 function getMovieScreensByDate($movie_id, $date){
     global $servername, $dbname, $username, $password;

@@ -32,69 +32,31 @@ $_SESSION["pagename"] = "adminDashboard";
                     <dv class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
                         <div class="col">
                             <div class="container h-100 shadow bg-body rounded p-3">
-                                <h5 class="h5">Movies This Month</h3>
-                                    <hr>
-                                    <div class="new-movies-section">
-                                        <div class="card flex-row news-card mb-2">
-                                            <div class="col-4">
-                                                <img class="card-img-left w-100 h-100"
-                                                    src="https://picsum.photos/400/350" />
-                                            </div>
-                                            <div class="card-body col-8 p-2">
-                                                <h5 class="card-title mb-1 mb-md-3">Left image</h5>
-                                                <p class="card-text small muted">This is a longer card with supporting
-                                                    text below as a natural
-                                                    lead-in to additional content. This content is a little bit longer.
-                                                </p>
-                                            </div>
+                                <h5 class="h5">Latest Movies</h3>
+                                <hr>
+                                <div id="newMoviesSection" class="new-movies-section">
+                                    <div class="card flex-row news-card mb-2">
+                                        <div class="col-4">
+                                            <img class="card-img-left w-100 h-100"
+                                                src="https://picsum.photos/400/350" />
                                         </div>
-                                        <div class="card flex-row news-card mb-2">
-                                            <div class="col-4">
-                                                <img class="card-img-left w-100 h-100"
-                                                    src="https://picsum.photos/400/350" />
-                                            </div>
-                                            <div class="card-body col-8 p-2">
-                                                <h5 class="card-title mb-1 mb-md-3">Left image</h5>
-                                                <p class="card-text small muted">This is a longer card with supporting
-                                                    text below as a natural
-                                                    lead-in to additional content. This content is a little bit longer.
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div class="card flex-row news-card mb-2">
-                                            <div class="col-4">
-                                                <img class="card-img-left w-100 h-100"
-                                                    src="https://picsum.photos/400/350" />
-                                            </div>
-                                            <div class="card-body col-8 p-2">
-                                                <h5 class="card-title mb-1 mb-md-3">Left image</h5>
-                                                <p class="card-text small muted">This is a longer card with supporting
-                                                    text below as a natural
-                                                    lead-in to additional content. This content is a little bit longer.
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div class="card flex-row news-card mb-2">
-                                            <div class="col-4">
-                                                <img class="card-img-left w-100 h-100"
-                                                    src="https://picsum.photos/400/350" />
-                                            </div>
-                                            <div class="card-body col-8 p-2">
-                                                <h5 class="card-title mb-1 mb-md-3">Left image</h5>
-                                                <p class="card-text small muted">This is a longer card with supporting
-                                                    text below as a natural
-                                                    lead-in to additional content. This content is a little bit longer.
-                                                </p>
-                                            </div>
+                                        <div class="card-body col-8 p-2">
+                                            <h5 class="card-title">Left image</h5>
+                                            <label class="card-title">Category</label>
+                                            <p class="card-text small muted">This is a longer card with supporting
+                                                text below as a natural
+                                                lead-in to additional content. This content is a little bit longer.
+                                            </p>
                                         </div>
                                     </div>
+                                </div>
                             </div>
                         </div>
                         <div class="col">
                             <div class="container h-100 shadow bg-body rounded p-3">
-                                <h5 class="h5">Movie Hall Capacity</h3>
+                                <h5 class="h5">Movies by Category</h3>
                                     <hr>
-                                    <canvas id="hallCapacity"></canvas>
+                                    <canvas id="movieCategory"></canvas>
                             </div>
                         </div>
                         <div class="col">
@@ -108,8 +70,8 @@ $_SESSION["pagename"] = "adminDashboard";
                                             </label>
                                         </div>
                                         <div class="col-4 text-end">
-                                            <label class="h4 mb-0">
-                                                20
+                                            <label id="seatsBooked" class="h4 mb-0">
+                                                0
                                             </label>
                                         </div>
                                     </div>
@@ -120,8 +82,8 @@ $_SESSION["pagename"] = "adminDashboard";
                                             </label>
                                         </div>
                                         <div class="col-4 text-end">
-                                            <label class="h4 mb-0">
-                                                20
+                                            <label id="seatsCancelled" class="h4 mb-0">
+                                                0
                                             </label>
                                         </div>
                                     </div>
@@ -132,8 +94,8 @@ $_SESSION["pagename"] = "adminDashboard";
                                             </label>
                                         </div>
                                         <div class="col-4 text-end">
-                                            <label class="h4 mb-0">
-                                                20
+                                            <label id="newUsers" class="h4 mb-0">
+                                                0
                                             </label>
                                         </div>
                                     </div>
@@ -144,8 +106,8 @@ $_SESSION["pagename"] = "adminDashboard";
                                             </label>
                                         </div>
                                         <div class="col-4 text-end">
-                                            <label class="h4 mb-0">
-                                                20
+                                            <label id="totalUsers" class="h4 mb-0">
+                                                0
                                             </label>
                                         </div>
                                     </div>
@@ -156,8 +118,8 @@ $_SESSION["pagename"] = "adminDashboard";
                                             </label>
                                         </div>
                                         <div class="col-4 text-end">
-                                            <label class="h4 mb-0">
-                                                20
+                                            <label id="totalScreens" class="h4 mb-0">
+                                                0
                                             </label>
                                         </div>
                                     </div>
@@ -188,10 +150,10 @@ $_SESSION["pagename"] = "adminDashboard";
                 </div>
 
                 <!-- User Information -->
-                <div class="container-fluid shadow p-2 p-md-3 mb-3 bg-body rounded">
+                <div class="container-fluid shadow p-2 p-md-3 my-3 bg-body rounded">
                     <div class="row">
                         <di class="col">
-                            <h2>User Information</h2>
+                            <h4>User Information</h4>
                         </di>
                     </div>
                     <hr class="mt-0">
@@ -248,27 +210,20 @@ $_SESSION["pagename"] = "adminDashboard";
     <script type="text/javascript">
     $(document).ready(function() {
 
-        const hallCapacity = $('#hallCapacity');
+        const movieCategory = $('#movieCategory');
         const movieReservation = $('#movieReservation');
         const movieCancellation = $('#movieCancellation');
         const bookingSeats = $('#bookingSeats');
 
-        new Chart(hallCapacity, {
+        new Chart(movieCategory, {
             type: 'pie',
             data: {
-                labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                labels: ['ODC', 'Balcony', 'Box'],
                 datasets: [{
-                    label: '# of Votes',
-                    data: [12, 19, 3, 5, 2, 3],
+                    label: 'Seats',
+                    data: [20, 20, 5],
                     borderWidth: 1
                 }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
             }
         });
 
@@ -323,16 +278,79 @@ $_SESSION["pagename"] = "adminDashboard";
                     data: [12, 19, 3],
                     borderWidth: 1
                 }]
-            },
-            options: {
-                indexAxis: 'y',
-                elements: {
-                    bar: {
-                        borderWidth: 2,
-                    }
-                }
             }
         });
+
+        function showLatestMovies() {
+            var getData = new FormData();
+            getData.append('function', 'latestmovies');
+            $.ajax({
+                type: "POST",
+                url: '../controllers/charts.php',
+                processData: false,
+                contentType: false,
+                data: getData,
+                success: function(response) {
+                    if (!response.error) {
+                        var movie_string = "";
+                        response.result.forEach(element => {
+                            var movie = element.movie;
+                            var category = element.category[0];
+                            movie_string += `<div class="card flex-row news-card mb-2">
+                                                <div class="col-4">
+                                                    <img class="card-img-left w-100 h-100"
+                                                        src="../assets/images/movies/${movie.img_path}" />
+                                                </div>
+                                                <div class="card-body col-8 p-2">
+                                                    <h5 class="card-title">${movie.name}</h5>
+                                                    <label class="card-title">${category.name}</label>
+                                                    <p class="card-text small muted">${(movie.description.length > 100)? movie.description.substring(0,100): movie.description}</p>
+                                                </div>
+                                            </div>`;
+                        });
+                        $("#newMoviesSection").empty().append(movie_string);
+                    } else {
+                        Swal.fire({
+                            title: 'Error Loading Movies!',
+                            text: response.error,
+                            icon: 'error',
+                            showConfirmButton: true
+                        });
+                    }
+                }
+            });
+        }
+        showLatestMovies();
+
+        function showStats() {
+            var getData = new FormData();
+            getData.append('function', 'stats');
+            $.ajax({
+                type: "POST",
+                url: '../controllers/charts.php',
+                processData: false,
+                contentType: false,
+                data: getData,
+                success: function(response) {
+                    if (!response.error) {
+                        console.log(response)
+                        $("#seatsBooked").empty().append(response.bookings.length);
+                        $("#seatsCancelled").empty().append(response.cancellations.length);
+                        $("#newUsers").empty().append(response.newusers.length);
+                        $("#totalUsers").empty().append(response.users.length);
+                        $("#totalScreens").empty().append(response.screens.length);
+                    } else {
+                        Swal.fire({
+                            title: 'Error Loading Movies!',
+                            text: response.error,
+                            icon: 'error',
+                            showConfirmButton: true
+                        });
+                    }
+                }
+            });
+        }
+        showStats();
 
     })
     </script>
