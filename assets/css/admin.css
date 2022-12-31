@@ -9,6 +9,28 @@ body {
 
 
 /*
+   * Dashboard
+   */
+
+@media (max-width: 768px) {
+    .new-movies-section {
+        max-height: 15rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .new-movies-section {
+        max-height: 25rem;
+    }
+}
+
+.new-movies-section {
+    max-height: 30rem;
+    overflow-y: auto;
+}
+
+
+/*
    * Sidebar
    */
 
