@@ -33,23 +33,23 @@ $_SESSION["pagename"] = "adminDashboard";
                         <div class="col">
                             <div class="container h-100 shadow bg-body rounded p-3">
                                 <h5 class="h5">Latest Movies</h3>
-                                <hr>
-                                <div id="newMoviesSection" class="new-movies-section">
-                                    <div class="card flex-row news-card mb-2">
-                                        <div class="col-4">
-                                            <img class="card-img-left w-100 h-100"
-                                                src="https://picsum.photos/400/350" />
-                                        </div>
-                                        <div class="card-body col-8 p-2">
-                                            <h5 class="card-title">Left image</h5>
-                                            <label class="card-title">Category</label>
-                                            <p class="card-text small muted">This is a longer card with supporting
-                                                text below as a natural
-                                                lead-in to additional content. This content is a little bit longer.
-                                            </p>
+                                    <hr>
+                                    <div id="newMoviesSection" class="new-movies-section">
+                                        <div class="card flex-row news-card mb-2">
+                                            <div class="col-4">
+                                                <img class="card-img-left w-100 h-100"
+                                                    src="https://picsum.photos/400/350" />
+                                            </div>
+                                            <div class="card-body col-8 p-2">
+                                                <h5 class="card-title">Left image</h5>
+                                                <label class="card-title">Category</label>
+                                                <p class="card-text small muted">This is a longer card with supporting
+                                                    text below as a natural
+                                                    lead-in to additional content. This content is a little bit longer.
+                                                </p>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
                             </div>
                         </div>
                         <div class="col">
@@ -227,48 +227,6 @@ $_SESSION["pagename"] = "adminDashboard";
             }
         });
 
-        new Chart(movieReservation, {
-            type: 'line',
-            data: {
-                labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-                datasets: [{
-                    backgroundColor: '#22CFCF',
-                    borderColor: '#22CFCF',
-                    label: '# of Votes',
-                    data: [12, 19, 3, 5, 2, 3],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-
-        new Chart(movieCancellation, {
-            type: 'line',
-            data: {
-                labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-                datasets: [{
-                    backgroundColor: '#FF6384',
-                    borderColor: '#FF6384',
-                    label: '# of Votes',
-                    data: [12, 19, 3, 5, 2, 3],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-
         new Chart(bookingSeats, {
             type: 'bar',
             data: {
@@ -339,9 +297,36 @@ $_SESSION["pagename"] = "adminDashboard";
                         $("#newUsers").empty().append(response.newusers.length);
                         $("#totalUsers").empty().append(response.users.length);
                         $("#totalScreens").empty().append(response.screens.length);
+
+                        new Chart(movieReservation, {
+                            type: 'line',
+                            data: {
+                                datasets: [{
+                                    backgroundColor: '#22CFCF',
+                                    borderColor: '#22CFCF',
+                                    label: 'Reservations',
+                                    data: response.reservations,
+                                    borderWidth: 1
+                                }]
+                            }
+                        });
+
+                        new Chart(movieCancellation, {
+                            type: 'line',
+                            data: {
+                                datasets: [{
+                                    backgroundColor: '#FF6384',
+                                    borderColor: '#FF6384',
+                                    label: 'Cancellations',
+                                    data: response.countcancellations,
+                                    borderWidth: 1
+                                }]
+                            }
+                        });
+
                     } else {
                         Swal.fire({
-                            title: 'Error Loading Movies!',
+                            title: 'Error Loading Stats!',
                             text: response.error,
                             icon: 'error',
                             showConfirmButton: true

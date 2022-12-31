@@ -36,12 +36,16 @@
                 $newusers = getAllUsersByMonth();
                 $userlist = getAllUsersByType('user');
                 $screens = getMovieScreensByMonth();
+                $reservations = getCountReservationsForMonth();
+                $countcancellations = getCountCancellationsForMonth();
                 $Result['status'] = 200;
                 $Result['bookings'] = $bookings;
                 $Result['cancellations'] = $cancellations;
                 $Result['newusers'] = $newusers;
                 $Result['users'] = $userlist;
                 $Result['screens'] = $screens;
+                $Result['reservations'] = $reservations;
+                $Result['countcancellations'] = $countcancellations;
                 break;
             
             case 'latestnews':
