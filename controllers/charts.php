@@ -1,6 +1,7 @@
 <?php
     header('Content-Type: application/json');
     require_once('../models/movie.php');
+    require_once('../models/seats.php');
     require_once('../models/screen.php');
     require_once('../models/users.php');
     require_once('../models/category.php');
@@ -38,8 +39,12 @@
                 $screens = getMovieScreensByMonth();
                 $reservations = getCountReservationsForMonth();
                 $countcancellations = getCountCancellationsForMonth();
+                $activeSeats = getAllActiveSeatsCountByType();
+                $bookingseats = getBookingbySeat();
                 $Result['status'] = 200;
                 $Result['bookings'] = $bookings;
+                $Result['bookingseats'] = $bookingseats;
+                $Result['seats'] = $activeSeats;
                 $Result['cancellations'] = $cancellations;
                 $Result['newusers'] = $newusers;
                 $Result['users'] = $userlist;

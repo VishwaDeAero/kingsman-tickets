@@ -54,9 +54,9 @@ $_SESSION["pagename"] = "adminDashboard";
                         </div>
                         <div class="col">
                             <div class="container h-100 shadow bg-body rounded p-3">
-                                <h5 class="h5">Movies by Category</h3>
+                                <h5 class="h5">Movie Hall Capacity</h3>
                                     <hr>
-                                    <canvas id="movieCategory"></canvas>
+                                    <canvas id="hallCapacity"></canvas>
                             </div>
                         </div>
                         <div class="col">
@@ -210,34 +210,10 @@ $_SESSION["pagename"] = "adminDashboard";
     <script type="text/javascript">
     $(document).ready(function() {
 
-        const movieCategory = $('#movieCategory');
+        const hallCapacity = $('#hallCapacity');
         const movieReservation = $('#movieReservation');
         const movieCancellation = $('#movieCancellation');
         const bookingSeats = $('#bookingSeats');
-
-        new Chart(movieCategory, {
-            type: 'pie',
-            data: {
-                labels: ['ODC', 'Balcony', 'Box'],
-                datasets: [{
-                    label: 'Seats',
-                    data: [20, 20, 5],
-                    borderWidth: 1
-                }]
-            }
-        });
-
-        new Chart(bookingSeats, {
-            type: 'bar',
-            data: {
-                labels: ['ODC', 'Balcony', 'Box'],
-                datasets: [{
-                    label: 'Bookings Made',
-                    data: [12, 19, 3],
-                    borderWidth: 1
-                }]
-            }
-        });
 
         function showLatestMovies() {
             var getData = new FormData();
@@ -308,6 +284,12 @@ $_SESSION["pagename"] = "adminDashboard";
                                     data: response.reservations,
                                     borderWidth: 1
                                 }]
+                            },
+                            options: {
+                                parsing: {
+                                    xAxisKey: 'date',
+                                    yAxisKey: 'reservations'
+                                }
                             }
                         });
 
@@ -321,6 +303,45 @@ $_SESSION["pagename"] = "adminDashboard";
                                     data: response.countcancellations,
                                     borderWidth: 1
                                 }]
+                            },
+                            options: {
+                                parsing: {
+                                    xAxisKey: 'date',
+                                    yAxisKey: 'cancellations'
+                                }
+                            }
+                        });
+
+                        new Chart(hallCapacity, {
+                            type: 'pie',
+                            data: {
+                                labels: ['Balcony Seats', 'Box Seats', 'ODC Seats'],
+                                datasets: [{
+                                    label: 'Seats',
+                                    data: response.seats,
+                                    borderWidth: 1
+                                }]
+                            },
+                            options: {
+                                parsing: {
+                                    key: 'count'
+                                }
+                            }
+                        });
+
+                        new Chart(bookingSeats, {
+                            type: 'bar',
+                            data: {
+                                datasets: [{
+                                    label: 'Bookings Made',
+                                    data: response.bookingseats,
+                                    borderWidth: 1
+                                }]
+                            },options: {
+                                parsing: {
+                                    xAxisKey: 'seat_category',
+                                    yAxisKey: 'count'
+                                }
                             }
                         });
 
