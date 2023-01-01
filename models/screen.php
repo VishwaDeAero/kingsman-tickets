@@ -17,7 +17,7 @@ function getMovieScreens($id){
         $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
         // set the PDO error mode to exception
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $sql = $conn->prepare("SELECT * FROM screens WHERE id=$id AND deleted_at IS NULL");
+        $sql = $conn->prepare("SELECT * FROM screens WHERE id=$id");
         $sql->execute();
         return $sql->fetchAll(PDO::FETCH_ASSOC);
       } catch(PDOException $e) {
