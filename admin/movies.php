@@ -246,6 +246,7 @@ $_SESSION["pagename"] = "adminMovies";
                             $('#example').DataTable().clear().destroy();
                         }
                         $('#example').DataTable({
+                            responsive: true,
                             data: response.result,
                             columns: [{
                                     data: 'movie_screen_id'
