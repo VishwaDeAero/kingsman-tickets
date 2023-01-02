@@ -1,6 +1,7 @@
 <?php
     header('Content-Type: application/json');
     require_once('../models/seats.php');
+    require_once('../models/price.php');
 
 
     $Result = array();
@@ -19,6 +20,18 @@
                      $data = $_POST['data'];
                      $Result['status'] = 200;
                      $Result['result'] = insertSeat($data['code'], $data['seat_category'], $data['active']);
+                }
+                break;
+
+            case 'addprice':
+                if( !is_array($_POST['data']) || (count($_POST['data']) < 2) ) {
+                    $Result['status'] = 500;
+                    $Result['error'] = 'Missing Required Data!';
+                }
+                else {
+                     $data = $_POST['data'];
+                     $Result['status'] = 200;
+                     $Result['result'] = insertPrice($data['type'], $data['price']);
                 }
                 break;
 
@@ -48,8 +61,14 @@
 
             case 'list':
                 $seatList = getAllSeats();
+                $price = [
+                    'odc' => getLatestPrice('ODC')[0]['price'],
+                    'bal' => getLatestPrice('BAL')[0]['price'],
+                    'box' => getLatestPrice('BOX')[0]['price'],
+                ];
                 $Result['status'] = 200;
                 $Result['result'] = $seatList;
+                $Result['price'] = $price;
                 break;
 
             case 'layout':                

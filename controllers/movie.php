@@ -1,5 +1,6 @@
 <?php
     header('Content-Type: application/json');
+    require_once('../models/price.php');
     require_once('../models/movie.php');
     require_once('../models/screen.php');
     require_once('../models/category.php');
@@ -23,9 +24,15 @@
                      $Result['status'] = 200;
                      $movieData = getSingleMovie($id);
                      $categoryData = getSingleCategory($movieData[0]['category_id']);
+                     $price = [
+                        'odc' => getLatestPrice('ODC')[0]['price'],
+                        'bal' => getLatestPrice('BAL')[0]['price'],
+                        'box' => getLatestPrice('BOX')[0]['price'],
+                    ];
                      $Result['result'] = [
                          'movie' => $movieData,
-                         'category' => $categoryData
+                         'category' => $categoryData,
+                         'price' => $price
                      ];
                 }
                 break;

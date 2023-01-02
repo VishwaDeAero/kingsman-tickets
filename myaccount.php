@@ -231,6 +231,7 @@ if(!isset($_SESSION["user"])){
                 contentType: false,
                 data: getData,
                 success: function(response) {
+                    console.log(response)
                     if (!response.error) {
                         var tickets_string = "";
                         response.result.forEach(element => {
@@ -242,17 +243,18 @@ if(!isset($_SESSION["user"])){
                             var seatcancel = [];
                             var seatcancelid = [];
                             seats.forEach(seat => {
-                                seatcancel.push(seat[0].code);
-                                seatcancelid.push(seat[0].id);
+                                seatcancel.push(seat.code);
+                                seatcancelid.push(seat.id);
                                 seat_string +=
-                                    `<span class="bg-dark col-auto text-light px-2 py-1 rounded" data-id="${seat[0].id}" title="${seat[0].seat_category}">${seat[0].code}</span>`;
+                                    `<span class="bg-dark col-auto text-light px-2 py-1 rounded" data-id="${seat.id}" title="${seat.seat_category}">${seat.code}</span>`;
                             });
                             tickets_string += `<div class="container ticket shadow bg-body rounded p-4 col-12">
                                                     <div class="row d-flex align-items-center">
                                                         <div class="col-md-3">
                                                             <p class="h4 fw-bold"><i class="fa-solid fa-ticket me-2"></i>${ticket.id}</p>
                                                             <p class="h5"><i class="fa-solid fa-film me-2"></i>${movie.name}</p>
-                                                            <p class="text-muted m-0"><i class="fa-solid fa-calendar-days me-2"></i>${screen.date} ${screen.time}</p>
+                                                            <p class="text-muted"><i class="fa-solid fa-calendar-days me-2"></i>${screen.date} ${screen.time}</p>
+                                                            <p class="h4 m-0 fw-bold">Rs.${parseFloat(element.price).toFixed(2)}</p>
                                                         </div>
                                                         <div class="col-md-6">
                                                             <div class="row mt-3 mt-md-2 mt-sm-0">

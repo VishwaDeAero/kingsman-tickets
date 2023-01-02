@@ -93,7 +93,16 @@ if(!isset($_SESSION["user"])){
                         </div>
                     </div>
                     <div class="row mt-2">
-                        <div class="col-12 text-end">
+                        <div class="col">
+                            <label class="h5 w-100">
+                                <div class="row">
+                                    <div class="col-auto">ODC - Rs.<span class="fw-bold" id="odcPrice">0.00</span></div>
+                                    <div class="col-auto">BALCONY - Rs.<span class="fw-bold" id="balPrice">0.00</span></div>
+                                    <div class="col-auto">BOX - Rs.<span class="fw-bold" id="boxPrice">0.00</span></div>
+                                </div>
+                            </label>
+                        </div>
+                        <div class="col-auto text-end">
                             <button id="bookSeatsBtn" type="button" class="btn btn-dark">Book Seats</button>
                         </div>
                     </div>
@@ -127,6 +136,11 @@ if(!isset($_SESSION["user"])){
                 contentType: false,
                 data: getData,
                 success: function(response) {
+                    if(response.result.price){
+                        $('#odcPrice').text(parseFloat(response.result.price.odc).toFixed(2));
+                        $('#balPrice').text(parseFloat(response.result.price.bal).toFixed(2));
+                        $('#boxPrice').text(parseFloat(response.result.price.box).toFixed(2));
+                    }
                     if (!response.error) {
                         var img_path = 'assets/images/movies/' + response.result.movie[0].img_path;
                         $("#movie_title").text(response.result.movie[0].name);

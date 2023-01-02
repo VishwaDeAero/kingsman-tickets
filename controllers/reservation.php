@@ -1,5 +1,6 @@
 <?php
     header('Content-Type: application/json');
+    require_once('../models/price.php');
     require_once('../models/seats.php');
     require_once('../models/screen.php');
     require_once('../models/reservation.php');
@@ -145,10 +146,13 @@
                         $ticket_info['screen'] = getMovieScreens($screen_id)[0];
                         $seats = getAllBookingsByReservation($ticket['id']);
                         $seatsList = [];
+                        $price = 0;
                         foreach ($seats as $skey => $seat) {
-                            $seat_info = getSingleSeat($seat['seat_id']);
+                            $seat_info = getSingleSeat($seat['seat_id'])[0];
+                            $price += (float) getRelatedPrice($seat_info['seat_category'], $ticket_info['ticket']['created_at'])[0]['price'];
                             array_push($seatsList, $seat_info);
                         }
+                        $ticket_info['price'] = $price;
                         $ticket_info['seats'] = $seatsList;
                         array_push($ticketsList, $ticket_info);
                     }

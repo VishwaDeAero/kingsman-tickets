@@ -2,6 +2,7 @@
     header('Content-Type: application/json');
     require_once('../models/reservation.php');
     require_once('../models/booking.php');
+    require_once('../models/price.php');
     require_once('../models/movie.php');
     require_once('../models/screen.php');
     require_once('../models/seats.php');
@@ -25,8 +26,10 @@
                     $screen = getMovieScreens($value['screen_id'])[0];
                     $seatids = getAllBookingsByReservation($value['id']);
                     $seats = "";
+                    $price = 0;
                     foreach ($seatids as $skey => $seat) {
                         $seat_info = getSingleSeat($seat['seat_id'])[0];
+                        $price += (float) getRelatedPrice($seat_info['seat_category'], $value['created_at'])[0]['price'];
                         $seats .= '<span class="mx-1 p-1 border rounded border-primary">'.$seat_info['code'].'</span>';
                     }
                     $tableArray[$key]['customer'] = $user['first_name']." ".$user['last_name'];
@@ -34,9 +37,9 @@
                     $tableArray[$key]['date'] = $screen['date'];
                     $tableArray[$key]['time'] = $screen['time'];
                     $tableArray[$key]['seats'] = $seats;
-                    $tableArray[$key]['price'] = "-";
+                    $tableArray[$key]['price'] = "Rs.".(float)$price;
                     if($seatids){
-                        $tableArray[$key]['action'] = '<a class="btn py-0 text-success col-auto" data-id="'.$value['id'].'" title="Mark as Paid"><i class="fa-solid fa-dollar me-1"></i>Paid</a>';
+                        $tableArray[$key]['action'] = '<a class="btn btn-sm btn-primary text-light col-auto fw-bold" data-id="'.$value['id'].'" title="Mark Paid"><i class="fa-solid fa-dollar me-1"></i>Mark as Paid</a>';
                     }else{
                         $tableArray[$key]['action'] = '<span class="text-danger fw-bold col-auto">Cancelled</span>';
                     }
