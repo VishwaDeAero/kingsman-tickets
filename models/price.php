@@ -33,7 +33,7 @@ function getRelatedPrice($type, $date){
         $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
         // set the PDO error mode to exception
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $sql = $conn->prepare("SELECT TOP 1 FROM prices WHERE created_at<CURRENT_TIMESTAMP() AND deleted_at IS NULL ORDER BY created_at DESC");
+        $sql = $conn->prepare("SELECT * FROM prices WHERE seat_category='$type' AND created_at<'$date' ORDER BY created_at DESC LIMIT 1");
         $sql->execute();
         return $sql->fetchAll(PDO::FETCH_ASSOC);
       } catch(PDOException $e) {
