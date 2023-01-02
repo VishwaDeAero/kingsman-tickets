@@ -50,7 +50,7 @@ function insertPrice($type, $price){
         $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
         // set the PDO error mode to exception
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $sql1 = $conn->prepare("UPDATE prices SET active=0, deleted_at='$date' WHERE active=1 AND seat_category='$type'");
+        $sql1 = $conn->prepare("UPDATE prices SET active=0, deleted_at='$date' WHERE active='1' AND seat_category='$type'");
         $sql1->execute();
         $sql2 = "INSERT INTO prices (seat_category, price)
         VALUES ('$type', '$price')";
@@ -58,7 +58,7 @@ function insertPrice($type, $price){
         $last_id = $conn->lastInsertId();
         return "New record: $last_id created successfully";
       } catch(PDOException $e) {
-        return $sql . "<br>" . $e->getMessage();
+        return "Error: " . $e->getMessage();
       }
       $conn = null;
 }

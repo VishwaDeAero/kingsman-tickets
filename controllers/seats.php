@@ -23,6 +23,18 @@
                 }
                 break;
 
+            case 'addprice':
+                if( !is_array($_POST['data']) || (count($_POST['data']) < 2) ) {
+                    $Result['status'] = 500;
+                    $Result['error'] = 'Missing Required Data!';
+                }
+                else {
+                     $data = $_POST['data'];
+                     $Result['status'] = 200;
+                     $Result['result'] = insertPrice($data['type'], $data['price']);
+                }
+                break;
+
             case 'edit':
                 if( !is_array($_POST['data']) || (count($_POST['data']) < 3) ) {
                     $Result['status'] = 500;
