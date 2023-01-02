@@ -167,7 +167,7 @@ $_SESSION["pagename"] = "adminSeats";
                 <div class="container-fluid p-2 p-md-4 my-3">
 
                     <!-- ODC List -->
-                    <h5 class="fw-bold">ODC Seats</h5>
+                    <h5 class="fw-bold">ODC Seats - Rs.<span id="odcPrice">0.00</span></h5>
                     <div id="odcList" class="row gap-1 mx-0 mb-4">
                         <!-- ODC Item Sample-->
                         <div class="col-auto border rounded-3 border-primary text-primary p-2">
@@ -205,7 +205,7 @@ $_SESSION["pagename"] = "adminSeats";
                     </div>
 
                     <!-- Balcony List -->
-                    <h5 class="fw-bold">Balcony Seats</h5>
+                    <h5 class="fw-bold">Balcony Seats - Rs.<span id="balPrice">0.00</span></h5>
                     <div id="balList" class="row gap-1 mx-0 mb-4">
                         <!-- Balcony Item Sample-->
                         <div class="col-auto border rounded-3 border-warning text-warning p-2">
@@ -243,7 +243,7 @@ $_SESSION["pagename"] = "adminSeats";
                     </div>
 
                     <!-- Box List -->
-                    <h5 class="fw-bold">Box Seats</h5>
+                    <h5 class="fw-bold">Box Seats - Rs.<span id="boxPrice">0.00</span></h5>
                     <div id="boxList" class="row gap-1 mx-0 mb-4">
                         <!-- Box Item Sample-->
                         <div class="col-auto border rounded-3 border-danger text-danger p-2">
@@ -305,7 +305,12 @@ $_SESSION["pagename"] = "adminSeats";
                     function: 'list'
                 },
                 success: function(response) {
-                    console.log(response)
+                    console.log(response);
+                    if(response.price){
+                        $('#odcPrice').text(parseFloat(response.price.odc).toFixed(2));
+                        $('#balPrice').text(parseFloat(response.price.bal).toFixed(2));
+                        $('#boxPrice').text(parseFloat(response.price.box).toFixed(2));
+                    }
                     if (response.result != undefined || response.result.length != 0) {
                         var ODClist = "";
                         var BALlist = "";

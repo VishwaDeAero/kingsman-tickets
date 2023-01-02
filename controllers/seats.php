@@ -1,6 +1,7 @@
 <?php
     header('Content-Type: application/json');
     require_once('../models/seats.php');
+    require_once('../models/price.php');
 
 
     $Result = array();
@@ -48,8 +49,14 @@
 
             case 'list':
                 $seatList = getAllSeats();
+                $price = [
+                    'odc' => getLatestPrice('ODC')[0]['price'],
+                    'bal' => getLatestPrice('BAL')[0]['price'],
+                    'box' => getLatestPrice('BOX')[0]['price'],
+                ];
                 $Result['status'] = 200;
                 $Result['result'] = $seatList;
+                $Result['price'] = $price;
                 break;
 
             case 'layout':                
