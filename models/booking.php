@@ -58,6 +58,38 @@ function getCancellationsbyMonth(){
     $conn = null;
 }
 
+// Get Reservations Count by Month
+function getCountReservationsbyMonth(){
+  global $servername, $dbname, $username, $password;
+  try {
+      $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+      // set the PDO error mode to exception
+      $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+      $sql = $conn->prepare("SELECT CAST(created_at AS DATE) AS date, COUNT(id) AS reservations FROM bookings WHERE MONTH(created_at) = MONTH(CURRENT_DATE()) AND YEAR(created_at) = YEAR(CURRENT_DATE()) AND deleted_at IS NULL GROUP BY CAST(created_at AS DATE)");
+      $sql->execute();
+      return $sql->fetchAll(PDO::FETCH_ASSOC);
+    } catch(PDOException $e) {
+      echo "Error: " . $e->getMessage();
+    }
+    $conn = null;
+}
+
+// Get Cancellations Count by Month
+function getCountCancellationsbyMonth(){
+  global $servername, $dbname, $username, $password;
+  try {
+      $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+      // set the PDO error mode to exception
+      $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+      $sql = $conn->prepare("SELECT CAST(deleted_at AS DATE) AS date, COUNT(id) AS cancellations FROM bookings WHERE MONTH(deleted_at) = MONTH(CURRENT_DATE()) AND YEAR(deleted_at) = YEAR(CURRENT_DATE()) AND deleted_at IS NOT NULL GROUP BY CAST(deleted_at AS DATE)");
+      $sql->execute();
+      return $sql->fetchAll(PDO::FETCH_ASSOC);
+    } catch(PDOException $e) {
+      echo "Error: " . $e->getMessage();
+    }
+    $conn = null;
+}
+
 // Get Single Booking
 function getSingleBooking($id){
   global $servername, $dbname, $username, $password;

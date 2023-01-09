@@ -37,8 +37,8 @@
                 $newusers = getAllUsersByMonth();
                 $userlist = getAllUsersByType('user');
                 $screens = getMovieScreensByMonth();
-                $reservations = getCountReservationsForMonth();
-                $countcancellations = getCountCancellationsForMonth();
+                $reservations = getCountReservationsbyMonth();
+                $countcancellations = getCountCancellationsbyMonth();
                 $activeSeats = getAllActiveSeatsCountByType();
                 $bookingseats = getBookingbySeat();
                 $Result['status'] = 200;
