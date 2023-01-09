@@ -197,12 +197,107 @@ $_SESSION["pagename"] = "adminDashboard";
                             </div>
                         </div>
                         <div class="d-grid gap-2 d-sm-block mt-4 d-md-flex justify-content-md-end">
-                            <button type="button" class="btn btn-dark text-light">Update Profile</button>
-                            <button type="button" class="btn btn-primary text-light">Change Password</button>
+                            <button type="button" data-bs-toggle="modal" data-bs-target="#updateUserFormModal" class="btn btn-dark text-light">Update Profile</button>
+                            <button type="button" data-bs-toggle="modal" data-bs-target="#updatePasswordFormModal" class="btn btn-primary text-light">Change Password</button>
                         </div>
                     </div>
                 </div>
                 <!-- User Information End -->
+
+                <!-- Update Password Modal -->
+                <div class="modal fade" id="updatePasswordFormModal" data-bs-backdrop="static" data-bs-keyboard="false"
+                    tabindex="-1" aria-labelledby="userFormLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="updatePasswordFormLabel">Update Password</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <form id="updatePasswordForm" name="updatePasswordForm" enctype="multipart/form-data">
+                                <div class="modal-body">
+                                    <div class="mb-3">
+                                        <label for="oldPassword" class="form-label">Old Password</label>
+                                        <input type="password" class="form-control password-input" id="oldPassword"
+                                            required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="updatePassword" class="form-label">New Password</label>
+                                        <input type="password" class="form-control password-input" id="updatePassword"
+                                            required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="updateMatchPassword" class="form-label">Re-enter New Password</label>
+                                        <input type="password" class="form-control password-input" id="updateMatchPassword"
+                                            required>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Cancel</button>
+                                    <button type="submit" id="updatePasswordBtn" class="btn btn-dark">Submit</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!-- Update Password Modal End -->
+
+                <!-- Update User Modal -->
+                <div class="modal fade" id="updateUserFormModal" data-bs-backdrop="static" data-bs-keyboard="false"
+                    tabindex="-1" aria-labelledby="userFormLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="updateUserFormLabel">Update Profile</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <form id="updateUserForm" name="updateUserForm" enctype="multipart/form-data">
+                                <div class="modal-body">
+                                    <div class="mb-3">
+                                        <label for="updateFirstName" class="form-label">First Name</label>
+                                        <input type="text" class="form-control" id="updateFirstName" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="updateLastName" class="form-label">Last Name</label>
+                                        <input type="text" class="form-control" id="updateLastName" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="updateNIC" class="form-label">NIC Number</label>
+                                        <input type="text" class="form-control" id="updateNIC" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="updateGender" class="form-label">Gender</label>
+                                        <select class="form-select" aria-label="Gender" id="updateGender" required>
+                                            <option value="Male">Male</option>
+                                            <option value="Female">Female</option>
+                                            <option value="Other">Other</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="updateDOB" class="form-label">Date of Birth</label>
+                                        <input type="date" max="<?php echo date('Y-m-d'); ?>" class="form-control" id="updateDOB" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="updateContactNo" class="form-label">Contact No</label>
+                                        <input type="text" class="form-control" id="updateContactNo">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="updateEmail" class="form-label">Email</label>
+                                        <input type="email" class="form-control" id="updateEmail">
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Cancel</button>
+                                    <button type="submit" id="updateUserBtn" class="btn btn-dark">Submit</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!-- Update User Modal End -->
             </main>
         </div>
     </div>
