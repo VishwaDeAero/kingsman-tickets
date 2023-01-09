@@ -69,8 +69,10 @@ if(!isset($_SESSION["user"])){
                 </div>
             </div>
             <div class="d-grid gap-2 d-sm-block mt-4 d-md-flex justify-content-md-end">
-                <button type="button" data-bs-toggle="modal" data-bs-target="#updateUserFormModal" class="btn btn-dark text-light">Update Profile</button>
-                <button type="button" data-bs-toggle="modal" data-bs-target="#updatePasswordFormModal" class="btn btn-warning text-dark">Change Password</button>
+                <button type="button" data-bs-toggle="modal" data-bs-target="#updateUserFormModal"
+                    class="btn btn-dark text-light">Update Profile</button>
+                <button type="button" data-bs-toggle="modal" data-bs-target="#updatePasswordFormModal"
+                    class="btn btn-warning text-dark">Change Password</button>
             </div>
         </div>
     </div>
@@ -89,7 +91,7 @@ if(!isset($_SESSION["user"])){
                     <div class="modal-body">
                         <div class="mb-3">
                             <label for="oldPassword" class="form-label">Old Password</label>
-                            <input type="password" class="form-control password-input" id="oldPassword" required>
+                            <input type="password" class="form-control" id="oldPassword" required>
                         </div>
                         <div class="mb-3">
                             <label for="updatePassword" class="form-label">New Password</label>
@@ -379,6 +381,75 @@ if(!isset($_SESSION["user"])){
             });
         }
         showAllTickets();
+
+        var passwordMatch = true;
+
+        // Check Passwords Match
+        $(".password-input").keyup(function(event) {
+            if ($('#updatePassword').val() != $('#updateMatchPassword').val()) {
+                $(".password-input").addClass("border-danger");
+                passwordMatch = false;
+            } else {
+                $(".password-input").removeClass("border-danger");
+                passwordMatch = true;
+            }
+        });
+
+        //Update Password
+        $('#updatePasswordForm').submit(function(e) {
+            e.preventDefault();
+            if ((!passwordMatch) || $('#updatePassword').val() == "") {
+                Swal.fire({
+                    title: 'Password Mismatch!',
+                    text: 'Please enter same password in each box',
+                    icon: 'error',
+                    showConfirmButton: true
+                });
+                return false;
+            }
+            Swal.fire({
+                title: 'Please Wait',
+                allowEscapeKey: false,
+                allowOutsideClick: false,
+            });
+            Swal.showLoading();
+            var sendData = new FormData();
+            // Append Function to Call
+            sendData.append('function', 'password');
+            // Append Update Info
+            sendData.append('oldPassword', $('#oldPassword').val());
+            sendData.append('updatePassword', $('#updatePassword').val());
+            sendData.append('id', user_id);
+            console.log("sendData", sendData);
+            $.ajax({
+                type: "POST",
+                url: 'controllers/users.php',
+                processData: false,
+                contentType: false,
+                data: sendData,
+                success: function(response) {
+                    console.log(response);
+                    if ((!response.error) && response.result) {
+                        $('#updatePasswordForm').trigger('reset');
+                        Swal.fire({
+                            title: 'Password Updated!',
+                            text: 'Please login again',
+                            icon: 'success',
+                        }).then((result) => {
+                            window.location.href = "login.php";
+                        });
+                    } else {
+                        $('#updatePasswordForm').trigger('reset');
+                        Swal.fire({
+                            title: 'Password Update Failed!',
+                            text: response.error,
+                            icon: 'error',
+                            showConfirmButton: true
+                        });
+                    }
+                }
+            });
+        })
 
         // Update Cancellation Modal on Popup
         $('#cancelTicketsFormModal').on('show.bs.modal', function(e) {

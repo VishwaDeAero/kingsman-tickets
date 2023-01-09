@@ -11,6 +11,32 @@
 
         switch($_POST['function']) {
 
+            case 'password':
+                if( !isset($_POST['id']) || !isset($_POST['oldPassword']) || !isset($_POST['updatePassword']) ){
+                    $Result['status'] = 500;
+                    $Result['error'] = 'User ID and Old/New Passwords Required!';
+                }else{
+                    if(!isset($_SESSION["user"])){
+                        session_start();
+                    }
+                    if($_SESSION["user"]){
+                        if($_SESSION["user"]['password'] == md5($_POST['oldPassword'])){
+                            $Result['status'] = 200;
+                            $data = [
+                                'password' => md5($_POST['updatePassword'])
+                            ];
+                            $Result["result"] = updateUser($_POST["id"],$data);
+                        } else{
+                            $Result['status'] = 200;
+                            $Result['error'] = 'Old Password Mismatch';
+                        }
+                    }else{
+                        $Result['status'] = 500;
+                        $Result['error'] = 'Please login & try again';
+                    }
+                }
+                break;
+
             case 'login':
                 if( !isset($_POST['username']) || !isset($_POST['password']) ){
                     $Result['status'] = 500;

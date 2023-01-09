@@ -218,7 +218,7 @@ $_SESSION["pagename"] = "adminDashboard";
                                 <div class="modal-body">
                                     <div class="mb-3">
                                         <label for="oldPassword" class="form-label">Old Password</label>
-                                        <input type="password" class="form-control password-input" id="oldPassword"
+                                        <input type="password" class="form-control" id="oldPassword"
                                             required>
                                     </div>
                                     <div class="mb-3">
@@ -305,10 +305,79 @@ $_SESSION["pagename"] = "adminDashboard";
     <script type="text/javascript">
     $(document).ready(function() {
 
+        const user_id = <?php echo $_SESSION["user"]["id"] ?>;
         const hallCapacity = $('#hallCapacity');
         const movieReservation = $('#movieReservation');
         const movieCancellation = $('#movieCancellation');
         const bookingSeats = $('#bookingSeats');
+        var passwordMatch = true;
+
+        // Check Passwords Match
+        $(".password-input").keyup(function(event) {
+            if ($('#updatePassword').val() != $('#updateMatchPassword').val()) {
+                $(".password-input").addClass("border-danger");
+                passwordMatch = false;
+            } else {
+                $(".password-input").removeClass("border-danger");
+                passwordMatch = true;
+            }
+        });
+
+        //Update Password
+        $('#updatePasswordForm').submit(function(e) {
+            e.preventDefault();
+            if ((!passwordMatch) || $('#updatePassword').val() == "") {
+                Swal.fire({
+                    title: 'Password Mismatch!',
+                    text: 'Please enter same password in each box',
+                    icon: 'error',
+                    showConfirmButton: true
+                });
+                return false;
+            }
+            Swal.fire({
+                title: 'Please Wait',
+                allowEscapeKey: false,
+                allowOutsideClick: false,
+            });
+            Swal.showLoading();
+            var sendData = new FormData();
+            // Append Function to Call
+            sendData.append('function', 'password');
+            // Append Update Info
+            sendData.append('oldPassword', $('#oldPassword').val());
+            sendData.append('updatePassword', $('#updatePassword').val());
+            sendData.append('id', user_id);
+            console.log("sendData", sendData);
+            $.ajax({
+                type: "POST",
+                url: '../controllers/users.php',
+                processData: false,
+                contentType: false,
+                data: sendData,
+                success: function(response) {
+                    console.log(response);
+                    if ((!response.error) && response.result) {
+                        $('#updatePasswordForm').trigger('reset');
+                        Swal.fire({
+                            title: 'Password Updated!',
+                            text: 'Please login again',
+                            icon: 'success',
+                        }).then((result) => {
+                            window.location.href = "../login.php";
+                        });
+                    } else {
+                        $('#updatePasswordForm').trigger('reset');
+                        Swal.fire({
+                            title: 'Password Update Failed!',
+                            text: response.error,
+                            icon: 'error',
+                            showConfirmButton: true
+                        });
+                    }
+                }
+            });
+        })
 
         function showLatestMovies() {
             var getData = new FormData();

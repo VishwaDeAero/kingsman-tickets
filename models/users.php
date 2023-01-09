@@ -128,7 +128,7 @@ function updateUser($id, $data){
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $sql = $conn->prepare("UPDATE users SET $updateDataQuery, updated_at='$date' WHERE id=$id");
         $sql->execute();
-        return "Record: $id update successfully";
+        return "User: $id password update successfully";
       } catch(PDOException $e) {
         return "Error: " . $e->getMessage();
       }
