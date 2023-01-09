@@ -63,8 +63,10 @@ $_SESSION["pagename"] = "myaccount";
                 </div>
             </div>
             <div class="d-grid gap-2 d-sm-block mt-4 d-md-flex justify-content-md-end">
-                <button type="button" data-bs-toggle="modal" data-bs-target="#updateUserFormModal" class="btn btn-dark text-light">Update Profile</button>
-                <button type="button" data-bs-toggle="modal" data-bs-target="#updatePasswordFormModal" class="btn btn-warning text-dark">Change Password</button>
+                <button type="button" data-bs-toggle="modal" data-bs-target="#updateUserFormModal"
+                    class="btn btn-dark text-light">Update Profile</button>
+                <button type="button" data-bs-toggle="modal" data-bs-target="#updatePasswordFormModal"
+                    class="btn btn-warning text-dark">Change Password</button>
             </div>
         </div>
     </div>
@@ -83,7 +85,7 @@ $_SESSION["pagename"] = "myaccount";
                     <div class="modal-body">
                         <div class="mb-3">
                             <label for="oldPassword" class="form-label">Old Password</label>
-                            <input type="password" class="form-control password-input" id="oldPassword" required>
+                            <input type="password" class="form-control" id="oldPassword" required>
                         </div>
                         <div class="mb-3">
                             <label for="updatePassword" class="form-label">New Password</label>
@@ -327,6 +329,146 @@ $_SESSION["pagename"] = "myaccount";
             });
         }
         showAllTickets();
+
+        var passwordMatch = true;
+
+        // Check Passwords Match
+        $(".password-input").keyup(function(event) {
+            if ($('#updatePassword').val() != $('#updateMatchPassword').val()) {
+                $(".password-input").addClass("border-danger");
+                passwordMatch = false;
+            } else {
+                $(".password-input").removeClass("border-danger");
+                passwordMatch = true;
+            }
+        });
+
+        //Update Password
+        $('#updatePasswordForm').submit(function(e) {
+            e.preventDefault();
+            if ((!passwordMatch) || $('#updatePassword').val() == "") {
+                Swal.fire({
+                    title: 'Password Mismatch!',
+                    text: 'Please enter same password in each box',
+                    icon: 'error',
+                    showConfirmButton: true
+                });
+                return false;
+            }
+            Swal.fire({
+                title: 'Please Wait',
+                allowEscapeKey: false,
+                allowOutsideClick: false,
+            });
+            Swal.showLoading();
+            var sendData = new FormData();
+            // Append Function to Call
+            sendData.append('function', 'password');
+            // Append Update Info
+            sendData.append('oldPassword', $('#oldPassword').val());
+            sendData.append('updatePassword', $('#updatePassword').val());
+            sendData.append('id', user_id);
+            console.log("sendData", sendData);
+            $.ajax({
+                type: "POST",
+                url: 'controllers/users.php',
+                processData: false,
+                contentType: false,
+                data: sendData,
+                success: function(response) {
+                    console.log(response);
+                    if ((!response.error) && response.result) {
+                        $('#updatePasswordForm').trigger('reset');
+                        Swal.fire({
+                            title: 'Password Updated!',
+                            text: 'Please login again',
+                            icon: 'success',
+                        }).then((result) => {
+                            window.location.href = "login.php";
+                        });
+                    } else {
+                        $('#updatePasswordForm').trigger('reset');
+                        Swal.fire({
+                            title: 'Password Update Failed!',
+                            text: response.error,
+                            icon: 'error',
+                            showConfirmButton: true
+                        });
+                    }
+                }
+            });
+        })
+
+        // Update Cancellation Modal on Popup
+        $('#cancelTicketsFormModal').on('show.bs.modal', function(e) {
+            var btn = e.relatedTarget;
+            var seatcodes = (btn.attributes['data-set'].value).split(",");
+            var seatids = (btn.attributes['data-id-set'].value).split(",");
+            var cancelseats = "";
+            var seatcount = 0;
+            if (seatcodes == "") {
+                Swal.fire({
+                    title: 'No Seats to Cancel!',
+                    icon: 'error',
+                    showConfirmButton: true
+                });
+                return false;
+            }
+            seatcodes.forEach(seat => {
+                cancelseats +=
+                    `<div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="${seatids[seatcount]}" value="${seatids[seatcount]}">
+                        <label class="form-check-label" for="${seatids[seatcount]}">${seat}</label>
+                    </div>`;
+                seatcount++;
+            });
+            $('#bookedSeatsCancel').empty().append(cancelseats);
+            $('#cancelReservationId').val(btn.attributes['data-res'].value);
+            $('#cancelUserId').val(user_id);
+        })
+        // ----------------------------------------------
+
+        // Cancel Tickets
+        $('#cancelTicketsForm').submit(function(e) {
+            e.preventDefault();
+            var selected = [];
+            $('#bookedSeatsCancel input:checked').each(function() {
+                selected.push($(this).attr('value'));
+            });
+            var sendData = new FormData();
+            sendData.append('function', 'cancel');
+            sendData.append('reservation', $('#cancelReservationId').val());
+            sendData.append('seats', selected);
+            $.ajax({
+                type: "POST",
+                url: 'controllers/reservation.php',
+                processData: false,
+                contentType: false,
+                data: sendData,
+                success: function(response) {
+                    console.log(response)
+                    if (!response.error) {
+                        Swal.fire({
+                            title: 'Seats Cancelled',
+                            text: response.result,
+                            icon: 'success',
+                            timer: 2000,
+                            showConfirmButton: false
+                        }).then((result) => {
+                            $("#cancelTicketsFormModal").modal('hide');
+                            showAllTickets();
+                        });
+                    } else {
+                        Swal.fire({
+                            title: 'Seats Cancellation Error!',
+                            text: response.error,
+                            icon: 'error',
+                            showConfirmButton: true
+                        });
+                    }
+                }
+            });
+        });
     });
     </script>
 </body>
