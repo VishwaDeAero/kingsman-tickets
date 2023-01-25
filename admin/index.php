@@ -197,8 +197,10 @@ $_SESSION["pagename"] = "adminDashboard";
                             </div>
                         </div>
                         <div class="d-grid gap-2 d-sm-block mt-4 d-md-flex justify-content-md-end">
-                            <button type="button" data-bs-toggle="modal" data-bs-target="#updateUserFormModal" class="btn btn-dark text-light">Update Profile</button>
-                            <button type="button" data-bs-toggle="modal" data-bs-target="#updatePasswordFormModal" class="btn btn-primary text-light">Change Password</button>
+                            <button type="button" data-bs-toggle="modal" data-bs-target="#updateUserFormModal"
+                                class="btn btn-dark text-light">Update Profile</button>
+                            <button type="button" data-bs-toggle="modal" data-bs-target="#updatePasswordFormModal"
+                                class="btn btn-primary text-light">Change Password</button>
                         </div>
                     </div>
                 </div>
@@ -218,8 +220,7 @@ $_SESSION["pagename"] = "adminDashboard";
                                 <div class="modal-body">
                                     <div class="mb-3">
                                         <label for="oldPassword" class="form-label">Old Password</label>
-                                        <input type="password" class="form-control" id="oldPassword"
-                                            required>
+                                        <input type="password" class="form-control" id="oldPassword" required>
                                     </div>
                                     <div class="mb-3">
                                         <label for="updatePassword" class="form-label">New Password</label>
@@ -227,9 +228,10 @@ $_SESSION["pagename"] = "adminDashboard";
                                             required>
                                     </div>
                                     <div class="mb-3">
-                                        <label for="updateMatchPassword" class="form-label">Re-enter New Password</label>
-                                        <input type="password" class="form-control password-input" id="updateMatchPassword"
-                                            required>
+                                        <label for="updateMatchPassword" class="form-label">Re-enter New
+                                            Password</label>
+                                        <input type="password" class="form-control password-input"
+                                            id="updateMatchPassword" required>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
@@ -257,15 +259,18 @@ $_SESSION["pagename"] = "adminDashboard";
                                 <div class="modal-body">
                                     <div class="mb-3">
                                         <label for="updateFirstName" class="form-label">First Name</label>
-                                        <input type="text" class="form-control" id="updateFirstName" required>
+                                        <input type="text" class="form-control" id="updateFirstName"
+                                            value="<?php echo $_SESSION["user"]["first_name"] ?>" required>
                                     </div>
                                     <div class="mb-3">
                                         <label for="updateLastName" class="form-label">Last Name</label>
-                                        <input type="text" class="form-control" id="updateLastName" required>
+                                        <input type="text" class="form-control" id="updateLastName"
+                                            value="<?php echo $_SESSION["user"]["last_name"] ?>" required>
                                     </div>
                                     <div class="mb-3">
                                         <label for="updateNIC" class="form-label">NIC Number</label>
-                                        <input type="text" class="form-control" id="updateNIC" required>
+                                        <input type="text" class="form-control" id="updateNIC"
+                                            value="<?php echo $_SESSION["user"]["nic"] ?>" required>
                                     </div>
                                     <div class="mb-3">
                                         <label for="updateGender" class="form-label">Gender</label>
@@ -277,21 +282,23 @@ $_SESSION["pagename"] = "adminDashboard";
                                     </div>
                                     <div class="mb-3">
                                         <label for="updateDOB" class="form-label">Date of Birth</label>
-                                        <input type="date" max="<?php echo date('Y-m-d'); ?>" class="form-control" id="updateDOB" required>
+                                        <input type="date" max="<?php echo date('Y-m-d'); ?>" class="form-control"
+                                            id="updateDOB" value="<?php echo $_SESSION["user"]["dob"] ?>" required>
                                     </div>
                                     <div class="mb-3">
                                         <label for="updateContactNo" class="form-label">Contact No</label>
-                                        <input type="text" class="form-control" id="updateContactNo">
+                                        <input type="text" class="form-control" id="updateContactNo"
+                                            value="<?php echo $_SESSION["user"]["contact_no"] ?>">
                                     </div>
                                     <div class="mb-3">
                                         <label for="updateEmail" class="form-label">Email</label>
-                                        <input type="email" class="form-control" id="updateEmail">
+                                        <input type="email" class="form-control" id="updateEmail"
+                                            value="<?php echo $_SESSION["user"]["email"] ?>">
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary"
-                                        data-bs-dismiss="modal">Cancel</button>
-                                    <button type="submit" id="updateUserBtn" class="btn btn-dark">Submit</button>
+                                    <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Cancel</button>
+                                    <button type="submit" id="updateUserBtn" class="btn btn-warning">Submit</button>
                                 </div>
                             </form>
                         </div>
@@ -370,6 +377,69 @@ $_SESSION["pagename"] = "adminDashboard";
                         $('#updatePasswordForm').trigger('reset');
                         Swal.fire({
                             title: 'Password Update Failed!',
+                            text: response.error,
+                            icon: 'error',
+                            showConfirmButton: true
+                        });
+                    }
+                }
+            });
+        })
+
+
+        //Update Account Info
+        $('#updateUserForm').submit(function(e) {
+            e.preventDefault();
+            // if ($('#updatePassword').val() == "") {
+            //     Swal.fire({
+            //         title: 'Data Incomplete!',
+            //         text: 'Please complete info and try again',
+            //         icon: 'error',
+            //         showConfirmButton: true
+            //     });
+            //     return false;
+            // }
+            Swal.fire({
+                title: 'Please Wait',
+                allowEscapeKey: false,
+                allowOutsideClick: false,
+            });
+            Swal.showLoading();
+            var sendData = new FormData();
+            // Append Function to Call
+            sendData.append('function', 'update');
+            // Append Update Info
+            sendData.append('firstname', $('#updateFirstName').val());
+            sendData.append('lastname', $('#updateLastName').val());
+            sendData.append('nic', $('#updateNIC').val());
+            sendData.append('gender', $('#updateGender').val());
+            sendData.append('dob', $('#updateDOB').val());
+            sendData.append('contactno', $('#updateContactNo').val());
+            sendData.append('email', $('#updateEmail').val());
+            sendData.append('id', user_id);
+            console.log("sendData", sendData);
+            $.ajax({
+                type: "POST",
+                url: '../controllers/users.php',
+                processData: false,
+                contentType: false,
+                data: sendData,
+                success: function(response) {
+                    console.log(response);
+                    if ((!response.error) && response.result) {
+                        $('#updateUserForm').trigger('reset');
+                        Swal.fire({
+                            title: 'Profile Updated!',
+                            text: 'Please login again to validate changes',
+                            icon: 'success',
+                        }).then((result) => {
+                            $("#updateUserFormModal").modal('hide');
+                            window.location.href = "../login.php";
+                        });
+                    } else {
+                        $('#updateUserForm').trigger('reset');
+                        Swal.fire({
+                            title: 'Profile Update Failed!',
                             text: response.error,
                             icon: 'error',
                             showConfirmButton: true
@@ -501,7 +571,8 @@ $_SESSION["pagename"] = "adminDashboard";
                                     data: response.bookingseats,
                                     borderWidth: 1
                                 }]
-                            },options: {
+                            },
+                            options: {
                                 parsing: {
                                     xAxisKey: 'seat_category',
                                     yAxisKey: 'count'
