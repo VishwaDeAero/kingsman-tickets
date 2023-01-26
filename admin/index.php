@@ -267,9 +267,17 @@ $_SESSION["pagename"] = "adminDashboard";
                 data: getData,
                 success: function(response) {
                     if (!response.error) {
-                        console.log(response)
-                        $("#seatsBooked").empty().append(response.bookings.length);
-                        $("#seatsCancelled").empty().append(response.cancellations.length);
+                        console.log(response);
+                        var cancellations = 0;
+                        var reservations = 0;
+                        response.countcancellations.forEach(element => {
+                            cancellations += parseFloat(element.cancellations);
+                        });
+                        response.reservations.forEach(element => {
+                            reservations += parseFloat(element.reservations);
+                        });
+                        $("#seatsBooked").empty().append(reservations);
+                        $("#seatsCancelled").empty().append(cancellations);
                         $("#newUsers").empty().append(response.newusers.length);
                         $("#totalUsers").empty().append(response.users.length);
                         $("#totalScreens").empty().append(response.screens.length);
