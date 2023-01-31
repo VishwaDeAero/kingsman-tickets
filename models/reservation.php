@@ -58,6 +58,22 @@ function getCountCancellationsForMonth(){
       $conn = null;
 }
 
+// Get Reservations by Date range
+function getReservationsByRange($startdate, $enddate){
+    global $servername, $dbname, $username, $password;
+    try {
+        $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+        // set the PDO error mode to exception
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $sql = $conn->prepare("SELECT * FROM reservations WHERE deleted_at IS NULL AND (created_at BETWEEN '$startdate' AND '$enddate')");
+        $sql->execute();
+        return $sql->fetchAll(PDO::FETCH_ASSOC);
+      } catch(PDOException $e) {
+        echo "Error: " . $e->getMessage();
+      }
+      $conn = null;
+}
+
 // Get All Reservations
 function getAllReservations(){
     global $servername, $dbname, $username, $password;
