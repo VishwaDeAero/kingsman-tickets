@@ -102,7 +102,7 @@
                         $tableArray[$key]['email'] = $value['email'];
                         $checked = ($value['active'])?'checked':'';
                         $tableArray[$key]['active'] = '<div class="form-check form-switch"><input class="form-check-input" data-id="'.$value['id'].'" value="'.$value['active'].'" type="checkbox" id="activeSwitch" '.$checked.'></div>';
-                        $tableArray[$key]['action'] = '<a class="btn py-0 text-warning col-auto" data-id="'.$value['id'].'" title="edit"><i class="fa-solid fa-pen"></i></a><a class="btn py-0 text-danger col-auto" data-id="'.$value['id'].'" title="delete"><i class="fa-solid fa-trash"></i></a>';
+                        $tableArray[$key]['action'] = "<a class='btn py-0 text-warning col-auto' data-id='".$value['id']."' data-set='".json_encode($value)."' data-bs-toggle='modal' data-bs-target='#updateStaffFormModal' title='edit'><i class='fa-solid fa-pen'></i></a><a class='btn py-0 text-danger col-auto delete-user-btn' data-id='".$value['id']."' title='delete'><i class='fa-solid fa-trash'></i></a>";
                     }
                     $Result['status'] = 200;
                     $Result['result'] = $tableArray;

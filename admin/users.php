@@ -106,7 +106,7 @@ $_SESSION["pagename"] = "adminUsers";
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="updateUserFormLabel">Update Profile</h5>
+                                <h5 class="modal-title" id="updateUserFormLabel">Update User</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
                             </div>
@@ -318,7 +318,6 @@ $_SESSION["pagename"] = "adminUsers";
                         success: function(response) {
                             console.log(response);
                             if ((!response.error) && response.result) {
-                                $('#updateUserForm').trigger('reset');
                                 showUsers();
                                 Swal.fire(
                                     'Deleted!',

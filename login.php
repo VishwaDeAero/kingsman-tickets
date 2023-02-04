@@ -1,6 +1,7 @@
 <?php
 session_start();
 $_SESSION["pagename"] = "login";
+unset($_SESSION["user"]);
 ?>
 <!DOCTYPE html>
 <html lang="en">
