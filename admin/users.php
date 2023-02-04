@@ -135,7 +135,8 @@ $_SESSION["pagename"] = "adminUsers";
                                     </div>
                                     <div class="mb-3">
                                         <label for="updateDOB" class="form-label">Date of Birth</label>
-                                        <input type="date" max="<?php echo date('Y-m-d'); ?>" class="form-control" id="updateDOB" value="" required>
+                                        <input type="date" max="<?php echo date('Y-m-d'); ?>" class="form-control"
+                                            id="updateDOB" value="" required>
                                     </div>
                                     <div class="mb-3">
                                         <label for="updateContactNo" class="form-label">Contact No</label>
@@ -281,6 +282,62 @@ $_SESSION["pagename"] = "adminUsers";
                 }
             });
         })
+
+        // Delete User
+        $(document).on('click', '.delete-user-btn', function(e){ 
+            e.preventDefault();
+            var user_id = this.attributes['data-id'].value;
+            console.log(user_id)
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You want to delete this user?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: 'Please Wait',
+                        allowEscapeKey: false,
+                        allowOutsideClick: false,
+                    });
+                    Swal.showLoading();
+                    var sendData = new FormData();
+                    // Append Function to Call
+                    sendData.append('function', 'delete');
+                    // Append Update Info
+                    sendData.append('id', user_id);
+                    $.ajax({
+                        type: "POST",
+                        url: '../controllers/users.php',
+                        processData: false,
+                        contentType: false,
+                        data: sendData,
+                        success: function(response) {
+                            console.log(response);
+                            if ((!response.error) && response.result) {
+                                $('#updateUserForm').trigger('reset');
+                                showUsers();
+                                Swal.fire(
+                                    'Deleted!',
+                                    'User has been deleted.',
+                                    'success'
+                                );
+                            } else {
+                                Swal.fire(
+                                    'Oops!',
+                                    'Something went wrong',
+                                    'error'
+                                );
+                            }
+                        }
+                    });
+                }
+            })
+        })
+        // -------------------------------------------------
 
 
         function showUsers() {

@@ -37,33 +37,6 @@
                 }
                 break;
 
-            case 'update':
-                if( !isset($_POST['firstname']) || !isset($_POST['lastname']) || !isset($_POST['nic']) || !isset($_POST['gender']) || !isset($_POST['dob']) ) {
-                    $Result['status'] = 500;
-                    $Result['error'] = 'Missing Required Data!';
-                }
-                else {
-                     $user_id = $_POST["id"];
-                     $first_name = $_POST['firstname'];
-                     $last_name = $_POST['lastname'];
-                     $nic = $_POST['nic'];
-                     $contact_no = $_POST['contactno'];
-                     $email = $_POST['email'];
-                     $gender = $_POST['gender'];
-                     $dob = $_POST['dob'];
-                     $data = [
-                        'first_name' => $first_name,
-                        'last_name' => $last_name,
-                        'nic' => $nic,
-                        'contact_no' => $contact_no,
-                        'email' => $email,
-                        'gender' => $gender,
-                        'dob' => $dob,
-                    ];
-                    $Result["result"] = updateUser($_POST["id"],$data);
-                }
-                break;
-
             case 'login':
                 if( !isset($_POST['username']) || !isset($_POST['password']) ){
                     $Result['status'] = 400;
@@ -103,7 +76,7 @@
                         $tableArray[$key]['email'] = $value['email'];
                         $checked = ($value['active'])?'checked':'';
                         $tableArray[$key]['active'] = '<div class="form-check form-switch"><input class="form-check-input" data-id="'.$value['id'].'" value="'.$value['active'].'" type="checkbox" id="activeSwitch" '.$checked.'></div>';
-                        $tableArray[$key]['action'] = "<a class='btn py-0 text-warning col-auto' data-id='".$value['id']."' data-set='".json_encode($value)."' data-bs-toggle='modal' data-bs-target='#updateUserFormModal' title='edit'><i class='fa-solid fa-pen'></i></a><a class='btn py-0 text-danger col-auto' data-id='".$value['id']."' title='delete'><i class='fa-solid fa-trash'></i></a>";
+                        $tableArray[$key]['action'] = "<a class='btn py-0 text-warning col-auto' data-id='".$value['id']."' data-set='".json_encode($value)."' data-bs-toggle='modal' data-bs-target='#updateUserFormModal' title='edit'><i class='fa-solid fa-pen'></i></a><a class='btn py-0 text-danger col-auto delete-user-btn' data-id='".$value['id']."' title='delete'><i class='fa-solid fa-trash'></i></a>";
                     }
                     $Result['status'] = 200;
                     $Result['result'] = $tableArray;
@@ -155,6 +128,44 @@
                      $active = $_POST['active'];
                      $Result['status'] = 200;
                      $Result['result'] = insertUser( $first_name, $last_name, $nic, $gender, $dob, $contact_no, $email, $usrname, $passwrd, $user_type, $active );
+                }
+                break;
+                
+            case 'update':
+                if( !isset($_POST['firstname']) || !isset($_POST['lastname']) || !isset($_POST['nic']) || !isset($_POST['gender']) || !isset($_POST['dob']) ) {
+                    $Result['status'] = 500;
+                    $Result['error'] = 'Missing Required Data!';
+                }
+                else {
+                     $user_id = $_POST["id"];
+                     $first_name = $_POST['firstname'];
+                     $last_name = $_POST['lastname'];
+                     $nic = $_POST['nic'];
+                     $contact_no = $_POST['contactno'];
+                     $email = $_POST['email'];
+                     $gender = $_POST['gender'];
+                     $dob = $_POST['dob'];
+                     $data = [
+                        'first_name' => $first_name,
+                        'last_name' => $last_name,
+                        'nic' => $nic,
+                        'contact_no' => $contact_no,
+                        'email' => $email,
+                        'gender' => $gender,
+                        'dob' => $dob,
+                    ];
+                    $Result["result"] = updateUser($_POST["id"],$data);
+                }
+                break;
+                
+            case 'delete':
+                if( !isset($_POST['id']) ) {
+                    $Result['status'] = 400;
+                    $Result['error'] = 'Missing Required Data!';
+                }
+                else {
+                    $user_id = $_POST["id"];
+                    $Result["result"] = deleteUser($user_id);
                 }
                 break;
 
