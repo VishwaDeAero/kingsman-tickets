@@ -10,6 +10,86 @@ try {
   }
 $conn = null;
 
+// Get Bookings by Month
+function getBookingbyMonth(){
+  global $servername, $dbname, $username, $password;
+  try {
+      $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+      // set the PDO error mode to exception
+      $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+      $sql = $conn->prepare("SELECT * FROM bookings WHERE MONTH(created_at) = MONTH(CURRENT_DATE()) AND YEAR(created_at) = YEAR(CURRENT_DATE()) AND deleted_at IS NULL");
+      $sql->execute();
+      return $sql->fetchAll(PDO::FETCH_ASSOC);
+    } catch(PDOException $e) {
+      echo "Error: " . $e->getMessage();
+    }
+    $conn = null;
+}
+
+// Get Bookings by Seat Types
+function getBookingbySeat(){
+  global $servername, $dbname, $username, $password;
+  try {
+      $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+      // set the PDO error mode to exception
+      $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+      $sql = $conn->prepare("SELECT seats.seat_category, COUNT(bookings.id) AS count FROM bookings RIGHT JOIN seats ON bookings.seat_id = seats.id WHERE MONTH(bookings.created_at) = MONTH(CURRENT_DATE()) AND YEAR(bookings.created_at) = YEAR(CURRENT_DATE()) AND bookings.deleted_at IS NULL GROUP BY seats.seat_category");
+      $sql->execute();
+      return $sql->fetchAll(PDO::FETCH_ASSOC);
+    } catch(PDOException $e) {
+      echo "Error: " . $e->getMessage();
+    }
+    $conn = null;
+}
+
+// Get Cancellations by Month
+function getCancellationsbyMonth(){
+  global $servername, $dbname, $username, $password;
+  try {
+      $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+      // set the PDO error mode to exception
+      $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+      $sql = $conn->prepare("SELECT * FROM bookings WHERE MONTH(created_at) = MONTH(CURRENT_DATE()) AND YEAR(created_at) = YEAR(CURRENT_DATE()) AND deleted_at IS NOT NULL");
+      $sql->execute();
+      return $sql->fetchAll(PDO::FETCH_ASSOC);
+    } catch(PDOException $e) {
+      echo "Error: " . $e->getMessage();
+    }
+    $conn = null;
+}
+
+// Get Reservations Count by Month
+function getCountReservationsbyMonth(){
+  global $servername, $dbname, $username, $password;
+  try {
+      $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+      // set the PDO error mode to exception
+      $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+      $sql = $conn->prepare("SELECT CAST(created_at AS DATE) AS date, COUNT(id) AS reservations FROM bookings WHERE MONTH(created_at) = MONTH(CURRENT_DATE()) AND YEAR(created_at) = YEAR(CURRENT_DATE()) AND deleted_at IS NULL GROUP BY CAST(created_at AS DATE)");
+      $sql->execute();
+      return $sql->fetchAll(PDO::FETCH_ASSOC);
+    } catch(PDOException $e) {
+      echo "Error: " . $e->getMessage();
+    }
+    $conn = null;
+}
+
+// Get Cancellations Count by Month
+function getCountCancellationsbyMonth(){
+  global $servername, $dbname, $username, $password;
+  try {
+      $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+      // set the PDO error mode to exception
+      $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+      $sql = $conn->prepare("SELECT CAST(deleted_at AS DATE) AS date, COUNT(id) AS cancellations FROM bookings WHERE MONTH(deleted_at) = MONTH(CURRENT_DATE()) AND YEAR(deleted_at) = YEAR(CURRENT_DATE()) AND deleted_at IS NOT NULL GROUP BY CAST(deleted_at AS DATE)");
+      $sql->execute();
+      return $sql->fetchAll(PDO::FETCH_ASSOC);
+    } catch(PDOException $e) {
+      echo "Error: " . $e->getMessage();
+    }
+    $conn = null;
+}
+
 // Get Single Booking
 function getSingleBooking($id){
   global $servername, $dbname, $username, $password;
@@ -87,6 +167,23 @@ function updateBooking($id, $res_id, $seat_id){
         $sql = $conn->prepare("UPDATE bookings SET reservation_id='$res_id', seat_id='$seat_id', updated_at='$date' WHERE id=$id");
         $sql->execute();
         return "Record: $id update successfully";
+      } catch(PDOException $e) {
+        return "Error: " . $e->getMessage();
+      }
+      $conn = null;
+}
+
+// Delete a Booking by seat & reservation (Soft Delete)
+function deleteCancelledBooking($res_id, $seat_id){
+    global $servername, $dbname, $username, $password;
+    $date = date('Y-m-d H:i:s');
+    try {
+        $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+        // set the PDO error mode to exception
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $sql = $conn->prepare("UPDATE bookings SET deleted_at='$date' WHERE reservation_id='$res_id' AND seat_id='$seat_id'");
+        $sql->execute();
+        return "Record deleted successfully";
       } catch(PDOException $e) {
         return "Error: " . $e->getMessage();
       }

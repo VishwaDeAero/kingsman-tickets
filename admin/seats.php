@@ -50,6 +50,43 @@ $_SESSION["pagename"] = "adminSeats";
                 </div>
                 <!-- Change Layout Modal End -->
 
+                <!-- Add Price Modal -->
+                <div class="modal fade" id="addPriceFormModal" data-bs-backdrop="static" data-bs-keyboard="false"
+                    tabindex="-1" aria-labelledby="priceFormLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="addPriceFormLabel">Update Ticket Price</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <form id="addPriceForm" name="addPriceForm">
+                                <div class="modal-body">
+                                    <div class="mb-3">
+                                        <label for="addPriceCategory" class="form-label">Seat Category</label>
+                                        <select class="form-select seat-category-list" aria-label="Select Seat Category"
+                                            id="addPriceCategory" required>
+                                            <option value="ODC">ODC</option>
+                                            <option value="BAL">Balcony</option>
+                                            <option value="BOX">Box</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="addPricePrice" class="form-label">Ticket Price</label>
+                                        <input type="number" class="form-control" id="addPricePrice" required>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Cancel</button>
+                                    <button type="submit" id="addPriceBtn" class="btn btn-dark">Submit</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!-- Add Price Modal End -->
+
                 <!-- Add Seats Modal -->
                 <div class="modal fade" id="addSeatsFormModal" data-bs-backdrop="static" data-bs-keyboard="false"
                     tabindex="-1" aria-labelledby="seatsFormLabel" aria-hidden="true">
@@ -158,8 +195,8 @@ $_SESSION["pagename"] = "adminSeats";
                     class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <h3 class="mx-2 mx-md-4 col">Active Seats</h3>
                     <div class="col-auto">
-                        <button class="btn btn-outline-dark fw-bold" data-bs-toggle="modal"
-                            data-bs-target="#addSeatsFormModal"><i class="fa-solid fa-plus me-2"></i>Add Seats</button>
+                        <button class="btn btn-outline-dark fw-bold" data-bs-toggle="modal" data-bs-target="#addSeatsFormModal"><i class="fa-solid fa-plus me-2"></i>Add Seats</button>
+                        <button class="btn btn-dark text-light fw-bold" data-bs-toggle="modal" data-bs-target="#addPriceFormModal"><i class="fa-solid fa-pen me-2"></i>Change Prices</button>
                     </div>
                 </div>
 
@@ -167,7 +204,7 @@ $_SESSION["pagename"] = "adminSeats";
                 <div class="container-fluid p-2 p-md-4 my-3">
 
                     <!-- ODC List -->
-                    <h5 class="fw-bold">ODC Seats</h5>
+                    <h5 class="fw-bold">ODC Seats - Rs.<span id="odcPrice">0.00</span></h5>
                     <div id="odcList" class="row gap-1 mx-0 mb-4">
                         <!-- ODC Item Sample-->
                         <div class="col-auto border rounded-3 border-primary text-primary p-2">
@@ -205,7 +242,7 @@ $_SESSION["pagename"] = "adminSeats";
                     </div>
 
                     <!-- Balcony List -->
-                    <h5 class="fw-bold">Balcony Seats</h5>
+                    <h5 class="fw-bold">Balcony Seats - Rs.<span id="balPrice">0.00</span></h5>
                     <div id="balList" class="row gap-1 mx-0 mb-4">
                         <!-- Balcony Item Sample-->
                         <div class="col-auto border rounded-3 border-warning text-warning p-2">
@@ -243,7 +280,7 @@ $_SESSION["pagename"] = "adminSeats";
                     </div>
 
                     <!-- Box List -->
-                    <h5 class="fw-bold">Box Seats</h5>
+                    <h5 class="fw-bold">Box Seats - Rs.<span id="boxPrice">0.00</span></h5>
                     <div id="boxList" class="row gap-1 mx-0 mb-4">
                         <!-- Box Item Sample-->
                         <div class="col-auto border rounded-3 border-danger text-danger p-2">
@@ -305,7 +342,12 @@ $_SESSION["pagename"] = "adminSeats";
                     function: 'list'
                 },
                 success: function(response) {
-                    console.log(response)
+                    console.log(response);
+                    if(response.price){
+                        $('#odcPrice').text(parseFloat(response.price.odc).toFixed(2));
+                        $('#balPrice').text(parseFloat(response.price.bal).toFixed(2));
+                        $('#boxPrice').text(parseFloat(response.price.box).toFixed(2));
+                    }
                     if (response.result != undefined || response.result.length != 0) {
                         var ODClist = "";
                         var BALlist = "";
@@ -450,6 +492,50 @@ $_SESSION["pagename"] = "adminSeats";
                     } else {
                         Swal.fire({
                             title: 'Insert Failed!',
+                            text: response.error,
+                            icon: 'error',
+                            showConfirmButton: true
+                        });
+                    }
+                }
+            });
+        });
+        // ----------------------------------------------
+
+        // Add Price
+        $('#addPriceForm').submit(function(e) {
+            e.preventDefault();
+            Swal.fire({
+                title: 'Please Wait',
+                allowEscapeKey: false,
+                allowOutsideClick: false,
+            });
+            Swal.showLoading();
+            $.ajax({
+                type: "POST",
+                url: '../controllers/seats.php',
+                dataType: 'json',
+                data: {
+                    function: 'addprice',
+                    data: {
+                        'type': $('#addPriceCategory').val(),
+                        'price': $('#addPricePrice').val()
+                    }
+                },
+                success: function(response) {
+                    if (!response.error) {
+                        $('#addPriceForm').trigger('reset');
+                        Swal.fire({
+                            title: 'Ticket Price Updated!',
+                            icon: 'success',
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                        showSeats();
+                        $("#addPriceFormModal").modal('hide');
+                    } else {
+                        Swal.fire({
+                            title: 'Price Update Failed!',
                             text: response.error,
                             icon: 'error',
                             showConfirmButton: true

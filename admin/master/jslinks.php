@@ -13,3 +13,5 @@
 <script src="../assets/libraries/sweetalert2/sweetalert2.js" crossorigin="anonymous"></script>
 <!-- Image Uploader -->
 <script src="../assets/libraries/imguploader/image-uploader.js" crossorigin="anonymous"></script>
+<!-- Chart Js -->
+<script src="../assets/libraries/chartjs/chart.js" crossorigin="anonymous"></script>

@@ -1,13 +1,13 @@
 <?php
 session_start();
-$_SESSION["pagename"] = "adminInquiry";
+$_SESSION["pagename"] = "adminTickets";
 ?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <?php include('master/headlinks.php') ?>
-    <title><?php echo $sitename; ?> - Inquiries</title>
+    <title><?php echo $sitename; ?> - Tickets</title>
     <style>
     </style>
 </head>
@@ -22,32 +22,9 @@ $_SESSION["pagename"] = "adminInquiry";
             <?php include('master/sidebar.php') ?>
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 working-area">
 
-                <!-- Add New Modal -->
-                <div class="modal fade" id="viewInquiryModal" data-bs-backdrop="static" data-bs-keyboard="false"
-                    tabindex="-1" aria-labelledby="viewInquiryLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="ViewInquiryTitle">Email Subject</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                    aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-
-                            </div>
-                            <div class="modal-footer">
-                                <!-- <button type="button" class="btn btn-secondary"
-                                        data-bs-dismiss="modal">Close</button> -->
-                                <button type="button" id="markRepliedBtn" class="btn btn-dark">Mark as Replied</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Add News Modal End -->
-
                 <div
                     class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                    <h3 class="mx-2 mx-md-4 col">Customer Inquiries</h3>
+                    <h3 class="mx-2 mx-md-4 col">Tickets Information</h3>
                 </div>
 
                 <div class="container-fluid p-2 p-md-4 my-3">
@@ -55,14 +32,17 @@ $_SESSION["pagename"] = "adminInquiry";
                         <thead>
                             <tr>
                                 <th>Id</th>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Title</th>
-                                <th>Description</th>
-                                <th>Created Date</th>
+                                <th>Customer</th>
+                                <th>Movie</th>
+                                <th>Seats</th>
+                                <th>Price</th>
+                                <th>Date</th>
+                                <th>Time</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
+                        <!-- <tbody>
+                        </tbody> -->
                     </table>
                 </div>
             </main>
@@ -72,19 +52,18 @@ $_SESSION["pagename"] = "adminInquiry";
     <script type="text/javascript">
     $(document).ready(function() {
 
-
-        function showInquiries() {
+        function showTickets() {
             var getData = new FormData();
             getData.append('function', 'list');
             $.ajax({
                 type: "POST",
-                url: '../controllers/inquiry.php',
+                url: '../controllers/tickets.php',
                 processData: false,
                 contentType: false,
                 data: getData,
                 success: function(response) {
-                    console.log(response.result)
                     if (response.result) {
+                        console.log(response.result)
                         if ($.fn.DataTable.isDataTable("#example")) {
                             $('#example').DataTable().clear().destroy();
                         }
@@ -95,22 +74,25 @@ $_SESSION["pagename"] = "adminInquiry";
                                     data: 'id'
                                 },
                                 {
-                                    data: 'name'
+                                    data: 'customer'
                                 },
                                 {
-                                    data: 'email'
+                                    data: 'movie'
                                 },
                                 {
-                                    data: 'subject'
+                                    data: 'seats'
                                 },
                                 {
-                                    data: 'description'
+                                    data: 'price'
                                 },
                                 {
-                                    data: 'created_at'
+                                    data: 'date'
                                 },
                                 {
-                                    data: 'action_buttons'
+                                    data: 'time'
+                                },
+                                {
+                                    data: 'action'
                                 }
                             ]
                         });
@@ -125,11 +107,7 @@ $_SESSION["pagename"] = "adminInquiry";
                 }
             });
         }
-        showInquiries();
-
-        // Change Status
-
-        // ----------------------------------------------
+        showTickets();
     });
     </script>
 </body>

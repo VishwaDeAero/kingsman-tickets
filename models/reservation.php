@@ -26,6 +26,38 @@ function getSingleReservation($id){
     $conn = null;
 }
 
+// Get Count Reservations
+function getCountReservationsForMonth(){
+    global $servername, $dbname, $username, $password;
+    try {
+        $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+        // set the PDO error mode to exception
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $sql = $conn->prepare("SELECT CAST(created_at AS DATE) AS date, COUNT(id) AS reservations FROM reservations WHERE MONTH(created_at) = MONTH(CURRENT_DATE()) AND YEAR(created_at) = YEAR(CURRENT_DATE()) AND deleted_at IS NULL GROUP BY CAST(created_at AS DATE)");
+        $sql->execute();
+        return $sql->fetchAll(PDO::FETCH_ASSOC);
+      } catch(PDOException $e) {
+        echo "Error: " . $e->getMessage();
+      }
+      $conn = null;
+}
+
+// Get Count Cancellations
+function getCountCancellationsForMonth(){
+    global $servername, $dbname, $username, $password;
+    try {
+        $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+        // set the PDO error mode to exception
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $sql = $conn->prepare("SELECT CAST(created_at AS DATE) AS date, COUNT(id) AS cancellations FROM reservations WHERE MONTH(created_at) = MONTH(CURRENT_DATE()) AND YEAR(created_at) = YEAR(CURRENT_DATE()) AND deleted_at IS NOT NULL GROUP BY CAST(created_at AS DATE)");
+        $sql->execute();
+        return $sql->fetchAll(PDO::FETCH_ASSOC);
+      } catch(PDOException $e) {
+        echo "Error: " . $e->getMessage();
+      }
+      $conn = null;
+}
+
 // Get All Reservations
 function getAllReservations(){
     global $servername, $dbname, $username, $password;
@@ -65,7 +97,7 @@ function getAllReservationsByUser($user_id){
         $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
         // set the PDO error mode to exception
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $sql = $conn->prepare("SELECT * FROM reservations WHERE user_id='$user_id' AND deleted_at IS NULL");
+        $sql = $conn->prepare("SELECT * FROM reservations WHERE user_id='$user_id' AND deleted_at IS NULL ORDER BY created_at DESC");
         $sql->execute();
         return $sql->fetchAll(PDO::FETCH_ASSOC);
       } catch(PDOException $e) {

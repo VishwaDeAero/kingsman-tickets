@@ -11,9 +11,62 @@
 
         switch($_POST['function']) {
 
+            case 'password':
+                if( !isset($_POST['id']) || !isset($_POST['oldPassword']) || !isset($_POST['updatePassword']) ){
+                    $Result['status'] = 500;
+                    $Result['error'] = 'User ID and Old/New Passwords Required!';
+                }else{
+                    if(!isset($_SESSION["user"])){
+                        session_start();
+                    }
+                    if($_SESSION["user"]){
+                        if($_SESSION["user"]['password'] == md5($_POST['oldPassword'])){
+                            $Result['status'] = 200;
+                            $data = [
+                                'password' => md5($_POST['updatePassword'])
+                            ];
+                            $Result["result"] = updateUser($_POST["id"],$data);
+                        } else{
+                            $Result['status'] = 200;
+                            $Result['error'] = 'Old Password Mismatch';
+                        }
+                    }else{
+                        $Result['status'] = 400;
+                        $Result['error'] = 'Please login & try again';
+                    }
+                }
+                break;
+
+            case 'update':
+                if( !isset($_POST['firstname']) || !isset($_POST['lastname']) || !isset($_POST['nic']) || !isset($_POST['gender']) || !isset($_POST['dob']) ) {
+                    $Result['status'] = 500;
+                    $Result['error'] = 'Missing Required Data!';
+                }
+                else {
+                     $user_id = $_POST["id"];
+                     $first_name = $_POST['firstname'];
+                     $last_name = $_POST['lastname'];
+                     $nic = $_POST['nic'];
+                     $contact_no = $_POST['contactno'];
+                     $email = $_POST['email'];
+                     $gender = $_POST['gender'];
+                     $dob = $_POST['dob'];
+                     $data = [
+                        'first_name' => $first_name,
+                        'last_name' => $last_name,
+                        'nic' => $nic,
+                        'contact_no' => $contact_no,
+                        'email' => $email,
+                        'gender' => $gender,
+                        'dob' => $dob,
+                    ];
+                    $Result["result"] = updateUser($_POST["id"],$data);
+                }
+                break;
+
             case 'login':
                 if( !isset($_POST['username']) || !isset($_POST['password']) ){
-                    $Result['status'] = 500;
+                    $Result['status'] = 400;
                     $Result['error'] = 'Username and Password Required!';
                 }else{
                     $usrname = $_POST['username'];
@@ -25,7 +78,7 @@
                         $Result['status'] = 200;
                         $Result['result'] = $_SESSION["user"];
                     }else{
-                        $Result['status'] = 500;
+                        $Result['status'] = 400;
                         $Result['error'] = 'Incorrect Username or Password. Please try again';
                     }
                 }
@@ -85,7 +138,7 @@
 
             case 'add':
                 if( !isset($_POST['firstname']) || !isset($_POST['lastname']) || !isset($_POST['username']) || !isset($_POST['password']) || !isset($_POST['nic']) || !isset($_POST['gender']) || !isset($_POST['dob']) || !isset($_POST['user_type']) || !isset($_POST['active']) ) {
-                    $Result['status'] = 500;
+                    $Result['status'] = 400;
                     $Result['error'] = 'Missing Required Data!';
                 }
                 else {

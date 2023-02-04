@@ -299,6 +299,7 @@ $_SESSION["pagename"] = "adminUsers";
                             $('#example').DataTable().clear().destroy();
                         }
                         $('#example').DataTable({
+                            responsive: true,
                             data: response.result,
                             columns: [{
                                     data: 'id'

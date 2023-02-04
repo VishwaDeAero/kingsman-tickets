@@ -1,5 +1,6 @@
 <?php
     header('Content-Type: application/json');
+    require_once('../models/price.php');
     require_once('../models/seats.php');
     require_once('../models/screen.php');
     require_once('../models/reservation.php');
@@ -70,6 +71,8 @@
                         }
                      }
                      $Result['result'] = $AvailableSeats;
+                     $Result['result1'] = $AllSeats;
+                     $Result['result2'] = $BookedSeats;
                 }
                 break;
 
@@ -109,6 +112,21 @@
                     }
                 }
                 break;
+            
+            case 'cancel':
+                if( !isset($_POST['reservation']) && !isset($_POST['seats']) ) {
+                    $Result['status'] = 500;
+                    $Result['error'] = 'invalid Data! reservation_id, seats required';
+                }else{
+                    $reservation_id = $_POST['reservation'];
+                    $seat_set = explode(",",$_POST['seats']);
+                    foreach ($seat_set as $key => $seat_id) {
+                        deleteCancelledBooking($reservation_id, $seat_id);
+                    }
+                    $Result['status'] = 200;
+                    $Result['result'] = 'Your selected seats reservation has cancelled successfully.';
+                }
+                break;
 
             case 'alltickets':
                 if( !isset($_POST['user_id'])) {
@@ -128,10 +146,13 @@
                         $ticket_info['screen'] = getMovieScreens($screen_id)[0];
                         $seats = getAllBookingsByReservation($ticket['id']);
                         $seatsList = [];
+                        $price = 0;
                         foreach ($seats as $skey => $seat) {
-                            $seat_info = getSingleSeat($seat['seat_id']);
+                            $seat_info = getSingleSeat($seat['seat_id'])[0];
+                            $price += (float) getRelatedPrice($seat_info['seat_category'], $ticket_info['ticket']['created_at'])[0]['price'];
                             array_push($seatsList, $seat_info);
                         }
+                        $ticket_info['price'] = $price;
                         $ticket_info['seats'] = $seatsList;
                         array_push($ticketsList, $ticket_info);
                     }

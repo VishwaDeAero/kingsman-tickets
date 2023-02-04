@@ -34,7 +34,23 @@ function getSingleUser($id){
         $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
         // set the PDO error mode to exception
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $sql = $conn->prepare("SELECT * FROM users WHERE id=$id AND deleted_at IS NULL");
+        $sql = $conn->prepare("SELECT * FROM users WHERE id=$id");
+        $sql->execute();
+        return $sql->fetchAll(PDO::FETCH_ASSOC);
+      } catch(PDOException $e) {
+        echo "Error: " . $e->getMessage();
+      }
+      $conn = null;
+}
+
+// Get All Users by Current Month
+function getAllUsersByMonth(){
+    global $servername, $dbname, $username, $password;
+    try {
+        $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+        // set the PDO error mode to exception
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $sql = $conn->prepare("SELECT * FROM users WHERE user_type='user' AND MONTH(created_at) = MONTH(CURRENT_DATE()) AND YEAR(created_at) = YEAR(CURRENT_DATE()) AND deleted_at IS NULL");
         $sql->execute();
         return $sql->fetchAll(PDO::FETCH_ASSOC);
       } catch(PDOException $e) {
@@ -112,7 +128,7 @@ function updateUser($id, $data){
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $sql = $conn->prepare("UPDATE users SET $updateDataQuery, updated_at='$date' WHERE id=$id");
         $sql->execute();
-        return "Record: $id update successfully";
+        return "User: $id information updated successfully";
       } catch(PDOException $e) {
         return "Error: " . $e->getMessage();
       }
