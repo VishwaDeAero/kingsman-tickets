@@ -70,7 +70,8 @@ $_SESSION["pagename"] = "adminUsers";
                                     </div>
                                     <div class="mb-3">
                                         <label for="addDOB" class="form-label">Date of Birth</label>
-                                        <input type="date" max="<?php echo date('Y-m-d'); ?>" class="form-control" id="addDOB" required>
+                                        <input type="date" max="<?php echo date('Y-m-d'); ?>" class="form-control"
+                                            id="addDOB" required>
                                     </div>
                                     <div class="mb-3">
                                         <label for="addContactNo" class="form-label">Contact No</label>
@@ -83,8 +84,8 @@ $_SESSION["pagename"] = "adminUsers";
                                     <div class="mb-3">
                                         <label class="form-check-label" for="addActive">User Active</label>
                                         <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" role="switch"
-                                                id="addActive" checked>
+                                            <input class="form-check-input" type="checkbox" role="switch" id="addActive"
+                                                checked>
                                         </div>
                                     </div>
                                 </div>
@@ -98,6 +99,62 @@ $_SESSION["pagename"] = "adminUsers";
                     </div>
                 </div>
                 <!-- Add New User Modal End -->
+
+                <!-- Update User Modal -->
+                <div class="modal fade" id="updateUserFormModal" data-bs-backdrop="static" data-bs-keyboard="false"
+                    tabindex="-1" aria-labelledby="userFormLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="updateUserFormLabel">Update Profile</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <form id="updateUserForm" name="updateUserForm" enctype="multipart/form-data">
+                                <div class="modal-body">
+                                    <input type="hidden" class="form-control" id="updateId" value="" required>
+                                    <div class="mb-3">
+                                        <label for="updateFirstName" class="form-label">First Name</label>
+                                        <input type="text" class="form-control" id="updateFirstName" value="" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="updateLastName" class="form-label">Last Name</label>
+                                        <input type="text" class="form-control" id="updateLastName" value="" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="updateNIC" class="form-label">NIC Number</label>
+                                        <input type="text" class="form-control" id="updateNIC" value="" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="updateGender" class="form-label">Gender</label>
+                                        <select class="form-select" aria-label="Gender" id="updateGender" required>
+                                            <option value="Male">Male</option>
+                                            <option value="Female">Female</option>
+                                            <option value="Other">Other</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="updateDOB" class="form-label">Date of Birth</label>
+                                        <input type="date" max="<?php echo date('Y-m-d'); ?>" class="form-control" id="updateDOB" value="" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="updateContactNo" class="form-label">Contact No</label>
+                                        <input type="text" class="form-control" id="updateContactNo" value="">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="updateEmail" class="form-label">Email</label>
+                                        <input type="email" class="form-control" id="updateEmail" value="">
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Cancel</button>
+                                    <button type="submit" id="updateUserBtn" class="btn btn-warning">Submit</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!-- Update User Modal End -->
 
                 <div
                     class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
@@ -155,6 +212,76 @@ $_SESSION["pagename"] = "adminUsers";
                 passwordMatch = true;
             }
         });
+
+        // Update User Modal on Popup
+        $('#updateUserFormModal').on('show.bs.modal', function(e) {
+            var btn = e.relatedTarget;
+            var user_id = btn.attributes['data-id'].value;
+            var data_set = JSON.parse(btn.attributes['data-set'].value);
+            $('#updateId').val(data_set.id);
+            $('#updateFirstName').val(data_set.first_name);
+            $('#updateLastName').val(data_set.last_name);
+            $('#updateNIC').val(data_set.nic);
+            $('#updateGender').val(data_set.gender);
+            $('#updateDOB').val(data_set.dob);
+            $('#updateContactNo').val(data_set.contact_no);
+            $('#updateEmail').val(data_set.email);
+        })
+        // ----------------------------------------------
+
+        //Update Account Info
+        $('#updateUserForm').submit(function(e) {
+            e.preventDefault();
+            Swal.fire({
+                title: 'Please Wait',
+                allowEscapeKey: false,
+                allowOutsideClick: false,
+            });
+            Swal.showLoading();
+            var sendData = new FormData();
+            // Append Function to Call
+            sendData.append('function', 'update');
+            // Append Update Info
+            sendData.append('firstname', $('#updateFirstName').val());
+            sendData.append('lastname', $('#updateLastName').val());
+            sendData.append('nic', $('#updateNIC').val());
+            sendData.append('gender', $('#updateGender').val());
+            sendData.append('dob', $('#updateDOB').val());
+            sendData.append('contactno', $('#updateContactNo').val());
+            sendData.append('email', $('#updateEmail').val());
+            sendData.append('id', $('#updateId').val());
+            console.log("sendData", sendData);
+            $.ajax({
+                type: "POST",
+                url: '../controllers/users.php',
+                processData: false,
+                contentType: false,
+                data: sendData,
+                success: function(response) {
+                    console.log(response);
+                    if ((!response.error) && response.result) {
+                        $('#updateUserForm').trigger('reset');
+                        showUsers();
+                        Swal.fire({
+                            title: 'User Updated!',
+                            text: 'User Information Changed',
+                            icon: 'success',
+                        }).then((result) => {
+                            $("#updateUserFormModal").modal('hide');
+                        });
+                    } else {
+                        $('#updateUserForm').trigger('reset');
+                        Swal.fire({
+                            title: 'Profile Update Failed!',
+                            text: response.error,
+                            icon: 'error',
+                            showConfirmButton: true
+                        });
+                    }
+                }
+            });
+        })
+
 
         function showUsers() {
             var getData = new FormData();
@@ -251,7 +378,7 @@ $_SESSION["pagename"] = "adminUsers";
             sendData.append('password', $('#addPassword').val());
             sendData.append('user_type', 'user');
             sendData.append('active', ($('#addActive').is(":checked")) ? 1 : 0);
-            console.log("sendData",sendData);
+            console.log("sendData", sendData);
             $.ajax({
                 type: "POST",
                 url: '../controllers/users.php',
