@@ -62,15 +62,28 @@
                 }
                 break;
 
-            case 'single':
-                if( !isset($_POST['id'])) {
-                    $Result['status'] = 500;
-                    $Result['error'] = 'invalid Data! id required';
-                }
-                else {
-                     $id = $_POST['id'];
-                     $Result['status'] = 200;
-                     $Result['result'] = getSingleNews($id);
+            case 'users':
+                if( !isset($_POST['startdate']) && !isset($_POST['enddate'])) {
+                    $Result['status'] = 400;
+                    $Result['error'] = 'invalid Data! Date range required';
+                } else {
+                    $userlist = getAllUsersByRange($_POST['startdate'], $_POST['enddate']);
+                    $tableArray = [];
+                    if($userlist){
+                        foreach ($userlist as $key => $value) {
+                            $tableArray[$key]['id'] = $value['id'];
+                            $tableArray[$key]['name'] = $value['first_name'].' '.$value['last_name'];
+                            $tableArray[$key]['username'] = $value['username'];
+                            $tableArray[$key]['user_type'] = $value['user_type'];
+                            $tableArray[$key]['nic'] = $value['nic'];
+                            $tableArray[$key]['gender'] = $value['gender'];
+                            $tableArray[$key]['dob'] = $value['dob'];
+                            $tableArray[$key]['contact_no'] = $value['contact_no'];
+                            $tableArray[$key]['email'] = $value['email'];
+                        }
+                    }
+                    $Result['status'] = 200;
+                    $Result['result'] = $tableArray;
                 }
                 break;
 

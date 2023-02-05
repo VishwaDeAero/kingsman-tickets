@@ -71,7 +71,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link <?php if($_SESSION["pagename"] == 'reportUsers'){ ?>active<?php } ?>" href="usersreport.php">
                     Users
                 </a>
             </li>
