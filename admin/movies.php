@@ -166,6 +166,70 @@ $_SESSION["pagename"] = "adminMovies";
                 </div>
                 <!-- Add Movie Modal End -->
 
+                <!-- Update Movie Modal -->
+                <div class="modal fade" id="updateMovieFormModal" data-bs-backdrop="static" data-bs-keyboard="false"
+                    tabindex="-1" aria-labelledby="categoryFormLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="updateMovieFormLabel">New Movie</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <form id="updateMovieForm" name="updateMovieForm" enctype="multipart/form-data">
+                                <div class="modal-body">
+                                    <div class="mb-3">
+                                        <label for="updateMovieName" class="form-label">Movie Name</label>
+                                        <input type="text" class="form-control" id="updateMovieName" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="updateMovieCategory" class="form-label">Movie Category</label>
+                                        <select class="form-select movie-category-list"
+                                            aria-label="Select Movie Category" id="updateMovieCategory" required>
+                                            <option value="-1" Disabled>No Categories</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="updateMovieDescription" class="form-label">Movie Description</label>
+                                        <textarea class="form-control" placeholder="Enter Description Here"
+                                            id="updateMovieDescription" rows="4"></textarea>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="formupload" class="form-label">Upload Movie Cover</label>
+                                        <div class="input-images"></div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="updateMovieDateTime" class="form-label">Movie Screen Times</label>
+                                        <div class="row">
+                                            <div class="col">
+                                                <input type="datetime-local" class="form-control" id="updateMovieDateTime">
+                                            </div>
+                                            <div class="col-auto">
+                                                <button type="button" id="addNewScreenBtn"
+                                                    class="btn btn-dark fw-bold"><i
+                                                        class="fa-solid fa-plus"></i></button>
+                                            </div>
+                                        </div>
+                                        <div id="screenList" class="row gap-1 mx-0 my-3">
+                                            <!-- Screen Time-->
+                                            <!-- <div class="col-auto border border-dark rounded-3 p-1">
+                                                <span class="ps-2">2022-05-10 16:30</span>
+                                                <button type="button" class="deleteScreenBtn btn btn-sm px-2"><i class="fa-solid fa-close"></i></button>
+                                            </div> -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Cancel</button>
+                                    <button type="submit" id="updateMovieBtn" class="btn btn-dark">Submit</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!-- Update Movie Modal End -->
+
                 <div
                     class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <h3 class="mx-2 mx-md-4 col">Screening Movies Details</h3>
@@ -186,30 +250,9 @@ $_SESSION["pagename"] = "adminMovies";
                                 <th>Show Date</th>
                                 <th>Time</th>
                                 <th>Active</th>
-                                <th>Change</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
-                        <!-- <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>Spider Man - No way home</td>
-                                <td>Marvel</td>
-                                <td>30-10-2022</td>
-                                <td>14:30</td>
-                                <td>
-                                    <div class="form-check form-switch">
-                                        <input class="form-check-input" value="-1" type="checkbox" id="activeSwitch"
-                                            checked>
-                                    </div>
-                                </td>
-                                <td>
-                                    <a class="btn py-0 text-warning col-auto" title="edit"><i
-                                            class="fa-solid fa-pen"></i></a>
-                                    <a class="btn py-0 text-danger col-auto" title="delete"><i
-                                            class="fa-solid fa-trash"></i></a>
-                                </td>
-                            </tr>
-                        </tbody> -->
                     </table>
                 </div>
             </main>
@@ -249,25 +292,25 @@ $_SESSION["pagename"] = "adminMovies";
                             responsive: true,
                             data: response.result,
                             columns: [{
-                                    data: 'movie_screen_id'
+                                    data: 'screen_id'
                                 },
                                 {
-                                    data: 'movie_name'
+                                    data: 'name'
                                 },
                                 {
-                                    data: 'movie_category'
+                                    data: 'category'
                                 },
                                 {
-                                    data: 'movie_screen_date'
+                                    data: 'screen_date'
                                 },
                                 {
-                                    data: 'movie_screen_time'
+                                    data: 'screen_time'
                                 },
                                 {
-                                    data: 'active_switch'
+                                    data: 'active'
                                 },
                                 {
-                                    data: 'action_buttons'
+                                    data: 'action'
                                 }
                             ]
                         });

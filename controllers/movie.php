@@ -45,17 +45,17 @@
                     $movie_info = getSingleMovie($movie_id);
                     $category_id = $movie_info[0]['category_id'];
                     $category_info = getSingleCategory($category_id);
-                    $tableArray[$key]['movie_id'] = $movie_id;
-                    $tableArray[$key]['movie_name'] = $movie_info[0]['name'];
-                    $tableArray[$key]['movie_description'] = $movie_info[0]['description'];
-                    $tableArray[$key]['movie_category'] = $category_info[0]['name'];
-                    $tableArray[$key]['movie_screen_id'] = $value['id'];
-                    $tableArray[$key]['movie_screen_date'] = $value['date'];
-                    $tableArray[$key]['movie_screen_time'] = $value['time'];
-                    $tableArray[$key]['movie_active'] = $value['active'];
+                    $tableArray[$key]['id'] = $movie_id;
+                    $tableArray[$key]['name'] = $movie_info[0]['name'];
+                    $tableArray[$key]['description'] = $movie_info[0]['description'];
+                    $tableArray[$key]['category'] = $category_info[0]['name'];
+                    $tableArray[$key]['screen_id'] = $value['id'];
+                    $tableArray[$key]['screen_date'] = $value['date'];
+                    $tableArray[$key]['screen_time'] = $value['time'];
+                    // $tableArray[$key]['active'] = $value['active'];
                     $checked = ($value['active'])?'checked':'';
-                    $tableArray[$key]['active_switch'] = '<div class="form-check form-switch"><input class="form-check-input" data-id="'.$value['id'].'" value="'.$value['active'].'" type="checkbox" id="activeSwitch" '.$checked.'></div>';
-                    $tableArray[$key]['action_buttons'] = '<a class="btn py-0 text-warning col-auto" data-id="'.$value['id'].'" title="edit"><i class="fa-solid fa-pen"></i></a><a class="btn py-0 text-danger col-auto" data-id="'.$value['id'].'" title="delete"><i class="fa-solid fa-trash"></i></a>';
+                    $tableArray[$key]['active'] = '<div class="form-check form-switch"><input class="form-check-input" data-id="'.$value['id'].'" value="'.$value['active'].'" type="checkbox" id="activeSwitch" '.$checked.'></div>';
+                    $tableArray[$key]['action'] = "<a class='btn py-0 text-warning col-auto' data-id='".$value['id']."' data-set='".json_encode($tableArray[$key])."' data-bs-toggle='modal' data-bs-target='#updateMovieFormModal'  title='edit'><i class='fa-solid fa-pen'></i></a><a class='btn py-0 text-danger col-auto' data-id='".$value['id']."' title='delete'><i class='fa-solid fa-trash'></i></a>";
                 }
                 $Result['status'] = 200;
                 $Result['result'] = $tableArray;
