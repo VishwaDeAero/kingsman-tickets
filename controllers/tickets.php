@@ -39,7 +39,11 @@
                     $tableArray[$key]['seats'] = $seats;
                     $tableArray[$key]['price'] = "Rs.".(float)$price;
                     if($seatids){
-                        $tableArray[$key]['action'] = '<a class="btn btn-sm btn-primary text-light col-auto fw-bold" data-id="'.$value['id'].'" title="Mark Paid"><i class="fa-solid fa-dollar me-1"></i>Mark as Paid</a>';
+                        if($value['paid'] == '1'){
+                            $tableArray[$key]['action'] = '<span class="text-success fw-bold col-auto">Paid</span>';
+                        } else {
+                            $tableArray[$key]['action'] = '<a class="btn btn-sm btn-primary text-light col-auto fw-bold mark-paid-btn" data-id="'.$value['id'].'" title="Mark Paid"><i class="fa-solid fa-dollar me-1"></i>Mark as Paid</a>';
+                        }
                     }else{
                         $tableArray[$key]['action'] = '<span class="text-danger fw-bold col-auto">Cancelled</span>';
                     }
@@ -57,6 +61,13 @@
                 $Result['status'] = 200;
                 $Result['result'] = insertInquiry($name, $email, $subject, $message);
                break;
+            
+            case 'pay':
+                $id = $_POST['id'];
+                $Result['status'] = 200;
+                updateReservationStatus($id, 'Watched');
+                $Result['result'] = updateReservationPayment($id, 1);
+                break;
 
             default:
                $Result['error'] = 'Function '.$_POST['function'].' Not Found!';

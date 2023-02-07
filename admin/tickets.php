@@ -41,8 +41,6 @@ $_SESSION["pagename"] = "adminTickets";
                                 <th>Action</th>
                             </tr>
                         </thead>
-                        <!-- <tbody>
-                        </tbody> -->
                     </table>
                 </div>
             </main>
@@ -70,6 +68,7 @@ $_SESSION["pagename"] = "adminTickets";
                         $('#example').DataTable({
                             responsive: true,
                             data: response.result,
+                            order: [[5, 'desc']], // Order by Date Descending 
                             columns: [{
                                     data: 'id'
                                 },
@@ -108,6 +107,61 @@ $_SESSION["pagename"] = "adminTickets";
             });
         }
         showTickets();
+
+        // Mark as Paid
+        $(document).on('click', '.mark-paid-btn', function(e) {
+            e.preventDefault();
+            var reservation_id = this.attributes['data-id'].value;
+            console.log(reservation_id)
+            Swal.fire({
+                title: 'Mark as Paid?',
+                text: "You cannot undone this",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'Yes'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: 'Please Wait',
+                        allowEscapeKey: false,
+                        allowOutsideClick: false,
+                    });
+                    Swal.showLoading();
+                    var sendData = new FormData();
+                    // Append Function to Call
+                    sendData.append('function', 'pay');
+                    // Append Update Info
+                    sendData.append('id', reservation_id);
+                    $.ajax({
+                        type: "POST",
+                        url: '../controllers/tickets.php',
+                        processData: false,
+                        contentType: false,
+                        data: sendData,
+                        success: function(response) {
+                            console.log(response);
+                            if ((!response.error) && response.result) {
+                                Swal.fire(
+                                    'Paid!',
+                                    'Reservation has been marked paid.',
+                                    'success'
+                                ).then((result) => {
+                                    showTickets();
+                                });
+                            } else {
+                                Swal.fire(
+                                    'Oops!',
+                                    'Something went wrong',
+                                    'error'
+                                );
+                            }
+                        }
+                    });
+                }
+            })
+        })
+        // -------------------------------------------------
     });
     </script>
 </body>
