@@ -172,11 +172,12 @@ $_SESSION["pagename"] = "adminMovies";
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="updateMovieFormLabel">New Movie</h5>
+                                <h5 class="modal-title" id="updateMovieFormLabel">Update Movie</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
                             </div>
                             <form id="updateMovieForm" name="updateMovieForm" enctype="multipart/form-data">
+                                <input type="hidden" class="form-control" id="updateMovieId" required>
                                 <div class="modal-body">
                                     <div class="mb-3">
                                         <label for="updateMovieName" class="form-label">Movie Name</label>
@@ -195,22 +196,22 @@ $_SESSION["pagename"] = "adminMovies";
                                             id="updateMovieDescription" rows="4"></textarea>
                                     </div>
                                     <div class="mb-3">
-                                        <label for="formupload" class="form-label">Upload Movie Cover</label>
+                                        <label for="formupload" class="form-label">Change Movie Cover</label>
                                         <div class="input-images"></div>
                                     </div>
                                     <div class="mb-3">
-                                        <label for="updateMovieDateTime" class="form-label">Movie Screen Times</label>
+                                        <label for="updateMovieDateTime" class="form-label">Add New Screen Times</label>
                                         <div class="row">
                                             <div class="col">
-                                                <input type="datetime-local" class="form-control" id="updateMovieDateTime">
+                                                <input type="datetime-local" min="<?php echo date('Y-m-d').'T'.date("h:i")?>" class="form-control" id="updateMovieDateTime">
                                             </div>
                                             <div class="col-auto">
-                                                <button type="button" id="addNewScreenBtn"
+                                                <button type="button" id="updateNewScreenBtn"
                                                     class="btn btn-dark fw-bold"><i
                                                         class="fa-solid fa-plus"></i></button>
                                             </div>
                                         </div>
-                                        <div id="screenList" class="row gap-1 mx-0 my-3">
+                                        <div id="updateScreenList" class="row gap-1 mx-0 my-3">
                                             <!-- Screen Time-->
                                             <!-- <div class="col-auto border border-dark rounded-3 p-1">
                                                 <span class="ps-2">2022-05-10 16:30</span>
@@ -327,16 +328,31 @@ $_SESSION["pagename"] = "adminMovies";
         }
 
         showMovies();
-        // $('#example').DataTable({
-        //     responsive: true
-        // });
-
         // Screen Times Array
         var ScreenTimes = [];
+        var UpdateScreenTimes = [];
+
+        // Add New Screen Time - Update Movie
+        $('#updateNewScreenBtn').click(function(e) {
+            var value = $('#updateMovieDateTime').val();
+            var date = moment(value).format('YYYY-MM-DD');
+            var time = moment(value).format('HH:mm:ss');
+            if (!UpdateScreenTimes.includes(value)) {
+                UpdateScreenTimes.push(value);
+                var screenItem = `<div data-date="${date}" data-time="${time}" data-value="${value}" class="screen-item col-auto border border-dark rounded-3 p-1">
+                        <span class="ps-2">${moment(value).format('YYYY-MM-DD HH:mm')}</span>
+                        <button type="button" class="btn btn-sm px-2 deleteScreenBtn">
+                            <i class="fa-solid fa-close"></i>
+                        </button>
+                    </div>`;
+                $('#updateScreenList').append(screenItem);
+            }
+            console.log(UpdateScreenTimes)
+        });
 
         // Add New Screen Time - Movie
         $('#addNewScreenBtn').click(function(e) {
-            var value = $('#addMovieDateTime').val()
+            var value = $('#addMovieDateTime').val();
             var date = moment(value).format('YYYY-MM-DD');
             var time = moment(value).format('HH:mm:ss');
             if (!ScreenTimes.includes(value)) {
@@ -362,6 +378,21 @@ $_SESSION["pagename"] = "adminMovies";
             (e.target.parentElement.parentElement).remove();
             console.log(ScreenTimes);
         });
+      
+
+        // Update Movie Modal on Popup
+        $('#updateMovieFormModal').on('show.bs.modal', function(e) {
+            var btn = e.relatedTarget;
+            var screen_id = btn.attributes['data-id'].value;
+            var data_set = JSON.parse(btn.attributes['data-set'].value);
+            console.log(data_set);
+            $('#updateMovieId').val(data_set.id);
+            $('#updateMovieName').val(data_set.name);
+            $('#updateMovieCategory').val(data_set.category_id);
+            $('#updateMovieDescription').val(data_set.description);
+        })
+        // ----------------------------------------------
+
 
         // Add New Movie
         $('#addMovieForm').submit(function(e) {
@@ -387,6 +418,7 @@ $_SESSION["pagename"] = "adminMovies";
                     icon: 'error',
                     showConfirmButton: true
                 });
+                return;
             }
             // Append Movie Info
             sendData.append('name', $('#addMovieName').val());
@@ -415,6 +447,62 @@ $_SESSION["pagename"] = "adminMovies";
                     } else {
                         Swal.fire({
                             title: 'Insert Failed!',
+                            text: response.error,
+                            icon: 'error',
+                            showConfirmButton: true
+                        });
+                    }
+                }
+            });
+        });
+        // ----------------------------------------------
+
+        // Update Movie
+        $('#updateMovieForm').submit(function(e) {
+            e.preventDefault();
+            Swal.fire({
+                title: 'Please Wait',
+                allowEscapeKey: false,
+                allowOutsideClick: false,
+            });
+            Swal.showLoading();
+            var sendData = new FormData();
+            // Get the Image
+            let form = $(this);
+            let files = form.find('input[name^="images"]')[0].files;
+            // Append Function to Call
+            sendData.append('function', 'update');
+            if (files.length > 0) {
+                sendData.append('image', files[0]);
+            }
+            // Append Movie Info
+            sendData.append('id', $('#updateMovieId').val());
+            sendData.append('name', $('#updateMovieName').val());
+            sendData.append('category_id', $('#updateMovieCategory').val());
+            sendData.append('description', $('#updateMovieDescription').val());
+            sendData.append('screens', UpdateScreenTimes);
+            console.log(sendData)
+            $.ajax({
+                type: "POST",
+                url: '../controllers/movie.php',
+                processData: false,
+                contentType: false,
+                data: sendData,
+                success: function(response) {
+                    console.log(response);
+                    if ((!response.error) && response.movie_result) {
+                        $('#updateMovieForm').trigger('reset');
+                        Swal.fire({
+                            title: 'Update Successful!',
+                            icon: 'success',
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                        $("#updateMovieFormModal").modal('hide');
+                        showMovies();
+                    } else {
+                        Swal.fire({
+                            title: 'Update Failed!',
                             text: response.error,
                             icon: 'error',
                             showConfirmButton: true

@@ -55,7 +55,7 @@
                     // $tableArray[$key]['active'] = $value['active'];
                     $checked = ($value['active'])?'checked':'';
                     $tableArray[$key]['active'] = '<div class="form-check form-switch"><input class="form-check-input" data-id="'.$value['id'].'" value="'.$value['active'].'" type="checkbox" id="activeSwitch" '.$checked.'></div>';
-                    $tableArray[$key]['action'] = "<a class='btn py-0 text-warning col-auto' data-id='".$value['id']."' data-set='".json_encode($tableArray[$key])."' data-bs-toggle='modal' data-bs-target='#updateMovieFormModal'  title='edit'><i class='fa-solid fa-pen'></i></a><a class='btn py-0 text-danger col-auto' data-id='".$value['id']."' title='delete'><i class='fa-solid fa-trash'></i></a>";
+                    $tableArray[$key]['action'] = "<a class='btn py-0 text-warning col-auto' data-id='".$value['id']."' data-set='".json_encode($movie_info[0])."' data-bs-toggle='modal' data-bs-target='#updateMovieFormModal'  title='edit'><i class='fa-solid fa-pen'></i></a><a class='btn py-0 text-danger col-auto' data-id='".$value['id']."' title='delete'><i class='fa-solid fa-trash'></i></a>";
                 }
                 $Result['status'] = 200;
                 $Result['result'] = $tableArray;
@@ -108,6 +108,67 @@
                     }
                 }
                break;
+
+            case 'update':
+                $id = $_POST['id'];
+                $name = $_POST['name'];
+                $newFileName = str_replace(" ", "_", $_POST['name']);
+                $category_id = $_POST['category_id'];
+                $description = str_replace("'", "''", $_POST['description']);
+
+                $screentimes = [];
+                if($_POST['screens']){
+                    $screens = explode(",",$_POST['screens']);
+                    foreach ($screens as $key => $value) {
+                        $array = [
+                            "date" => date('Y-m-d',strtotime($value)),
+                            "time" => date('h:i:s',strtotime($value))
+                        ];
+                        array_push($screentimes, $array);
+                    }
+                }
+
+                foreach ($screentimes as $key => $value) {
+                    $screenResult = insertScreen($id, $value['date'], $value['time']);
+                }
+                
+                $data = [
+                    'name' => $name,
+                    'category_id' => $category_id,
+                    'description' => $description
+                ];
+                
+                $newFileName = null;
+                $imageFileType = null;
+                if(isset($_FILES['image']['name'])){
+                    /* Getting file name */
+                    $filename = $_FILES['image']['name'];
+                    /* Location */
+                    $imageFileType = pathinfo($filename,PATHINFO_EXTENSION);
+                    $imageFileType = strtolower($imageFileType);
+                    $location = "../assets/images/movies/".$newFileName.".".$imageFileType;
+                 
+                    /* Valid extensions */
+                    $valid_extensions = array("jpg","jpeg","png");
+                 
+                    $Result['location'] = 0;
+                    /* Check file extension */
+                    if(!in_array(strtolower($imageFileType), $valid_extensions)) {
+                        $Result['status'] = 500;
+                        $Result['error'] = 'Image Type Not Supported';
+                    }else{
+                        /* Upload file */
+                        if(move_uploaded_file($_FILES['image']['tmp_name'],$location)){
+                            $Result['location'] = $location;
+                        }
+                        $data['img_path'] = $newFileName.'.'.$imageFileType;
+                    }
+                }
+
+                $Result['status'] = 200;
+                $Result['movie_result'] = updateMovie($id, $data);
+
+                break;
 
             default:
                $Result['error'] = 'Function '.$_POST['function'].' Not Found!';
