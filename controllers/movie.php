@@ -55,7 +55,7 @@
                     // $tableArray[$key]['active'] = $value['active'];
                     $checked = ($value['active'])?'checked':'';
                     $tableArray[$key]['active'] = '<div class="form-check form-switch"><input class="form-check-input" data-id="'.$value['id'].'" value="'.$value['active'].'" type="checkbox" id="activeSwitch" '.$checked.'></div>';
-                    $tableArray[$key]['action'] = "<a class='btn py-0 text-warning col-auto' data-id='".$value['id']."' data-set='".json_encode($movie_info[0])."' data-bs-toggle='modal' data-bs-target='#updateMovieFormModal'  title='edit'><i class='fa-solid fa-pen'></i></a><a class='btn py-0 text-danger col-auto' data-id='".$value['id']."' title='delete'><i class='fa-solid fa-trash'></i></a>";
+                    $tableArray[$key]['action'] = "<a class='btn py-0 text-warning col-auto' data-id='".$value['id']."' data-set='".json_encode($movie_info[0])."' data-bs-toggle='modal' data-bs-target='#updateMovieFormModal'  title='edit'><i class='fa-solid fa-pen'></i></a><a class='btn py-0 text-danger col-auto delete-screen-btn' data-id='".$value['id']."' title='delete'><i class='fa-solid fa-trash'></i></a>";
                 }
                 $Result['status'] = 200;
                 $Result['result'] = $tableArray;
@@ -138,7 +138,7 @@
                     'description' => $description
                 ];
                 
-                $newFileName = null;
+                $newFileName = $name;
                 $imageFileType = null;
                 if(isset($_FILES['image']['name'])){
                     /* Getting file name */
@@ -168,6 +168,17 @@
                 $Result['status'] = 200;
                 $Result['movie_result'] = updateMovie($id, $data);
 
+                break;
+
+            case 'delete':
+                if( !isset($_POST['id']) ) {
+                    $Result['status'] = 400;
+                    $Result['error'] = 'Missing Required Data!';
+                }
+                else {
+                    $screen_id = $_POST["id"];
+                    $Result["result"] = deleteScreen($screen_id);
+                }
                 break;
 
             default:
