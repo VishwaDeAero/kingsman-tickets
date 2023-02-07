@@ -43,11 +43,6 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">
-                    Main Slider
-                </a>
-            </li>
-            <li class="nav-item">
                 <a class="nav-link <?php if($_SESSION["pagename"] == 'adminStaff'){ ?>active<?php } ?>"
                     href="staff.php">
                     Staff
