@@ -27,11 +27,11 @@
                 $newsList = getAllNews();
                 $tableArray = [];
                 foreach ($newsList as $key => $value) {
-                    $tableArray[$key]['news_id'] = $value['id'];
-                    $tableArray[$key]['news_title'] = $value['title'];
-                    $tableArray[$key]['news_description'] = $value['description'];
+                    $tableArray[$key]['id'] = $value['id'];
+                    $tableArray[$key]['title'] = $value['title'];
+                    $tableArray[$key]['description'] = $value['description'];
                     $tableArray[$key]['created_date'] = $value['created_at'];
-                    $tableArray[$key]['action_buttons'] = '<a class="btn py-0 text-warning col-auto" data-id="'.$value['id'].'" title="edit"><i class="fa-solid fa-pen"></i></a><a class="btn py-0 text-danger col-auto" data-id="'.$value['id'].'" title="delete"><i class="fa-solid fa-trash"></i></a>';
+                    $tableArray[$key]['action'] = "<a class='btn py-0 text-warning col-auto' data-id='".$value['id']."' data-set='".json_encode($value)."' data-bs-toggle='modal' data-bs-target='#updateNewsFormModal' title='edit'><i class='fa-solid fa-pen'></i></a><a class='btn py-0 text-danger col-auto' data-id='".$value['id']."' title='delete'><i class='fa-solid fa-trash'></i></a>";
                 }
                 $Result['status'] = 200;
                 $Result['result'] = $tableArray;
@@ -67,6 +67,46 @@
                     }
                 }
                break;
+
+            case 'update':                
+                $id = $_POST['id'];
+                $title = $_POST['title'];
+                $newFileName = str_replace(" ", "_", $_POST['title']);
+                $description = str_replace("'", "''", $_POST['description']);
+
+                $data = [
+                    'title' => $title,
+                    'description' => $description
+                ];
+
+                if(isset($_FILES['image']['name'])){
+                    /* Getting file name */
+                    $filename = $_FILES['image']['name'];
+                    /* Location */
+                    $imageFileType = pathinfo($filename,PATHINFO_EXTENSION);
+                    $imageFileType = strtolower($imageFileType);
+                    $location = "../assets/images/news/".$newFileName.".".$imageFileType;
+                 
+                    /* Valid extensions */
+                    $valid_extensions = array("jpg","jpeg","png");
+                 
+                    $Result['location'] = 0;
+                    
+                    /* Check file extension */
+                    if(!in_array(strtolower($imageFileType), $valid_extensions)) {
+                        $Result['status'] = 500;
+                        $Result['error'] = 'Image Type Not Supported';
+                    }else{
+                        /* Upload file */
+                        if(move_uploaded_file($_FILES['image']['tmp_name'],$location)){
+                            $Result['location'] = $location;
+                        }
+                        $data['img_path'] = $newFileName.'.'.$imageFileType;
+                    }
+                }
+                $Result['status'] = 200;
+                $Result['result'] = updateNews($id, $data);
+                break;
 
             default:
                $Result['error'] = 'Function '.$_POST['function'].' Not Found!';

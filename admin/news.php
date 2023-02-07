@@ -22,7 +22,7 @@ $_SESSION["pagename"] = "adminNews";
             <?php include('master/sidebar.php') ?>
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 working-area">
 
-                <!-- Add New Modal -->
+                <!-- Add News Modal -->
                 <div class="modal fade" id="addNewsFormModal" data-bs-backdrop="static" data-bs-keyboard="false"
                     tabindex="-1" aria-labelledby="newsFormLabel" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
@@ -41,7 +41,7 @@ $_SESSION["pagename"] = "adminNews";
                                     <div class="mb-3">
                                         <label for="addNewsDescription" class="form-label">News Description</label>
                                         <textarea class="form-control" placeholder="Enter Description Here"
-                                            id="addNewsDescription" rows="4"></textarea>
+                                            id="addNewsDescription" rows="4" required></textarea>
                                     </div>
                                     <div class="mb-3">
                                         <label for="formupload" class="form-label">Upload News Cover</label>
@@ -58,6 +58,44 @@ $_SESSION["pagename"] = "adminNews";
                     </div>
                 </div>
                 <!-- Add News Modal End -->
+
+                <!-- Update News Modal -->
+                <div class="modal fade" id="updateNewsFormModal" data-bs-backdrop="static" data-bs-keyboard="false"
+                    tabindex="-1" aria-labelledby="newsFormLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="updateNewsFormLabel">Update News</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <form id="updateNewsForm" name="updateNewsForm" enctype="multipart/form-data">
+                                <input type="hidden" class="form-control" id="updateNewsId" required>
+                                <div class="modal-body">
+                                    <div class="mb-3">
+                                        <label for="updateNewsTitle" class="form-label">News Title</label>
+                                        <input type="text" class="form-control" id="updateNewsTitle" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="updateNewsDescription" class="form-label">News Description</label>
+                                        <textarea class="form-control" placeholder="Enter Description Here"
+                                            id="updateNewsDescription" rows="4" required></textarea>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="formupload" class="form-label">Change News Cover</label>
+                                        <div class="input-images"></div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Cancel</button>
+                                    <button type="submit" id="updateNewsBtn" class="btn btn-dark">Submit</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!-- Update News Modal End -->
 
                 <div
                     class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
@@ -102,12 +140,25 @@ $_SESSION["pagename"] = "adminNews";
     <script type="text/javascript">
     $(document).ready(function() {
 
-        // Initial Load
+        // Initial Load Image Uploader
         $('.input-images').imageUploader({
             imagesInputName: 'images',
             maxFiles: 1
         });
 
+        // Update News Modal on Popup
+        $('#updateNewsFormModal').on('show.bs.modal', function(e) {
+            var btn = e.relatedTarget;
+            var screen_id = btn.attributes['data-id'].value;
+            var data_set = JSON.parse(btn.attributes['data-set'].value);
+            console.log(data_set);
+            $('#updateNewsId').val(data_set.id);
+            $('#updateNewsTitle').val(data_set.title);
+            $('#updateNewsDescription').val(data_set.description);
+        })
+        // ----------------------------------------------
+
+        // Load News Function
         function showNews() {
             var getData = new FormData();
             getData.append('function', 'list');
@@ -127,19 +178,19 @@ $_SESSION["pagename"] = "adminNews";
                             responsive: true,
                             data: response.result,
                             columns: [{
-                                    data: 'news_id'
+                                    data: 'id'
                                 },
                                 {
-                                    data: 'news_title'
+                                    data: 'title'
                                 },
                                 {
-                                    data: 'news_description'
+                                    data: 'description'
                                 },
                                 {
                                     data: 'created_date'
                                 },
                                 {
-                                    data: 'action_buttons'
+                                    data: 'action'
                                 }
                             ]
                         });
@@ -206,6 +257,60 @@ $_SESSION["pagename"] = "adminNews";
                     } else {
                         Swal.fire({
                             title: 'Insert Failed!',
+                            text: response.error,
+                            icon: 'error',
+                            showConfirmButton: true
+                        });
+                    }
+                }
+            });
+        });
+        // ----------------------------------------------
+
+        // Update News
+        $('#updateNewsForm').submit(function(e) {
+            e.preventDefault();
+            Swal.fire({
+                title: 'Please Wait',
+                allowEscapeKey: false,
+                allowOutsideClick: false,
+            });
+            Swal.showLoading();
+            var sendData = new FormData();
+            // Get the Image
+            let form = $(this);
+            let files = form.find('input[name^="images"]')[0].files;
+            // Append Function to Call
+            sendData.append('function', 'update');
+            if (files.length > 0) {
+                sendData.append('image', files[0]);
+            }
+            // Append News Info
+            sendData.append('id', $('#updateNewsId').val());
+            sendData.append('title', $('#updateNewsTitle').val());
+            sendData.append('description', $('#updateNewsDescription').val());
+            console.log(sendData)
+            $.ajax({
+                type: "POST",
+                url: '../controllers/news.php',
+                processData: false,
+                contentType: false,
+                data: sendData,
+                success: function(response) {
+                    console.log(response);
+                    if ((!response.error) && response.result) {
+                        $('#updateNewsForm').trigger('reset');
+                        Swal.fire({
+                            title: 'Update Successful!',
+                            icon: 'success',
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                        $("#updateNewsFormModal").modal('hide');
+                        showNews();
+                    } else {
+                        Swal.fire({
+                            title: 'Update Failed!',
                             text: response.error,
                             icon: 'error',
                             showConfirmButton: true
