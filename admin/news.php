@@ -320,6 +320,61 @@ $_SESSION["pagename"] = "adminNews";
             });
         });
         // ----------------------------------------------
+
+        // Delete Movie Screen
+        $(document).on('click', '.delete-news-btn', function(e) {
+            e.preventDefault();
+            var user_id = this.attributes['data-id'].value;
+            console.log(user_id)
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You want to delete this News?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: 'Please Wait',
+                        allowEscapeKey: false,
+                        allowOutsideClick: false,
+                    });
+                    Swal.showLoading();
+                    var sendData = new FormData();
+                    // Append Function to Call
+                    sendData.append('function', 'delete');
+                    // Append Update Info
+                    sendData.append('id', user_id);
+                    $.ajax({
+                        type: "POST",
+                        url: '../controllers/news.php',
+                        processData: false,
+                        contentType: false,
+                        data: sendData,
+                        success: function(response) {
+                            console.log(response);
+                            if ((!response.error) && response.result) {
+                                Swal.fire(
+                                    'Deleted!',
+                                    'News has been deleted.',
+                                    'success'
+                                ).then((result) => {
+                                    showNews();
+                                });
+                            } else {
+                                Swal.fire(
+                                    'Oops!',
+                                    'Something went wrong',
+                                    'error'
+                                );
+                            }
+                        }
+                    });
+                }
+            })
+        })
+        // -------------------------------------------------
     });
     </script>
 </body>
