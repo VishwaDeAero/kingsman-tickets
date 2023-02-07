@@ -22,28 +22,42 @@ $_SESSION["pagename"] = "adminInquiry";
             <?php include('master/sidebar.php') ?>
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 working-area">
 
-                <!-- Add New Modal -->
+                <!-- View Email Modal -->
                 <div class="modal fade" id="viewInquiryModal" data-bs-backdrop="static" data-bs-keyboard="false"
-                    tabindex="-1" aria-labelledby="viewInquiryLabel" aria-hidden="true">
+                    tabindex="-1" aria-labelledby="InquiryModal" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="ViewInquiryTitle">Email Subject</h5>
+                                <h5 class="modal-title" id="viewInquiryLabel">View Email</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-
+                                <div class="mb-3">
+                                    <label for="fromEmail" class="form-label fw-bold">From :</label>
+                                    <p id="fromEmail"></p>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="nameEmail" class="form-label fw-bold">Name :</label>
+                                    <p id="nameEmail"></p>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="subjectEmail" class="form-label fw-bold">Subject :</label>
+                                    <p id="subjectEmail"></p>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="descriptionEmail" class="form-label fw-bold">Description :</label>
+                                    <p id="descriptionEmail"></p>
+                                </div>
                             </div>
                             <div class="modal-footer">
-                                <!-- <button type="button" class="btn btn-secondary"
-                                        data-bs-dismiss="modal">Close</button> -->
-                                <button type="button" id="markRepliedBtn" class="btn btn-dark">Mark as Replied</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <a type="button" id="sendEmailReply" href="#" class="btn btn-dark">Reply</a>
                             </div>
                         </div>
                     </div>
                 </div>
-                <!-- Add News Modal End -->
+                <!-- View Email Modal End -->
 
                 <div
                     class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
@@ -72,7 +86,22 @@ $_SESSION["pagename"] = "adminInquiry";
     <script type="text/javascript">
     $(document).ready(function() {
 
+        // Email Modal on Popup
+        $('#viewInquiryModal').on('show.bs.modal', function(e) {
+            var btn = e.relatedTarget;
+            var email_id = btn.attributes['data-id'].value;
+            var data_set = JSON.parse(btn.attributes['data-set'].value);
+            console.log(data_set);
+            $('#fromEmail').text(data_set.email);
+            $('#nameEmail').text(data_set.name);
+            $('#subjectEmail').text(data_set.subject);
+            $('#descriptionEmail').text(data_set.message);
+            $("#sendEmailReply").attr("href", "mailto:"+data_set.email);
+        })
+        // ----------------------------------------------
 
+
+        // Load Inquiries in a Table
         function showInquiries() {
             var getData = new FormData();
             getData.append('function', 'list');
@@ -110,7 +139,7 @@ $_SESSION["pagename"] = "adminInquiry";
                                     data: 'created_at'
                                 },
                                 {
-                                    data: 'action_buttons'
+                                    data: 'action'
                                 }
                             ]
                         });
@@ -127,9 +156,60 @@ $_SESSION["pagename"] = "adminInquiry";
         }
         showInquiries();
 
-        // Change Status
-
-        // ----------------------------------------------
+        // Delete Movie Screen
+        $(document).on('click', '.delete-inquiry-btn', function(e) {
+            e.preventDefault();
+            var inquiry_id = this.attributes['data-id'].value;
+            console.log(inquiry_id)
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You want to delete this Inquiry?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: 'Please Wait',
+                        allowEscapeKey: false,
+                        allowOutsideClick: false,
+                    });
+                    Swal.showLoading();
+                    var sendData = new FormData();
+                    // Append Function to Call
+                    sendData.append('function', 'delete');
+                    // Append Update Info
+                    sendData.append('id', inquiry_id);
+                    $.ajax({
+                        type: "POST",
+                        url: '../controllers/inquiry.php',
+                        processData: false,
+                        contentType: false,
+                        data: sendData,
+                        success: function(response) {
+                            console.log(response);
+                            if ((!response.error) && response.result) {
+                                Swal.fire(
+                                    'Deleted!',
+                                    'Inquiry has been deleted.',
+                                    'success'
+                                ).then((result) => {
+                                    showInquiries();
+                                });
+                            } else {
+                                Swal.fire(
+                                    'Oops!',
+                                    'Something went wrong',
+                                    'error'
+                                );
+                            }
+                        }
+                    });
+                }
+            })
+        })
+        // -------------------------------------------------
     });
     </script>
 </body>

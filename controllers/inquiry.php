@@ -20,7 +20,7 @@
                     $tableArray[$key]['subject'] = $value['subject'];
                     $tableArray[$key]['description'] = $value['message'];
                     $tableArray[$key]['created_at'] = $value['created_at'];
-                    $tableArray[$key]['action_buttons'] = '<a class="btn py-0 text-success col-auto" data-id="'.$value['id'].'" title="edit"><i class="fa-solid fa-check"></i></a><a class="btn py-0 text-danger col-auto" data-id="'.$value['id'].'" title="delete"><i class="fa-solid fa-trash"></i></a>';
+                    $tableArray[$key]['action'] = "<a class='btn py-0 text-primary col-auto' data-id='".$value['id']."' data-set='".json_encode($value)."' data-bs-toggle='modal' data-bs-target='#viewInquiryModal' title='edit'><i class='fa fa-envelope-open'></i></a><a class='btn py-0 text-danger col-auto delete-inquiry-btn' data-id='".$value['id']."' title='delete'><i class='fa-solid fa-trash'></i></a>";
                 }
                 $Result['status'] = 200;
                 $Result['result'] = $tableArray;
@@ -35,6 +35,18 @@
                 $Result['status'] = 200;
                 $Result['result'] = insertInquiry($name, $email, $subject, $message);
                break;
+
+            case 'delete':
+                if( !isset($_POST['id']) ) {
+                    $Result['status'] = 400;
+                    $Result['error'] = 'Missing Required Data!';
+                }
+                else {
+                    $inquiry_id = $_POST["id"];
+                    $Result['status'] = 200;
+                    $Result["result"] = deleteInquiry($inquiry_id);
+                }
+                break;
 
             default:
                $Result['error'] = 'Function '.$_POST['function'].' Not Found!';
