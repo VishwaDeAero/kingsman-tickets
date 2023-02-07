@@ -177,6 +177,7 @@
                 }
                 else {
                     $screen_id = $_POST["id"];
+                    $Result['status'] = 200;
                     $Result["result"] = deleteScreen($screen_id);
                 }
                 break;

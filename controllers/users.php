@@ -165,6 +165,7 @@
                 }
                 else {
                     $user_id = $_POST["id"];
+                    $Result['status'] = 200;
                     $Result["result"] = deleteUser($user_id);
                 }
                 break;

@@ -324,8 +324,8 @@ $_SESSION["pagename"] = "adminNews";
         // Delete Movie Screen
         $(document).on('click', '.delete-news-btn', function(e) {
             e.preventDefault();
-            var user_id = this.attributes['data-id'].value;
-            console.log(user_id)
+            var news_id = this.attributes['data-id'].value;
+            console.log(news_id)
             Swal.fire({
                 title: 'Are you sure?',
                 text: "You want to delete this News?",
@@ -345,7 +345,7 @@ $_SESSION["pagename"] = "adminNews";
                     // Append Function to Call
                     sendData.append('function', 'delete');
                     // Append Update Info
-                    sendData.append('id', user_id);
+                    sendData.append('id', news_id);
                     $.ajax({
                         type: "POST",
                         url: '../controllers/news.php',

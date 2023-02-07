@@ -115,6 +115,7 @@
                 }
                 else {
                     $news_id = $_POST["id"];
+                    $Result['status'] = 200;
                     $Result["result"] = deleteNews($news_id);
                 }
                 break;
