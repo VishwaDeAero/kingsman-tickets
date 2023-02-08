@@ -53,7 +53,7 @@ $_SESSION["pagename"] = "home";
                     alt="sinam">
             </div>
             <div class="carousel-item">
-                <img src="assets/images/main_slider/slide03.jpg"
+                <img src="assets/images/main_slider/slide04.jpg"
                     class="d-block carousel-img" alt="thiruchan">
             </div>
         </div>
