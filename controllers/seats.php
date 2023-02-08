@@ -13,7 +13,7 @@
         switch($_POST['function']) {
             case 'add':
                 if( !is_array($_POST['data']) || (count($_POST['data']) < 3) ) {
-                    $Result['status'] = 500;
+                    $Result['status'] = 400;
                     $Result['error'] = 'Missing Required Data!';
                 }
                 else {
@@ -25,7 +25,7 @@
 
             case 'addprice':
                 if( !is_array($_POST['data']) || (count($_POST['data']) < 2) ) {
-                    $Result['status'] = 500;
+                    $Result['status'] = 400;
                     $Result['error'] = 'Missing Required Data!';
                 }
                 else {
@@ -37,7 +37,7 @@
 
             case 'edit':
                 if( !is_array($_POST['data']) || (count($_POST['data']) < 3) ) {
-                    $Result['status'] = 500;
+                    $Result['status'] = 400;
                     $Result['error'] = 'Missing Required Data!';
                 }
                 else {
@@ -49,7 +49,7 @@
                 
             case 'delete':
                 if( !is_array($_POST['data']) || (count($_POST['data']) != 1) ) {
-                    $Result['status'] = 500;
+                    $Result['status'] = 400;
                     $Result['error'] = 'invalid Data! Seat Id required';
                 }
                 else {
@@ -94,9 +94,12 @@
                         }
                         $Result['status'] = 200;
                     }else{
-                        $Result['status'] = 500;
+                        $Result['status'] = 400;
                         $Result['error'] = 'Image must be in PNG format.';
                     }
+                }else{
+                    $Result['status'] = 400;
+                    $Result['error'] = 'Image must uploaded.';
                 }
                break;
 
