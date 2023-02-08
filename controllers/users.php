@@ -126,8 +126,14 @@
                      $dob = $_POST['dob'];
                      $user_type = $_POST['user_type'];
                      $active = $_POST['active'];
-                     $Result['status'] = 200;
-                     $Result['result'] = insertUser( $first_name, $last_name, $nic, $gender, $dob, $contact_no, $email, $usrname, $passwrd, $user_type, $active );
+                     $same_user = findUser($usrname);
+                    if($same_user){
+                        $Result['status'] = 400;
+                        $Result['error'] = 'Same Username Exist!';
+                    }else{ 
+                        $Result['status'] = 200;
+                        $Result['result'] = insertUser( $first_name, $last_name, $nic, $gender, $dob, $contact_no, $email, $usrname, $passwrd, $user_type, $active );
+                    }
                 }
                 break;
                 
