@@ -132,7 +132,7 @@ $_SESSION["pagename"] = "adminMovies";
                                     </div>
                                     <div class="mb-3">
                                         <label for="formupload" class="form-label">Upload Movie Cover</label>
-                                        <div class="input-images"></div>
+                                        <div class="add-input-images"></div>
                                     </div>
                                     <div class="mb-3">
                                         <label for="addMovieDateTime" class="form-label">Movie Screen Times</label>
@@ -197,7 +197,7 @@ $_SESSION["pagename"] = "adminMovies";
                                     </div>
                                     <div class="mb-3">
                                         <label for="formupload" class="form-label">Change Movie Cover</label>
-                                        <div class="input-images"></div>
+                                        <div class="update-input-images"></div>
                                     </div>
                                     <div class="mb-3">
                                         <label for="updateMovieDateTime" class="form-label">Add New Screen Times</label>
@@ -265,7 +265,11 @@ $_SESSION["pagename"] = "adminMovies";
 
         // Initial Load
         loadCategory();
-        $('.input-images').imageUploader({
+        $('.add-input-images').imageUploader({
+            imagesInputName: 'images',
+            maxFiles: 1
+        });
+        $('.update-input-images').imageUploader({
             imagesInputName: 'images',
             maxFiles: 1
         });
@@ -416,6 +420,15 @@ $_SESSION["pagename"] = "adminMovies";
                 Swal.fire({
                     title: 'No Cover Photo Selected',
                     text: 'Please upload a cover photo',
+                    icon: 'error',
+                    showConfirmButton: true
+                });
+                return;
+            }
+            if(ScreenTimes.length<=0) {
+                Swal.fire({
+                    title: 'No Screens Added',
+                    text: 'Please add screen times',
                     icon: 'error',
                     showConfirmButton: true
                 });

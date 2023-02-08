@@ -77,34 +77,40 @@
                         array_push($screentimes, $array);
                     }
                 }
-                if(isset($_FILES['image']['name'])){
-                    /* Getting file name */
-                    $filename = $_FILES['image']['name'];
-                    /* Location */
-                    $imageFileType = pathinfo($filename,PATHINFO_EXTENSION);
-                    $imageFileType = strtolower($imageFileType);
-                    $location = "../assets/images/movies/".$newFileName.".".$imageFileType;
-                 
-                    /* Valid extensions */
-                    $valid_extensions = array("jpg","jpeg","png");
-                 
-                    $Result['location'] = 0;
-                    /* Check file extension */
-                    if(in_array(strtolower($imageFileType), $valid_extensions)) {
-                        /* Upload file */
-                        if(move_uploaded_file($_FILES['image']['tmp_name'],$location)){
-                            $Result['location'] = $location;
+                $same_movie = findMovie($name);
+                if($same_movie){
+                    $Result['status'] = 400;
+                    $Result['error'] = 'Same Movie Name Exist!';
+                }else{   
+                    if(isset($_FILES['image']['name'])){
+                        /* Getting file name */
+                        $filename = $_FILES['image']['name'];
+                        /* Location */
+                        $imageFileType = pathinfo($filename,PATHINFO_EXTENSION);
+                        $imageFileType = strtolower($imageFileType);
+                        $location = "../assets/images/movies/".$newFileName.".".$imageFileType;
+                    
+                        /* Valid extensions */
+                        $valid_extensions = array("jpg","jpeg","png");
+                    
+                        $Result['location'] = 0;
+                        /* Check file extension */
+                        if(in_array(strtolower($imageFileType), $valid_extensions)) {
+                            /* Upload file */
+                            if(move_uploaded_file($_FILES['image']['tmp_name'],$location)){
+                                $Result['location'] = $location;
+                            }
+                            $Result['status'] = 200;
+                            $Result['movie_result'] = insertMovie($name, $category_id, $description, ($newFileName.'.'.$imageFileType));
+                            $screensInsert = [];
+                            foreach ($screentimes as $key => $value) {
+                                $screenResult = insertScreen($Result['movie_result']['id'], $value['date'], $value['time']);
+                            }
+                            $Result['test'] = $screentimes;
+                        }else{
+                            $Result['status'] = 500;
+                            $Result['error'] = 'Image Type Not Supported';
                         }
-                        $Result['status'] = 200;
-                        $Result['movie_result'] = insertMovie($name, $category_id, $description, ($newFileName.'.'.$imageFileType));
-                        $screensInsert = [];
-                        foreach ($screentimes as $key => $value) {
-                            $screenResult = insertScreen($Result['movie_result']['id'], $value['date'], $value['time']);
-                        }
-                        $Result['test'] = $screentimes;
-                    }else{
-                        $Result['status'] = 500;
-                        $Result['error'] = 'Image Type Not Supported';
                     }
                 }
                break;
