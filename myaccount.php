@@ -339,6 +339,23 @@ if(!isset($_SESSION["user"])){
                                 seat_string +=
                                     `<span class="bg-dark col-auto text-light px-2 py-1 rounded" data-id="${seat.id}" title="${seat.seat_category}">${seat.code}</span>`;
                             });
+
+                            var stat_section = "";
+                            var cancelBtn = false;
+                            if(seats.length>0){
+                                stat_section = `<label class="text-success h5">${ticket.status}</label>`;
+                                if(ticket.status=='Pending'){
+                                    cancelBtn = true;
+                                }
+                            }else{
+                                stat_section = `<label class="text-danger h5">Cancelled</label>`
+                            }
+
+                            if(cancelBtn){
+                                stat_section += `<button class="btn btn-outline-danger" data-bs-toggle="modal" data-res="${ticket.id}" data-set="${seatcancel}" data-id-set="${seatcancelid}"
+                                                data-bs-target="#cancelTicketsFormModal">Cancel</button>`;
+                            }
+
                             tickets_string += `<div class="container ticket shadow bg-body rounded p-4 col-12">
                                                     <div class="row d-flex align-items-center">
                                                         <div class="col-md-3">
@@ -358,11 +375,7 @@ if(!isset($_SESSION["user"])){
                                                             </div>
                                                         </div>
                                                         <div class="col-md-3 mt-3 mt-md-2 mt-sm-0 d-grid gap-2 d-md-flex justify-content-md-end">
-                                                            <label class="text-success h5">
-                                                                ${ticket.status}
-                                                            </label>
-                                                            <button class="btn btn-outline-danger" data-bs-toggle="modal" data-res="${ticket.id}" data-set="${seatcancel}" data-id-set="${seatcancelid}"
-                                                                data-bs-target="#cancelTicketsFormModal">Cancel</button>
+                                                            ${stat_section}                                                            
                                                         </div>
                                                     </div>
                                                 </div>`;
@@ -548,6 +561,15 @@ if(!isset($_SESSION["user"])){
             $('#bookedSeatsCancel input:checked').each(function() {
                 selected.push($(this).attr('value'));
             });
+            if(selected.length<=0){
+                Swal.fire({
+                    title: 'No Seats Selected!',
+                    text: 'Please select a seat to cancel',
+                    icon: 'error',
+                    showConfirmButton: true
+                });
+                return;
+            }
             var sendData = new FormData();
             sendData.append('function', 'cancel');
             sendData.append('reservation', $('#cancelReservationId').val());
