@@ -18,8 +18,14 @@
                 }
                 else {
                      $data = $_POST['data'];
-                     $Result['status'] = 200;
-                     $Result['result'] = insertSeat($data['code'], $data['seat_category'], $data['active']);
+                     $same_seat = findSeats($data['code']);
+                     if($same_seat){
+                        $Result['status'] = 400;
+                        $Result['error'] = 'Same Code Seat Exist!';
+                     }else{   
+                        $Result['status'] = 200;
+                        $Result['result'] = insertSeat($data['code'], $data['seat_category'], $data['active']);
+                     }
                 }
                 break;
 
