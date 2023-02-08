@@ -280,7 +280,7 @@ if(!isset($_SESSION["user"])){
                             reserveSeatSelect.empty(); // remove old options
                             response.result.forEach(element => {
                                 reserveSeatSelect.append($("<option></option>").attr(
-                                    "value", element.id).text(element.code));
+                                    "value", element.id).text(element.seat_category+' - '+element.code));
                             });
                             $('#reservedSeats').select2({
                                 theme: "bootstrap-5",

@@ -220,6 +220,58 @@ $_SESSION["pagename"] = "adminStaff";
             }
         });
 
+        // Active - Deactive User
+        $(document).on('change', '.staff-active', function(e) {
+            e.preventDefault();
+            var user_id = this.attributes['data-id'].value;
+            var checked = $(this).is(":checked");
+            if (user_id) {
+                Swal.fire({
+                    title: 'Please Wait',
+                    allowEscapeKey: false,
+                    allowOutsideClick: false,
+                });
+                Swal.showLoading();
+                var sendData = new FormData();
+                // Append Function to Call
+                sendData.append('function', 'active');
+                // Append Update Info
+                sendData.append('id', user_id);
+                sendData.append('checked', checked);
+                $.ajax({
+                    type: "POST",
+                    url: '../controllers/users.php',
+                    processData: false,
+                    contentType: false,
+                    data: sendData,
+                    success: function(response) {
+                        console.log(response);
+                        if ((!response.error) && response.result) {
+                            Swal.close();
+                        } else {
+                            Swal.fire(
+                                'Oops!',
+                                'Something went wrong',
+                                'error'
+                            );
+                        }
+                    }
+                });
+            } else {
+                if (checked) {
+                    $(this).prop('checked', true);
+                } else {
+                    $(this).prop('checked', false);
+                }
+                Swal.fire({
+                    title: 'Oops',
+                    text: 'Something Went Wrong.',
+                    icon: 'error',
+                    showConfirmButton: true
+                });
+            }
+        });
+
         // Update Staff Modal on Popup
         $('#updateStaffFormModal').on('show.bs.modal', function(e) {
             var btn = e.relatedTarget;
