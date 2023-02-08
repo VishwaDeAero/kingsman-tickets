@@ -38,6 +38,7 @@ $_SESSION["pagename"] = "adminSeats";
                                         <label for="formupload" class="form-label">Upload Seats Layout Image</label>
                                         <div class="input-images"></div>
                                     </div>
+                                    <span class="text-danger">* Image must be in png file format</span>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary"
