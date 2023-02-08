@@ -60,11 +60,11 @@
                     Tickets
                 </a>
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
                 <a class="nav-link" href="#">
                     Movies
                 </a>
-            </li>
+            </li> -->
             <li class="nav-item">
                 <a class="nav-link <?php if($_SESSION["pagename"] == 'reportUsers'){ ?>active<?php } ?>" href="usersreport.php">
                     Users
