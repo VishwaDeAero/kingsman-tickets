@@ -46,7 +46,7 @@ $_SESSION["pagename"] = "contactus";
                         </div>
                         <p class="dark-grey-text">We'll write rarely, but only the best content.</p>
                         <!-- Body -->
-                        <form id="inquiryForm" name="inquiryForm" >
+                        <form id="inquiryForm" name="inquiryForm">
                             <div class="md-form">
                                 <label class="mt-3 mb-2" for="form-name"><i
                                         class="fas fa-user prefix grey-text me-2"></i> Your name</label>
@@ -112,9 +112,15 @@ $_SESSION["pagename"] = "contactus";
     <!-- Contact Us End-->
     <?php include('master/footer.php'); ?>
     <?php include('master/jslinks.php'); ?>
-    
+
     <script type="text/javascript">
     $(document).ready(function() {
+
+        // Email Validate
+        function isEmail(email) {
+            var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+            return regex.test(email);
+        }
 
         // Add New Inquiry
         $('#inquiryForm').submit(function(e) {
@@ -125,6 +131,17 @@ $_SESSION["pagename"] = "contactus";
                 allowOutsideClick: false,
             });
             Swal.showLoading();
+
+            // Block if email not valid
+            if (!isEmail($('#form-email').val())) {
+                Swal.fire({
+                    title: 'Incorrect Email',
+                    text: 'Please Enter Correct Email',
+                    icon: 'error',
+                    showConfirmButton: true
+                });
+                return;
+            }
             $.ajax({
                 type: "POST",
                 url: 'controllers/inquiry.php',
@@ -143,7 +160,7 @@ $_SESSION["pagename"] = "contactus";
                     if (!response.error) {
                         $('#inquiryForm').trigger('reset');
                         Swal.fire({
-                            title: 'Insert Successful!',
+                            title: 'Inquiry Successful!',
                             icon: 'success',
                             timer: 2000,
                             showConfirmButton: false
@@ -151,7 +168,7 @@ $_SESSION["pagename"] = "contactus";
                         $("#inquiryForm").modal('hide');
                     } else {
                         Swal.fire({
-                            title: 'Insert Failed!',
+                            title: 'Inquiry Failed!',
                             text: response.error,
                             icon: 'error',
                             showConfirmButton: true
