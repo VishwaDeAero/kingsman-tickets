@@ -383,6 +383,59 @@ $_SESSION["pagename"] = "adminMovies";
             (e.target.parentElement.parentElement).remove();
             console.log(ScreenTimes);
         });
+
+        // Active - Deactive Screen
+        $(document).on('change', '.screen-active', function(e) {
+            e.preventDefault();
+            var screen_id = this.attributes['data-id'].value;
+            var checked = $(this).is(":checked");
+            console.log(screen_id, checked);
+            if (screen_id) {
+                Swal.fire({
+                    title: 'Please Wait',
+                    allowEscapeKey: false,
+                    allowOutsideClick: false,
+                });
+                Swal.showLoading();
+                var sendData = new FormData();
+                // Append Function to Call
+                sendData.append('function', 'active');
+                // Append Update Info
+                sendData.append('id', screen_id);
+                sendData.append('checked', checked);
+                $.ajax({
+                    type: "POST",
+                    url: '../controllers/movie.php',
+                    processData: false,
+                    contentType: false,
+                    data: sendData,
+                    success: function(response) {
+                        console.log(response);
+                        if ((!response.error) && response.result) {
+                            Swal.close();
+                        } else {
+                            Swal.fire(
+                                'Oops!',
+                                'Something went wrong',
+                                'error'
+                            );
+                        }
+                    }
+                });
+            } else {
+                if (checked) {
+                    $(this).prop('checked', true);
+                } else {
+                    $(this).prop('checked', false);
+                }
+                Swal.fire({
+                    title: 'Oops',
+                    text: 'Something Went Wrong.',
+                    icon: 'error',
+                    showConfirmButton: true
+                });
+            }
+        });
       
 
         // Update Movie Modal on Popup
