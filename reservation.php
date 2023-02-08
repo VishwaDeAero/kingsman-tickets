@@ -85,9 +85,6 @@ if(!isset($_SESSION["user"])){
                                 <!-- <input type="number" class="form-control" id="seatsCount" required disabled> -->
                                 <select class="form-select" multiple aria-label="multiple select example"
                                     id="reservedSeats" required disabled>
-                                    <option value="1">One</option>
-                                    <option value="2">Two</option>
-                                    <option value="3">Three</option>
                                 </select>
                             </div>
                         </div>
@@ -261,6 +258,10 @@ if(!isset($_SESSION["user"])){
             });
             Swal.showLoading();
             var getData = new FormData();
+            if(!$('#reserveTime').val()){
+                Swal.close();
+                return;
+            }
             getData.append('function', 'seatslist');
             getData.append('id', dataid);
             getData.append('screen', $('#reserveTime').val());

@@ -18,7 +18,7 @@
 
             case 'datelist':
                 if( !isset($_POST['id'])) {
-                    $Result['status'] = 500;
+                    $Result['status'] = 400;
                     $Result['error'] = 'invalid Data! id required';
                 }
                 else {
@@ -30,7 +30,7 @@
 
             case 'screenlist':
                 if( !isset($_POST['id']) && !isset($_POST['date']) ) {
-                    $Result['status'] = 500;
+                    $Result['status'] = 400;
                     $Result['error'] = 'invalid Data! id, date required';
                 }
                 else {
@@ -43,13 +43,12 @@
 
             case 'seatslist':
                 if( !isset($_POST['id']) && !isset($_POST['screen']) ) {
-                    $Result['status'] = 500;
+                    $Result['status'] = 400;
                     $Result['error'] = 'invalid Data! id, screen required';
                 }
                 else {
                      $id = $_POST['id'];
                      $screen = $_POST['screen'];
-                     $Result['status'] = 200;
                      //  Get All Active Seats
                      $AllSeats = getAllActiveSeats();
                      $screenReservations = getAllReservationsByScreen($screen);
@@ -70,15 +69,14 @@
                             array_push($AvailableSeats, $value) ;
                         }
                      }
+                     $Result['status'] = 200;
                      $Result['result'] = $AvailableSeats;
-                     $Result['result1'] = $AllSeats;
-                     $Result['result2'] = $BookedSeats;
                 }
                 break;
 
             case 'add':
                 if( !isset($_POST['movie_id']) && !isset($_POST['screen_id']) && !isset($_POST['user_id']) && !isset($_POST['seats_id']) ) {
-                    $Result['status'] = 500;
+                    $Result['status'] = 400;
                     $Result['error'] = 'invalid Data! movie_id, screen_id, user_id, seats_id required';
                 }
                 else {
@@ -115,7 +113,7 @@
             
             case 'cancel':
                 if( !isset($_POST['reservation']) && !isset($_POST['seats']) ) {
-                    $Result['status'] = 500;
+                    $Result['status'] = 400;
                     $Result['error'] = 'invalid Data! reservation_id, seats required';
                 }else{
                     $reservation_id = $_POST['reservation'];
@@ -130,7 +128,7 @@
 
             case 'alltickets':
                 if( !isset($_POST['user_id'])) {
-                    $Result['status'] = 500;
+                    $Result['status'] = 400;
                     $Result['error'] = 'invalid Data! user_id required';
                 }
                 else {

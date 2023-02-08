@@ -49,7 +49,7 @@ function getMovieScreensByDate($movie_id, $date){
         $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
         // set the PDO error mode to exception
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $sql = $conn->prepare("SELECT * FROM screens WHERE movie_id=$movie_id AND date='$date' AND active=1 AND deleted_at IS NULL");
+        $sql = $conn->prepare("SELECT * FROM screens WHERE movie_id=$movie_id AND date='$date' AND active=1 AND deleted_at IS NULL AND date>'".date('Y-m-d')."'");
         $sql->execute();
         return $sql->fetchAll(PDO::FETCH_ASSOC);
       } catch(PDOException $e) {
@@ -65,7 +65,7 @@ function getMovieScreensDates($movie_id){
         $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
         // set the PDO error mode to exception
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $sql = $conn->prepare("SELECT DISTINCT date FROM screens WHERE movie_id=$movie_id AND active=1 AND deleted_at IS NULL");
+        $sql = $conn->prepare("SELECT DISTINCT date FROM screens WHERE movie_id=$movie_id AND active=1 AND deleted_at IS NULL AND date>'".date('Y-m-d')."'");
         // $sql = $conn->prepare("SELECT DISTINCT date FROM screens WHERE movie_id=$movie_id AND date >= CURDATE() AND active=1 AND deleted_at IS NULL");
         $sql->execute();
         return $sql->fetchAll(PDO::FETCH_ASSOC);
