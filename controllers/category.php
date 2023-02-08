@@ -21,8 +21,14 @@
                }
                else {
                     $data = $_POST['data'];
-                    $Result['status'] = 200;
-                    $Result['result'] = insertCategory($data['name']);
+                    $same_category = findCategory($data['name']);
+                    if($same_category){
+                        $Result['status'] = 400;
+                        $Result['error'] = 'Same Category Name Exist!';
+                    }else{ 
+                        $Result['status'] = 200;
+                        $Result['result'] = insertCategory($data['name']);
+                    }
                }
                break;
 
