@@ -79,7 +79,7 @@ $_SESSION["pagename"] = "adminStaff";
                                     </div>
                                     <div class="mb-3">
                                         <label for="addEmail" class="form-label">Email</label>
-                                        <input type="email" class="form-control" id="addEmail">
+                                        <input type="email" class="form-control" id="addEmail" required>
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-check-label" for="addActive">User Active</label>
@@ -144,7 +144,7 @@ $_SESSION["pagename"] = "adminStaff";
                                     </div>
                                     <div class="mb-3">
                                         <label for="updateEmail" class="form-label">Email</label>
-                                        <input type="email" class="form-control" id="updateEmail" value="">
+                                        <input type="email" class="form-control" id="updateEmail" value="" required>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
@@ -203,6 +203,12 @@ $_SESSION["pagename"] = "adminStaff";
     $(document).ready(function() {
         var passwordMatch = true;
 
+        // Email Validate
+        function isEmail(email) {
+            var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+            return regex.test(email);
+        }
+
         // Check Passwords Match
         $(".password-input").keyup(function(event) {
             if ($('#addPassword').val() != $('#addMatchPassword').val()) {
@@ -232,6 +238,16 @@ $_SESSION["pagename"] = "adminStaff";
 
         //Update Account Info
         $('#updateStaffForm').submit(function(e) {
+            // Block if email not valid
+            if (!isEmail($('#updateEmail').val())) {
+                Swal.fire({
+                    title: 'Incorrect Email',
+                    text: 'Please Enter Correct Email',
+                    icon: 'error',
+                    showConfirmButton: true
+                });
+                return;
+            }
             e.preventDefault();
             Swal.fire({
                 title: 'Please Wait',
@@ -415,6 +431,16 @@ $_SESSION["pagename"] = "adminStaff";
                     showConfirmButton: true
                 });
                 return false;
+            }
+            // Block if email not valid
+            if (!isEmail($('#addEmail').val())) {
+                Swal.fire({
+                    title: 'Incorrect Email',
+                    text: 'Please Enter Correct Email',
+                    icon: 'error',
+                    showConfirmButton: true
+                });
+                return;
             }
             Swal.fire({
                 title: 'Please Wait',
