@@ -54,9 +54,10 @@ $_SESSION["pagename"] = "reportTickets";
                                 <th>Customer</th>
                                 <th>Movie</th>
                                 <th>Seats</th>
-                                <th>Price</th>
-                                <th>Date</th>
+                                <th>Show Date</th>
                                 <th>Time</th>
+                                <th>Price</th>
+                                <th>Booked At</th>
                                 <th>Status</th>
                             </tr>
                         </thead>
@@ -108,13 +109,16 @@ $_SESSION["pagename"] = "reportTickets";
                                     data: 'seats'
                                 },
                                 {
-                                    data: 'price'
-                                },
-                                {
                                     data: 'date'
                                 },
                                 {
                                     data: 'time'
+                                },
+                                {
+                                    data: 'price'
+                                },
+                                {
+                                    data: 'created_at'
                                 },
                                 {
                                     data: 'action'

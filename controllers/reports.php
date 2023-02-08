@@ -46,6 +46,7 @@
                             $tableArray[$key]['time'] = $screen['time'];
                             $tableArray[$key]['seats'] = $seats;
                             $tableArray[$key]['price'] = "Rs.".(float)$price;
+                            $tableArray[$key]['created_at'] = $value['created_at'];
                             if($seatids){
                                 if($value['paid'] == 1){
                                     $tableArray[$key]['action'] = '<span class="text-success fw-bold col-auto">Paid</span>';
