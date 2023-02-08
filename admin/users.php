@@ -220,6 +220,59 @@ $_SESSION["pagename"] = "adminUsers";
             }
         });
 
+        // Active - Deactive User
+        $(document).on('change', '.user-active', function(e) {
+            e.preventDefault();
+            var user_id = this.attributes['data-id'].value;
+            var checked = $(this).is(":checked");
+            console.log(user_id, checked);
+            if (user_id) {
+                Swal.fire({
+                    title: 'Please Wait',
+                    allowEscapeKey: false,
+                    allowOutsideClick: false,
+                });
+                Swal.showLoading();
+                var sendData = new FormData();
+                // Append Function to Call
+                sendData.append('function', 'active');
+                // Append Update Info
+                sendData.append('id', user_id);
+                sendData.append('checked', checked);
+                $.ajax({
+                    type: "POST",
+                    url: '../controllers/users.php',
+                    processData: false,
+                    contentType: false,
+                    data: sendData,
+                    success: function(response) {
+                        console.log(response);
+                        if ((!response.error) && response.result) {
+                            Swal.close();
+                        } else {
+                            Swal.fire(
+                                'Oops!',
+                                'Something went wrong',
+                                'error'
+                            );
+                        }
+                    }
+                });
+            } else {
+                if (checked) {
+                    $(this).prop('checked', true);
+                } else {
+                    $(this).prop('checked', false);
+                }
+                Swal.fire({
+                    title: 'Oops',
+                    text: 'Something Went Wrong.',
+                    icon: 'error',
+                    showConfirmButton: true
+                });
+            }
+        });
+
         // Update User Modal on Popup
         $('#updateUserFormModal').on('show.bs.modal', function(e) {
             var btn = e.relatedTarget;
@@ -300,7 +353,7 @@ $_SESSION["pagename"] = "adminUsers";
         })
 
         // Delete User
-        $(document).on('click', '.delete-user-btn', function(e){ 
+        $(document).on('click', '.delete-user-btn', function(e) {
             e.preventDefault();
             var user_id = this.attributes['data-id'].value;
             console.log(user_id)

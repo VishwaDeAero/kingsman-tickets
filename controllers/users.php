@@ -11,9 +11,24 @@
 
         switch($_POST['function']) {
 
+            case 'active':
+                if( !isset($_POST['id']) || !isset($_POST['checked']) ){
+                    $Result['status'] = 400;
+                    $Result['error'] = 'User ID and Active Status Required!';
+                }else{
+                    $id = $_POST['id'];
+                    $active = 0;
+                    if($_POST['checked'] == "true"){
+                        $active = 1;
+                    }
+                    $Result['status'] = 200;
+                    $Result['result'] = activeUser($id, $active);
+                }
+                break;
+
             case 'password':
                 if( !isset($_POST['id']) || !isset($_POST['oldPassword']) || !isset($_POST['updatePassword']) ){
-                    $Result['status'] = 500;
+                    $Result['status'] = 400;
                     $Result['error'] = 'User ID and Old/New Passwords Required!';
                 }else{
                     if(!isset($_SESSION["user"])){
@@ -75,7 +90,7 @@
                         $tableArray[$key]['contact_no'] = $value['contact_no'];
                         $tableArray[$key]['email'] = $value['email'];
                         $checked = ($value['active'])?'checked':'';
-                        $tableArray[$key]['active'] = '<div class="form-check form-switch"><input class="form-check-input" data-id="'.$value['id'].'" value="'.$value['active'].'" type="checkbox" id="activeSwitch" '.$checked.'></div>';
+                        $tableArray[$key]['active'] = '<div class="form-check form-switch"><input class="form-check-input user-active" data-id="'.$value['id'].'" value="'.$value['active'].'" type="checkbox" id="activeSwitch" '.$checked.'></div>';
                         $tableArray[$key]['action'] = "<a class='btn py-0 text-warning col-auto' data-id='".$value['id']."' data-set='".json_encode($value)."' data-bs-toggle='modal' data-bs-target='#updateUserFormModal' title='edit'><i class='fa-solid fa-pen'></i></a><a class='btn py-0 text-danger col-auto delete-user-btn' data-id='".$value['id']."' title='delete'><i class='fa-solid fa-trash'></i></a>";
                     }
                     $Result['status'] = 200;
@@ -101,7 +116,7 @@
                         $tableArray[$key]['contact_no'] = $value['contact_no'];
                         $tableArray[$key]['email'] = $value['email'];
                         $checked = ($value['active'])?'checked':'';
-                        $tableArray[$key]['active'] = '<div class="form-check form-switch"><input class="form-check-input" data-id="'.$value['id'].'" value="'.$value['active'].'" type="checkbox" id="activeSwitch" '.$checked.'></div>';
+                        $tableArray[$key]['active'] = '<div class="form-check form-switch"><input class="form-check-input staff-active" data-id="'.$value['id'].'" value="'.$value['active'].'" type="checkbox" id="activeSwitch" '.$checked.'></div>';
                         $tableArray[$key]['action'] = "<a class='btn py-0 text-warning col-auto' data-id='".$value['id']."' data-set='".json_encode($value)."' data-bs-toggle='modal' data-bs-target='#updateStaffFormModal' title='edit'><i class='fa-solid fa-pen'></i></a><a class='btn py-0 text-danger col-auto delete-user-btn' data-id='".$value['id']."' title='delete'><i class='fa-solid fa-trash'></i></a>";
                     }
                     $Result['status'] = 200;

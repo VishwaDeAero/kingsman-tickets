@@ -167,6 +167,23 @@ function updateUser($id, $data){
       $conn = null;
 }
 
+// Activate a User
+function activeUser($id, $active){
+    global $servername, $dbname, $username, $password;
+    $date = date('Y-m-d H:i:s');
+    try {
+        $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+        // set the PDO error mode to exception
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $sql = $conn->prepare("UPDATE users SET active=$active WHERE id=$id");
+        $sql->execute();
+        return "Record: $id status updated successfully";
+      } catch(PDOException $e) {
+        return "Error: " . $e->getMessage();
+      }
+      $conn = null;
+}
+
 // Delete a User (Soft Delete)
 function deleteUser($id){
     global $servername, $dbname, $username, $password;
