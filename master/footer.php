@@ -9,8 +9,7 @@
                             <i class="fa-brands fa-kickstarter me-3"></i>Cineflix Movies
                         </h6>
                         <p>
-                            Here you can use rows and columns to organize your footer content. Lorem ipsum
-                            dolor sit amet, consectetur adipisicing elit.
+                        At Cineflix Movies, we strive to provide our customers with an unforgettable movie-going experience. We hope you enjoy your time with us and look forward to seeing you soon!
                         </p>
                     </div>
                     <div class="col-md-5 col-lg-4 col-xl-4 mx-auto mb-4">
