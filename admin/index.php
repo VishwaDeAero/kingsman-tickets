@@ -293,7 +293,7 @@ $_SESSION["pagename"] = "adminDashboard";
                                     <div class="mb-3">
                                         <label for="updateEmail" class="form-label">Email</label>
                                         <input type="email" class="form-control" id="updateEmail"
-                                            value="<?php echo $_SESSION["user"]["email"] ?>">
+                                            value="<?php echo $_SESSION["user"]["email"] ?>" required>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
@@ -329,6 +329,13 @@ $_SESSION["pagename"] = "adminDashboard";
                 passwordMatch = true;
             }
         });
+
+        
+        // Email Validate
+        function isEmail(email) {
+            var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+            return regex.test(email);
+        }
 
         //Update Password
         $('#updatePasswordForm').submit(function(e) {
@@ -390,6 +397,16 @@ $_SESSION["pagename"] = "adminDashboard";
         //Update Account Info
         $('#updateUserForm').submit(function(e) {
             e.preventDefault();
+            // Block if email not valid
+            if (!isEmail($('#updateEmail').val())) {
+                Swal.fire({
+                    title: 'Incorrect Email',
+                    text: 'Please Enter Correct Email',
+                    icon: 'error',
+                    showConfirmButton: true
+                });
+                return;
+            }
             Swal.fire({
                 title: 'Please Wait',
                 allowEscapeKey: false,
