@@ -41,7 +41,7 @@ $_SESSION["pagename"] = "home";
         </div>
         <div class="carousel-inner">
             <div class="carousel-item active">
-                <img src="assets/images/main_slider/movies_1315_633145515b98f_naane_varu_sd.jpg"
+                <img src="assets/images/main_slider/slide01.jpg"
                     class="d-block carousel-img" alt="Naane Varuen">
                 <!-- <div class="carousel-caption d-none d-md-block">
                     <h1>First slide label</h1>
@@ -49,11 +49,11 @@ $_SESSION["pagename"] = "home";
                 </div> -->
             </div>
             <div class="carousel-item">
-                <img src="assets/images/main_slider/movies_1170_6045ea459dd42_sinam_sd.jpg" class="d-block carousel-img"
+                <img src="assets/images/main_slider/slide02.jpg" class="d-block carousel-img"
                     alt="sinam">
             </div>
             <div class="carousel-item">
-                <img src="assets/images/main_slider/movies_1301_62f6378b2572d_thiruchi_sd.jpg"
+                <img src="assets/images/main_slider/slide03.jpg"
                     class="d-block carousel-img" alt="thiruchan">
             </div>
         </div>
