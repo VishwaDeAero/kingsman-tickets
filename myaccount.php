@@ -126,15 +126,18 @@ if(!isset($_SESSION["user"])){
                     <div class="modal-body">
                         <div class="mb-3">
                             <label for="updateFirstName" class="form-label">First Name</label>
-                            <input type="text" class="form-control" id="updateFirstName" value="<?php echo $_SESSION["user"]["first_name"] ?>" required>
+                            <input type="text" class="form-control" id="updateFirstName"
+                                value="<?php echo $_SESSION["user"]["first_name"] ?>" required>
                         </div>
                         <div class="mb-3">
                             <label for="updateLastName" class="form-label">Last Name</label>
-                            <input type="text" class="form-control" id="updateLastName" value="<?php echo $_SESSION["user"]["last_name"] ?>" required>
+                            <input type="text" class="form-control" id="updateLastName"
+                                value="<?php echo $_SESSION["user"]["last_name"] ?>" required>
                         </div>
                         <div class="mb-3">
                             <label for="updateNIC" class="form-label">NIC Number</label>
-                            <input type="text" class="form-control" id="updateNIC" value="<?php echo $_SESSION["user"]["nic"] ?>" required>
+                            <input type="text" class="form-control" id="updateNIC"
+                                value="<?php echo $_SESSION["user"]["nic"] ?>" required>
                         </div>
                         <div class="mb-3">
                             <label for="updateGender" class="form-label">Gender</label>
@@ -146,15 +149,18 @@ if(!isset($_SESSION["user"])){
                         </div>
                         <div class="mb-3">
                             <label for="updateDOB" class="form-label">Date of Birth</label>
-                            <input type="date" max="<?php echo date('Y-m-d'); ?>" class="form-control" id="updateDOB" value="<?php echo $_SESSION["user"]["dob"] ?>" required>
+                            <input type="date" max="<?php echo date('Y-m-d'); ?>" class="form-control" id="updateDOB"
+                                value="<?php echo $_SESSION["user"]["dob"] ?>" required>
                         </div>
                         <div class="mb-3">
                             <label for="updateContactNo" class="form-label">Contact No</label>
-                            <input type="text" class="form-control" id="updateContactNo" value="<?php echo $_SESSION["user"]["contact_no"] ?>">
+                            <input type="text" class="form-control" id="updateContactNo"
+                                value="<?php echo $_SESSION["user"]["contact_no"] ?>">
                         </div>
                         <div class="mb-3">
                             <label for="updateEmail" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="updateEmail" value="<?php echo $_SESSION["user"]["email"] ?>">
+                            <input type="email" class="form-control" id="updateEmail"
+                                value="<?php echo $_SESSION["user"]["email"] ?>" required>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -311,6 +317,12 @@ if(!isset($_SESSION["user"])){
     $(document).ready(function() {
         const user_id = <?php echo $_SESSION["user"]["id"] ?>;
 
+        // Email Validate
+        function isEmail(email) {
+            var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+            return regex.test(email);
+        }
+
         function showAllTickets() {
             var getData = new FormData();
             getData.append('function', 'alltickets');
@@ -342,16 +354,18 @@ if(!isset($_SESSION["user"])){
 
                             var stat_section = "";
                             var cancelBtn = false;
-                            if(seats.length>0){
-                                stat_section = `<label class="text-success h5">${ticket.status}</label>`;
-                                if(ticket.status=='Pending'){
+                            if (seats.length > 0) {
+                                stat_section =
+                                    `<label class="text-success h5">${ticket.status}</label>`;
+                                if (ticket.status == 'Pending') {
                                     cancelBtn = true;
                                 }
-                            }else{
-                                stat_section = `<label class="text-danger h5">Cancelled</label>`
+                            } else {
+                                stat_section =
+                                    `<label class="text-danger h5">Cancelled</label>`
                             }
 
-                            if(cancelBtn){
+                            if (cancelBtn) {
                                 stat_section += `<button class="btn btn-outline-danger" data-bs-toggle="modal" data-res="${ticket.id}" data-set="${seatcancel}" data-id-set="${seatcancelid}"
                                                 data-bs-target="#cancelTicketsFormModal">Cancel</button>`;
                             }
@@ -466,15 +480,16 @@ if(!isset($_SESSION["user"])){
         //Update Account Info
         $('#updateUserForm').submit(function(e) {
             e.preventDefault();
-            // if ($('#updatePassword').val() == "") {
-            //     Swal.fire({
-            //         title: 'Data Incomplete!',
-            //         text: 'Please complete info and try again',
-            //         icon: 'error',
-            //         showConfirmButton: true
-            //     });
-            //     return false;
-            // }
+            // Block if email not valid
+            if (!isEmail($('#updateEmail').val())) {
+                Swal.fire({
+                    title: 'Incorrect Email',
+                    text: 'Please Enter Correct Email',
+                    icon: 'error',
+                    showConfirmButton: true
+                });
+                return;
+            }
             Swal.fire({
                 title: 'Please Wait',
                 allowEscapeKey: false,
@@ -561,7 +576,7 @@ if(!isset($_SESSION["user"])){
             $('#bookedSeatsCancel input:checked').each(function() {
                 selected.push($(this).attr('value'));
             });
-            if(selected.length<=0){
+            if (selected.length <= 0) {
                 Swal.fire({
                     title: 'No Seats Selected!',
                     text: 'Please select a seat to cancel',

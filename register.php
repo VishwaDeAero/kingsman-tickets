@@ -38,35 +38,35 @@ $_SESSION["pagename"] = "register";
                                 <i class="fas fa-font fa-lg me-3 mb-3 mb-3 fa-fw"></i>
                                 <div class="form-outline flex-fill mb-0">
                                     <label class="form-label" for="firstName">First Name</label>
-                                    <input type="text" id="firstName" class="form-control" />
+                                    <input type="text" id="firstName" class="form-control" required/>
                                 </div>
                             </div>
                             <div class="d-flex flex-row align-items-end mb-4">
                                 <i class="fas fa-font fa-lg me-3 mb-3 mb-3 fa-fw"></i>
                                 <div class="form-outline flex-fill mb-0">
                                     <label class="form-label" for="lastName">Last Name</label>
-                                    <input type="text" id="lastName" class="form-control" />
+                                    <input type="text" id="lastName" class="form-control" required/>
                                 </div>
                             </div>
                             <div class="d-flex flex-row align-items-end mb-4">
                                 <i class="fas fa-user fa-lg me-3 mb-3 mb-3 fa-fw"></i>
                                 <div class="form-outline flex-fill mb-0">
                                     <label class="form-label" for="username">Userame</label>
-                                    <input type="text" id="username" class="form-control" />
+                                    <input type="text" id="username" class="form-control" required/>
                                 </div>
                             </div>
                             <div class="d-flex flex-row align-items-end mb-4">
                                 <i class="fas fa-id-card fa-lg me-3 mb-3 mb-3 fa-fw"></i>
                                 <div class="form-outline flex-fill mb-0">
                                     <label class="form-label" for="NIC">NIC Number</label>
-                                    <input type="text" id="NIC" class="form-control" />
+                                    <input type="text" id="NIC" class="form-control" required />
                                 </div>
                             </div>
                             <div class="d-flex flex-row align-items-end mb-4">
                                 <i class="fas fa-venus-mars fa-lg me-3 mb-3 mb-3 fa-fw"></i>
                                 <div class="form-outline flex-fill mb-0">
                                     <label class="form-label" for="gender">Gender</label>
-                                    <select class="form-select" aria-label="Gender" id="gender">
+                                    <select class="form-select" aria-label="Gender" id="gender" required>
                                         <option value="Male">Male</option>
                                         <option value="Female">Female</option>
                                         <option value="Other">Other</option>
@@ -78,14 +78,14 @@ $_SESSION["pagename"] = "register";
                                 <div class="form-outline flex-fill mb-0">
                                     <label class="form-label" for="DOB">Date of Birth</label>
                                     <input type="date" max="<?php echo date('Y-m-d'); ?>" id="DOB"
-                                        class="form-control" />
+                                        class="form-control" required/>
                                 </div>
                             </div>
                             <div class="d-flex flex-row align-items-end mb-4">
                                 <i class="fas fa-envelope fa-lg me-3 mb-3 fa-fw"></i>
                                 <div class="form-outline flex-fill mb-0">
                                     <label class="form-label" for="email">Email</label>
-                                    <input type="email" id="email" class="form-control" />
+                                    <input type="email" id="email" class="form-control" required/>
                                 </div>
                             </div>
                             <div class="d-flex flex-row align-items-end mb-4">
@@ -140,6 +140,12 @@ $_SESSION["pagename"] = "register";
             }
         });
 
+        // Email Validate
+        function isEmail(email) {
+            var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+            return regex.test(email);
+        }
+
         // Add Users
         $('#regBtn').click(function(e) {
             e.preventDefault();
@@ -151,6 +157,16 @@ $_SESSION["pagename"] = "register";
                     showConfirmButton: true
                 });
                 return false;
+            }
+            // Block if email not valid
+            if (!isEmail($('#email').val())) {
+                Swal.fire({
+                    title: 'Incorrect Email',
+                    text: 'Please Enter Correct Email',
+                    icon: 'error',
+                    showConfirmButton: true
+                });
+                return;
             }
             Swal.fire({
                 title: 'Please Wait',
