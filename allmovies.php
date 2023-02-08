@@ -115,13 +115,13 @@ $_SESSION["pagename"] = "allmovies";
                                                                             <h5 class="card-title">${movie_element.name}</h5>
                                                                             <h6 class="">${element.name}</h6>
                                                                         </div>
-                                                                        <div class="col text-end align-items-center d-flex justify-content-sm-end">
+                                                                        <!--<div class="col text-end align-items-center d-flex justify-content-sm-end">
                                                                             <small class="bg-warning p-2 rounded-3 align-middle">
                                                                                 <span class="d-none d-md-inline">Rating:</span>
                                                                                 <span>
                                                                                     4.8/5</span>
                                                                             </small>
-                                                                        </div>
+                                                                        </div>-->
                                                                     </div>
                                                                     <hr>
                                                                     <p class="card-text"><small class="text-muted">${(movie_element.description.length > 100)? movie_element.description.substring(0,100): movie_element.description}.</small></p>

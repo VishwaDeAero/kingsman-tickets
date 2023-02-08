@@ -43,26 +43,18 @@ $_SESSION["pagename"] = "home";
             <div class="carousel-item active">
                 <img src="assets/images/main_slider/movies_1315_633145515b98f_naane_varu_sd.jpg"
                     class="d-block carousel-img" alt="Naane Varuen">
-                <div class="carousel-caption d-none d-md-block">
+                <!-- <div class="carousel-caption d-none d-md-block">
                     <h1>First slide label</h1>
                     <h3>Some representative placeholder content for the first slide.</h3>
-                </div>
+                </div> -->
             </div>
             <div class="carousel-item">
                 <img src="assets/images/main_slider/movies_1170_6045ea459dd42_sinam_sd.jpg" class="d-block carousel-img"
                     alt="sinam">
-                <div class="carousel-caption d-none d-md-block">
-                    <h1>Second slide label</h1>
-                    <h3>Some representative placeholder content for the second slide.</h3>
-                </div>
             </div>
             <div class="carousel-item">
                 <img src="assets/images/main_slider/movies_1301_62f6378b2572d_thiruchi_sd.jpg"
                     class="d-block carousel-img" alt="thiruchan">
-                <div class="carousel-caption d-none d-md-block">
-                    <h1>Third slide label</h1>
-                    <h3>Some representative placeholder content for the third slide.</h3>
-                </div>
             </div>
         </div>
         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions"
@@ -181,13 +173,13 @@ $_SESSION["pagename"] = "home";
                                                                 <h5 class="card-title">${movie.name}</h5>
                                                                 <h6 class="">${category.name}</h6>
                                                             </div>
-                                                            <div class="col text-end align-items-center d-flex justify-content-sm-end">
+                                                            <!--<div class="col text-end align-items-center d-flex justify-content-sm-end">
                                                                 <small class="bg-warning p-2 rounded-3 align-middle">
                                                                     <span class="d-none d-md-inline">Rating:</span>
                                                                     <span>
                                                                         4.8/5</span>
                                                                 </small>
-                                                            </div>
+                                                            </div>-->
                                                         </div>
                                                         <hr>
                                                         <p class="card-text"><small class="text-muted">${(movie.description.length > 100)? movie.description.substring(0,100): movie.description}.</small></p>
