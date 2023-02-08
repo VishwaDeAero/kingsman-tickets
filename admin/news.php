@@ -45,7 +45,7 @@ $_SESSION["pagename"] = "adminNews";
                                     </div>
                                     <div class="mb-3">
                                         <label for="formupload" class="form-label">Upload News Cover</label>
-                                        <div class="input-images"></div>
+                                        <div class="add-input-images"></div>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
@@ -83,7 +83,7 @@ $_SESSION["pagename"] = "adminNews";
                                     </div>
                                     <div class="mb-3">
                                         <label for="formupload" class="form-label">Change News Cover</label>
-                                        <div class="input-images"></div>
+                                        <div class="update-input-images"></div>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
@@ -141,7 +141,11 @@ $_SESSION["pagename"] = "adminNews";
     $(document).ready(function() {
 
         // Initial Load Image Uploader
-        $('.input-images').imageUploader({
+        $('.add-input-images').imageUploader({
+            imagesInputName: 'images',
+            maxFiles: 1
+        });
+        $('.update-input-images').imageUploader({
             imagesInputName: 'images',
             maxFiles: 1
         });
