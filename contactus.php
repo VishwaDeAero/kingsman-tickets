@@ -32,9 +32,7 @@ $_SESSION["pagename"] = "contactus";
     <!-- Contact Us -->
     <div class="container p-3 p-sm-2 p-lg-5 my-md-3 m-auto">
         <h3 class="font-weight-bold text-center mb-4">Contact Us</h3>
-        <p class="text-center w-responsive mx-auto pb-5">Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-            Fugit, error amet numquam iure provident voluptate esse quasi, veritatis totam voluptas nostrum quisquam
-            eum porro a pariatur veniam.</p>
+        <p class="text-center w-responsive mx-auto pb-5">Thank you for visiting our Cineflix Movies. If you have any questions or concerns, please don't hesitate to reach out to us. Our dedicated customer support team is available to assist you during business hours. You can use the contact form provided on this page. We value your feedback and strive to provide the best movie ticket booking experience possible. We look forward to hearing from you!</p>
         <div class="row">
             <div class="col-lg-5 mb-lg-0 pb-lg-3 mb-4">
                 <!-- Form with header -->
